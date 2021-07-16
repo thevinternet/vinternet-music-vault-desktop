@@ -16,9 +16,6 @@ TrackUtilities.createTrackDocuments = async (tracks, releaseId) => {
 		artistId: [],
 	};
 
-	console.log("got here to!");
-	console.log(tracksArray.length);
-
 	if (tracksArray.length) {
 		for (let index = 0; index < tracksArray.length; index++) {
 

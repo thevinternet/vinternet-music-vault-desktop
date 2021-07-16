@@ -52,6 +52,9 @@ const TrackSchema = new Schema(
 		mixkey: {
 			type: String
 		},
+		bpm: {
+			type: String
+		},
 		file_location: {
 			type: String
 		}

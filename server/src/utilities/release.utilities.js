@@ -11,17 +11,17 @@ const ReleaseUtilities = {}
 ReleaseUtilities.createReleaseDocument = async (release, tracks) => {
 
 	// Manage linked Label Name data properties
-	const labelNames = await DocumentUtilities.manageLinkedData(release.labelName, LabelModel);
+	const labelNames = await DocumentUtilities.manageLinkedData(release.label_name, LabelModel);
 
 	// Create new Release Document
 	const newRelease = await ReleaseModel.create({
-		title: release.releaseTitle,
+		title: release.title,
 		label_name: labelNames,
 		catalogue: release.catalogue,
-		year: release.releaseYear,
-		format: release.releaseFormat,
-		discogs_url: release.discogsUrl,
-		discogs_id: release.discogsId,
+		year: release.year,
+		format: release.format,
+		discogs_url: release.discogs_url,
+		discogs_id: release.discogs_id,
 	});
 
 	// Grab new Release ID
@@ -56,19 +56,17 @@ ReleaseUtilities.updateReleaseDocument = async (id, release, tracks) => {
 
 	// Create updated Release object
 	const updatedRelease = {
-		title: release.releaseTitle,
-		artist_name: [],
-		label_name: [],
+		title: release.title,
 		catalogue: release.catalogue,
-		year: release.releaseYear,
-		format: release.releaseFormat,
-		discogs_url: release.discogsUrl,
-		discogs_id: release.discogsId,
+		year: release.year,
+		format: release.format,
+		discogs_url: release.discogs_url,
+		discogs_id: release.discogs_id,
 		picture: release.picture
 	}
 
 	// Manage linked Label Name data properties
-	updatedRelease.label_name = await DocumentUtilities.manageLinkedData(release.labelName, LabelModel);
+	updatedRelease.label_name = await DocumentUtilities.manageLinkedData(release.label_name, LabelModel);
 
 	console.log(tracks);
 
@@ -127,13 +125,13 @@ ReleaseUtilities.createImportedReleases = async (tracks) => {
 			}
 		});
 
-		newRelease.release.releaseTitle = regex.exec(newRelease.tracks[0].release_catalogue)[0];
-		newRelease.release.labelName = newRelease.tracks[0].release_label;
+		newRelease.release.title = regex.exec(newRelease.tracks[0].release_catalogue)[0];
+		newRelease.release.label_name = newRelease.tracks[0].release_label;
 		newRelease.release.catalogue = newRelease.tracks[0].release_catalogue;
-		newRelease.release.releaseYear = newRelease.tracks[0].year;
-		newRelease.release.releaseFormat = [];
-		newRelease.release.discogsUrl = "";
-		newRelease.release.discogsId = "";
+		newRelease.release.year = newRelease.tracks[0].year;
+		newRelease.release.format = [];
+		newRelease.release.discogs_url = "";
+		newRelease.release.discogs_id = "";
 		newRelease.release.picture = [{
 			location: "avatar.jpg",
 			filename: "avatar.jpg",

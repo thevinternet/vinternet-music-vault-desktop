@@ -8,8 +8,6 @@ const ReleaseController = {};
 // Controller - Validate Release Input Data (Express Validator Middleware)
 //===============================================================================================================//
 
-//TODO: Handle Validation of Tracks object array
-
 ReleaseController.validate = (method) => {
 	switch (method) {	
 		case "checkReleaseId": {
@@ -24,36 +22,75 @@ ReleaseController.validate = (method) => {
 				body("release._id")
 					.optional().isMongoId()
 					.withMessage("The value for the Release Id provided is not valid"),
-				body("release.releaseTitle")
+				body("release.title")
 					.notEmpty().escape().trim()
 					.withMessage("Please provide the name of the release"),
-				body("release.labelName")
+				body("release.label_name")
 					.isArray()
 					.withMessage("Label array is malformed and not valid"),
-				body("release.labelName.*._id")
+				body("release.label_name.*._id")
 					.isMongoId().optional()
 					.withMessage("The value for the Label Id provided is not valid"),
-				body("release.labelName.*.name")
+				body("release.label_name.*.name")
 					.optional().escape().trim(),
 				body("release.catalogue")
 					.optional().escape().trim(),
-				body("release.releaseYear")
+				body("release.year")
 					.optional().escape().trim(),
-				body("release.releaseFormat")
+				body("release.format")
 					.isArray()
 					.withMessage("Format array is malformed and not valid"),
-				body("release.releaseFormat.*._id")
+				body("release.format.*._id")
 					.isMongoId().optional()
 					.withMessage("The value for the Format Id provided is not valid"),
-				body("release.releaseFormat.*.name")
+				body("release.format.*.name")
 					.notEmpty().escape().trim()
 					.withMessage("Please provide the name/type of the media format"),
-				body("release.releaseFormat.*.released")
+				body("release.format.*.released")
 					.optional().escape().trim(),
-				body("label.discogsUrl")
+				body("label.discogs_url")
 					.optional().escape().trim(),
-				body("label.discogsId")
+				body("label.discogs_id")
 					.optional().escape().trim()
+			]
+		}
+		case "checkTrackInput": {
+			return [
+				body("tracks.*._id")
+					.optional().isMongoId()
+					.withMessage("The value for the Track Id provided is not valid"),
+				body("tracks.*.name")
+					.notEmpty().escape().trim()
+					.withMessage("Please provide the name of the track"),
+				body("tracks.*.artist_name")
+					.isArray()
+					.withMessage("Artist Name array is malformed and not valid"),
+				body("tracks.*.artist_name.*._id")
+					.isMongoId().optional()
+					.withMessage("The value for the Artist Id provided is not valid"),
+				body("tracks.*.artist_name.*.name")
+					.optional().escape().trim(),
+				body("tracks.*.track_number")
+					.optional().escape().trim(),
+				body("tracks.*.genre")
+					.optional().escape().trim(),
+				body("tracks.*.mixkey")
+					.optional().escape().trim(),
+				body("tracks.*.label_name")
+					.isMongoId().optional()
+					.withMessage("The value for the Label Id provided is not valid"),
+				body("tracks.*.release_title")
+					.isMongoId().optional()
+					.withMessage("The value for the Label Id provided is not valid"),
+				body("tracks.*.release_catalogue")
+					.isMongoId().optional()
+					.withMessage("The value for the Label Id provided is not valid"),
+				body("tracks.*.release_ref")
+					.isMongoId().optional()
+					.withMessage("The value for the Label Id provided is not valid"),
+				body("tracks.*.release_picture")
+					.isMongoId().optional()
+					.withMessage("The value for the Label Id provided is not valid")
 			]
 		}
 	}
@@ -258,14 +295,6 @@ ReleaseController.importNewReleases = async (req, res, next) => {
 	}
 }
 
-
-
-
-
-
-
-
-
 //===============================================================================================================//
 // Controller - Create New Release With Text Properties & Image File
 //===============================================================================================================//
@@ -295,7 +324,7 @@ ReleaseController.createNewRelease = async (req, res, next) => {
 					response: "HTTP Status Code 200 (OK)",
 					errors: [
 						{
-							value: req.body.release.releaseTitle,
+							value: req.body.release.title,
 							msg: `This release provided is already in the database | see: ${req.body.release.catalogue}`,
 							param: "releaseTitle",
 							location: "body"
@@ -310,17 +339,17 @@ ReleaseController.createNewRelease = async (req, res, next) => {
 
 		// Handle picture file props and append to release object
 		if (req.file) {
-			props.picture = {
+			props.picture = [{
 				location: req.file.filename,
 				filename: req.file.originalname,
 				format: req.file.mimetype
-			}
+			}]
 		} else {
-			props.picture = {
+			props.picture = [{
 				location: "avatar.jpg",
 				filename: "avatar.jpg",
 				format: "image/jpeg"
-			}
+			}]
 		}
 
 		// Grab Id from new newly created release object
@@ -376,9 +405,7 @@ ReleaseController.updateExistingReleaseById = async (req, res, next) => {
 
 		// If release id does not exist return error object
 		const id = req.params.id;
-		console.log("got here!");
 		const releaseCheck = await ReleaseModel.find({ _id: id }).exec();
-		console.log(releaseCheck);
 
 		if (!releaseCheck.length) {
 			return res.json({
@@ -397,19 +424,16 @@ ReleaseController.updateExistingReleaseById = async (req, res, next) => {
 			});
 		}
 
-		console.log(req.body.release);
-		console.log(req.body.tracks);
-
 		// If all checks pass prepare release object with linked properties
 		const props = await ReleaseUtilties.updateReleaseDocument(id, req.body.release, req.body.tracks);
 
 		// Handle optional picture file and append to release object
 		if (req.file) {
-			props.picture = {
+			props.picture = [{
 				location: req.file.filename,
 				filename: req.file.originalname,
 				format: req.file.mimetype
-			}
+			}]
 		}
 
 		// Submit release object to model and handle response
