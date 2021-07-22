@@ -45,6 +45,11 @@ a.btn--warning,
   @include button($white, $warning--dark, $warning);
 }
 
+a.btn--opaque,
+.btn--opaque {
+  @include buttonLink($white, none, $white, $purple-1);
+}
+
 a.btn--disabled,
 .btn--disabled {
   @include button($grey-1, $grey-4, $grey-4);
