@@ -7,7 +7,7 @@ const { createClient } = require("webdav");
 const mm = require('music-metadata');
 
 const ReleaseUtilities = require("../utilities/release.utilities");
-const importUtilities = {}
+const ImportUtilities = {}
 
 //===============================================================================================================//
 // Initiate Environment Variables
@@ -20,11 +20,12 @@ const {
 	MSC_PWD
 } = process.env;
 
+
 //===============================================================================================================//
 // Utility - Create Release Document (Managing Linked Data & Linked Tracks)
 //===============================================================================================================//
 
-importUtilities.importReleasesFromFileSystem = async (folderLocation) => {
+ImportUtilities.importReleasesFromFileSystem = async (folderLocation) => {
 
 	const folderPath = "-00- DJ Vault/-01- Hardcore & Jungle/[Anthill Records] (ANT XX)";
 	let results;
@@ -130,4 +131,4 @@ importUtilities.importReleasesFromFileSystem = async (folderLocation) => {
 
 //===============================================================================================================//
 
-module.exports = importUtilities;
+module.exports = ImportUtilities;

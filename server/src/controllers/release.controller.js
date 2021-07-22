@@ -264,11 +264,6 @@ ReleaseController.importNewReleases = async (req, res, next) => {
 
 			resultsMsg += `${releaseImportProps.catalogue}, `;
 		}
-
-
-
-
-
 		if (res.error) {
 			return res.json({
 				error: {

@@ -40,7 +40,7 @@ router.get("/label/:id", ReleaseController.validate("checkReleaseId"), ReleaseCo
 router.get("/artist/:id", ReleaseController.validate("checkReleaseId"), ReleaseController.getReleasesByArtist);
 
 // [GET] Import Releases From Filesystem Endpoint
-router.get("/import/webdav", ReleaseController.importNewReleases);
+//router.get("/import/webdav", ReleaseController.generateTree);
 
 //===============================================================================================================//
 // Routes - All Release [POST] Routes

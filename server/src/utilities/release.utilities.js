@@ -68,13 +68,16 @@ ReleaseUtilities.updateReleaseDocument = async (id, release, tracks) => {
 	// Manage linked Label Name data properties
 	updatedRelease.label_name = await DocumentUtilities.manageLinkedData(release.label_name, LabelModel);
 
-	console.log(tracks);
-
 	// Create new Track documents with linked data and return new linked Track & Artist IDs
 	const linkedProps = await TrackUtilities.createTrackDocuments(tracks, id);
 
 	// Append Track IDs array to updatedRelease object
 	updatedRelease.tracks = linkedProps.trackId;
+
+	// Remove any existing Tracks not part of the updated Release
+	if (updatedRelease.tracks.length) {
+		await TrackUtilities.removeExistingTrackDocuments(updatedRelease.tracks, id);
+	}
 
 	// Remove any duplicate Artist Ids
 	const artistIds = [...linkedProps.artistId];
