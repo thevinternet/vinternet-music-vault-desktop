@@ -1,0 +1,40 @@
+nav {
+	display: flex;
+	width: 100%;
+	background-color: rgba(57, 59, 59, 0.5);
+	border-bottom: solid 3px #111;
+	padding-bottom: $base-spacing-unit;
+	outline: none;
+	ul {
+		display: flex;
+		flex-grow: 1;
+		align-items: flex-end;
+		list-style-type: none;
+		:first-child {
+			margin-left: auto;
+		}
+		:last-child {
+			padding-right: 0;
+			margin-right: $base-spacing-unit-extra-large;
+		}	
+		li {
+			@include fontsize(22);
+			padding-right: $base-spacing-unit-tiny;
+			color: $white;
+			> a {
+				color: $white;
+				text-decoration: none;
+				:hover {
+					text-decoration: underline;
+				}
+			}
+			> button.btn {
+				position: relative;
+				letter-spacing: 0.125em;
+				top: ($base-spacing-unit-medium + 1);
+				margin-right: 0;
+				padding-right: $base-spacing-unit-small;
+			}
+		}
+	}
+}

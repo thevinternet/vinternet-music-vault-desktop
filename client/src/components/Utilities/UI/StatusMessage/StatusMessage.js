@@ -21,16 +21,17 @@ const StatusMessage = props => {
 			role="status"
 		>
 			<h2>{he.decode(props.headline)}</h2>
-			{props.message.length ? (
 				<ul>
-					{props.message.map((message, index) =>
-						<li key={index}>
-							{he.decode(`${message.msg} | value passed = '${message.value}'`)}
-						</li>
-					)}
+					{props.message.length ? (
+						props.message.map((message, index) =>
+							<li key={index}>
+								{he.decode(`${message.msg} | value passed = '${message.value}'`)}
+							</li>
+						)
+					) : null }
 					<li>{he.decode(props.response)}</li>
 				</ul>
-			) : null }
+			
 			<Button type={props.status} clicked={props.action} elmRef={statusMessageButton}>
 				{props.buttonText}
 			</Button>

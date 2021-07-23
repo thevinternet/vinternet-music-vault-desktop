@@ -10,11 +10,8 @@ import Footer from "../../components/Structure/Footer/Footer";
 //===============================================================================================================//
 
 const Layout = props => {
-  
-	//const [AuthenticatedStatus, setAutenticatedStatus] = useState(false);
-	//<Header isAuthenticated={AuthenticatedStatus} />
 
-	return (
+	let layout = (
 		<Auxiliary>
 			<Link
 				to={{ hash: "#content" }}
@@ -28,6 +25,7 @@ const Layout = props => {
 			<Footer />
 		</Auxiliary>
 	);
+	return layout;
 }
 
 //===============================================================================================================//

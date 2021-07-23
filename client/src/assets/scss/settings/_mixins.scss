@@ -61,19 +61,6 @@
   }
 }
 
-/*-- Button Link Style Mixin [link colour, link decoration, visited colour, hover colour] --*/
-
-@mixin buttonLink(
-  $link-color,
-	$link-decoration,
-	$visited-color,
-	$hover-color
-) {
-  @include links($link-color, $link-decoration, $visited-color, $hover-color);
-	letter-spacing: 0.125em;
-}
-
-
 /*--- Theme [background colour, typography, link colour, hover color, accent colour] ---*/
 
 @mixin theme($background, $color, $link-color, $hover-color, $accent) {

@@ -21,6 +21,7 @@ import ReleaseList from "./containers/Releases/ReleaseList/ReleaseList";
 import Track from "./containers/Tracks/Track/Track";
 import TrackList from "./containers/Tracks/TrackList/TrackList";
 import Dashboard from "./containers/Dashboard/Dashboard";
+import Profile from "./containers/Profile/Profile";
 
 //===============================================================================================================//
 
@@ -42,6 +43,7 @@ const App = props => {
 			<Route path={"/releases/:id/edit"} exact component={ReleaseEdit} />
 			<Route path={"/tracks"} exact component={withRouter(TrackList)} />
 			<Route path={"/tracks/:id"} exact component={withRouter(Track)} />
+			<Route path={"/profile"} exact component={withRouter(Profile)} />
 			<Route path={"/"} component={Dashboard} />
 		</Switch>
 	);
