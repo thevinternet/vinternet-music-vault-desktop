@@ -5,33 +5,30 @@ import "./ReleaseImport.scss";
 
 import Auxiliary from "../../../wrappers/Auxiliary/Auxiliary";
 
-import FileDirectoryInput from "../../../components/Utilities/Form/File/FileDirectory";
-
 import Loader from "../../../components/Utilities/UI/Loader/Loader";
 import StatusMessage from "../../../components/Utilities/UI/StatusMessage/StatusMessage";
+import Button from "../../../components/Utilities/UI/Button/Button";
 
 import * as releaseActions from "../../../store/actions/index";
 
-
 const ReleaseImport = props => {
 
-	const [getAvatar, setAvatar] = useState("releases/avatar.jpg");
-	const [getAvatarName, setAvatarName] = useState("No directory selected");
-	const [getAvatarFile, setAvatarFile] = useState("");
-	const [getFormIsValid, setFormIsValid] = useState(true);
+	const [getImportLocation, setImportLocation] = useState("");
 
 	//===============================================================================================================//
-
-	const imageUploadPreviewHandler = event => {
-		event.preventDefault();
-		console.log(event);
-		console.log(URL.createObjectURL(event.target.files[0]));
-	}
 
 	const releaseMessageHandler = event => {
 		event.preventDefault();
 		props.onResetStatus();
 	};
+
+	const getImportLocationHandler = event => {
+		event.preventDefault();
+		(async () => {
+			const ImportLocation = await window.api.dialogFolder();
+			setImportLocation(ImportLocation[0]);
+		})();
+	}
 
 	//===============================================================================================================//
 
@@ -53,28 +50,10 @@ const ReleaseImport = props => {
 					</Auxiliary>
 				) : null }
 				<div className="userform">
-					<form>
-						<div className="input-wrapper">
-							<FileDirectoryInput
-								key={1}
-								type={"file"}
-								id={"directoryUpload"}
-								name={"directoryUpload"}
-								label={"Choose Directory"}
-								labelFor={"directoryUpload"}
-								image={getAvatar}
-								directoryDefault={
-									getAvatarFile
-										? getAvatarFile
-										: getAvatarName
-								}
-								hasUpload={getAvatarFile ? true : false}
-								directoryUpload={getAvatarFile}
-								importTypeTitle={"Import Releases From WebDav Server"}
-								changed={event => imageUploadPreviewHandler(event)}
-							/>
-						</div>
-					</form>
+					<Button type={"primary"} clicked={getImportLocationHandler}>
+						Choose Folder
+					</Button>
+					<p>{ getImportLocation }</p>
 				</div>
 			</div>
 		);
