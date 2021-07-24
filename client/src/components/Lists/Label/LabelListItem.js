@@ -13,13 +13,13 @@ const labelListItem = props => {
 				<figure>
 					<picture>
 						<img
-							key={he.decode(props.labelName)}
+							key={props.labelName ? he.decode(props.labelName) : ""}
 							src={props.picture.map(picture =>
 								picture.location
 									? process.env.PUBLIC_URL + `/assets/images/labels/${picture.location}`
-									: process.env.PUBLIC_URL + "/assets/images/labels/avatar.jpg"
+									: process.env.PUBLIC_URL + "/assets/images/site/avatar-label.jpg"
 						)}
-							alt={he.decode(props.labelName)}
+							alt={props.labelName ? he.decode(props.labelName) : ""}
 							width="60px"
 							height="60px"
 						/>
@@ -28,7 +28,7 @@ const labelListItem = props => {
 				<div className="card__details">
 					<h2>
 						<Link to={{ pathname: `/labels/${props.labelId}` }}>
-							{he.decode(props.labelName)}
+							{props.labelName ? he.decode(props.labelName) : ""}
 						</Link>
 					</h2>
 				</div>

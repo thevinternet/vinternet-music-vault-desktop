@@ -33,7 +33,7 @@ const ArtistAdd = props => {
 	// Set Up Component STATE & Initialise HOOKS
 	//===============================================================================================================//
 
-	const [getAvatar, setAvatar] = useState("artists/avatar.jpg");
+	const [getAvatar, setAvatar] = useState("site/avatar-artist.jpg");
 	const [getAvatarName, setAvatarName] = useState("No file(s) selected");
 	const [getAvatarFile, setAvatarFile] = useState("");
 	const [getFormIsValid, setFormIsValid] = useState(false);

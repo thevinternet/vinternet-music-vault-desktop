@@ -15,15 +15,15 @@ const trackListItem = props => {
 				<figure>
 					<picture>
 						<img
-							key={he.decode(props.trackName)}
+							key={props.trackName ? he.decode(props.trackName) : ""}
 							src={props.trackPicture.map(pictures =>
 								pictures.picture.map(picture =>
 									picture.location
 										? process.env.PUBLIC_URL + `/assets/images/releases/${picture.location}`
-										: process.env.PUBLIC_URL + "/assets/images/releases/avatar.jpg"
+										: process.env.PUBLIC_URL + "/assets/images/site/avatar-track.jpg"
 								)
 							)}
-							alt={he.decode(props.trackName)}
+							alt={props.trackName ? he.decode(props.trackName) : ""}
 							width="60px"
 							height="60px"
 						/>
@@ -35,21 +35,21 @@ const trackListItem = props => {
 							array.length - 1 === index ? (
 								<span key={artist._id}>
 									<Link to={`/artists/${artist._id}`}>
-										{he.decode(artist.name)}
+										{artist.name ? he.decode(artist.name) : ""}
 									</Link>
 									{" - "}
 								</span>
 							) : (
 								<span key={artist._id}>
 									<Link to={`/artists/${artist._id}`}>
-										{he.decode(artist.name)}
+										{artist.name ? he.decode(artist.name) : ""}
 									</Link>
 									{" & "}
 								</span>
 							)
 						) }
 						<Link to={`/tracks/${props.trackId}`}>
-							{he.decode(props.trackName)}
+							{props.trackName ? he.decode(props.trackName) : ""}
 						</Link>
 					</h2>
 					{ props.trackCat.length ? (
@@ -59,7 +59,7 @@ const trackListItem = props => {
 									<li key={catalogue._id}>
 										<span>
 											<Link to={`/releases/${catalogue._id}`}>
-												{he.decode(catalogue.catalogue)}
+												{catalogue.catalogue ? he.decode(catalogue.catalogue) : ""}
 											</Link>
 										</span>
 									</li>

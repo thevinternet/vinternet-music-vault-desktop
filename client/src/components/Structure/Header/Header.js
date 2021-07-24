@@ -9,7 +9,7 @@ import Navigation from "../Navigation/Navigation";
 const header = props => {
   return (
     <header>
-      <Navigation isAuth={props.isAuthenticated} />
+      <Navigation />
       <div>{props.children}</div>
     </header>
   );

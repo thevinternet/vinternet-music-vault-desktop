@@ -30,15 +30,14 @@ const Dashboard = props => {
 					picture={ process.env.PUBLIC_URL + "/assets/images/site/avatar-artist.jpg" }
 					link={"/artists"}
 				/>
-				{ authContext.isAuth
-					? <DashboardListItem
+				{ authContext.isAuth ? (
+					<DashboardListItem
 						name={"Add New Artist"}
 						altName={"Artists"}
 						picture={ process.env.PUBLIC_URL + "/assets/images/site/avatar-artist.jpg" }
 						link={"/artists/new"}
 					/>
-					: null
-				}
+				) : null }
 			</ol>
 			<h2>Labels</h2>
 			<ol className="list--block">
@@ -48,15 +47,14 @@ const Dashboard = props => {
 					picture={ process.env.PUBLIC_URL + "/assets/images/site/avatar-label.jpg" }
 					link={"/labels"}
 				/>
-				{ authContext.isAuth
-					? <DashboardListItem
+				{ authContext.isAuth ? (
+					<DashboardListItem
 						name={"Add New Label"}
 						altName={"Labels"}
 						picture={ process.env.PUBLIC_URL + "/assets/images/site/avatar-label.jpg" }
 						link={"/labels/new"}
 					/>
-					: null
-				}
+				) : null }
 			</ol>
 			<h2>Releases</h2>
 			<ol className="list--block">
@@ -66,24 +64,22 @@ const Dashboard = props => {
 					picture={ process.env.PUBLIC_URL + "/assets/images/site/avatar-release.jpg" }
 					link={"/releases"}
 				/>
-				{ authContext.isAuth
-					? <DashboardListItem
+				{ authContext.isAuth ? (
+					<DashboardListItem
 						name={"Add New Release"}
 						altName={"Releases"}
 						picture={ process.env.PUBLIC_URL + "/assets/images/site/avatar-release.jpg" }
 						link={"/releases/new"}
 					/>
-					: null
-				}
-				{ authContext.isAuth
-					? <DashboardListItem
+				) : null }
+				{ authContext.isAuth ? (
+					<DashboardListItem
 						name={"Import Releases"}
 						altName={"Releases"}
 						picture={ process.env.PUBLIC_URL + "/assets/images/site/avatar-release.jpg" }
 						link={"/releases/import"}
 					/>
-					: null
-				}
+				)	: null }
 			</ol>
 			<h2>Tracks</h2>
 			<ol className="list--block">

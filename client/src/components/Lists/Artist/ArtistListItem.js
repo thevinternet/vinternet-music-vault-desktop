@@ -13,13 +13,13 @@ const artistListItem = props => {
 				<figure>
 					<picture>
 						<img
-							key={he.decode(props.artistName)}
+							key={props.artistName ? he.decode(props.artistName) : ""}
 							src={props.picture.map(picture =>
 								picture.location
 									? process.env.PUBLIC_URL + `/assets/images/artists/${picture.location}`
-									: process.env.PUBLIC_URL + "/assets/images/artists/avatar.jpg"
+									: process.env.PUBLIC_URL + "/assets/images/site/avatar-artist.jpg"
 							)}
-							alt={he.decode(props.artistName)}
+							alt={props.artistName ? he.decode(props.artistName) : ""}
 							width="60px"
 							height="60px"
 						/>
@@ -28,7 +28,7 @@ const artistListItem = props => {
 				<div className="card__details">
 					<h2>
 						<Link to={{ pathname: `/artists/${props.artistId}` }}>
-							{he.decode(props.artistName)}
+							{props.artistName ? he.decode(props.artistName) : ""}
 						</Link>
 					</h2>
 				</div>

@@ -33,7 +33,7 @@ const LabelAdd = props => {
 	// Set Up Component STATE & Initialise HOOKS
 	//===============================================================================================================//
 
-	const [getAvatar, setAvatar] = useState("labels/avatar.jpg");
+	const [getAvatar, setAvatar] = useState("site/avatar-label.jpg");
 	const [getAvatarName, setAvatarName] = useState("No file(s) selected");
 	const [getAvatarFile, setAvatarFile] = useState("");
 	const [getFormIsValid, setFormIsValid] = useState(false);
@@ -170,7 +170,6 @@ const LabelAdd = props => {
 			fileFlag = true;
 		}
 
-		//console.log(newLabelData)
 		props.onAddLabel(newLabelData, fileFlag);
 	};
 
