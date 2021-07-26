@@ -103,7 +103,7 @@ ReleaseUtilities.createImportedReleases = async (tracks) => {
 	const tracksArray = [...tracks];
 	let releaseArray = [];
 	let newReleases = [];
-	let regex = /(?<=\[)(.*?)(?=\])/;
+	let regex = /(?<=\[)(.*?)(?=\])/; // Match & return string value between '[' and ']' characters
 
 	tracksArray.forEach(track => {
 		releaseArray.push(track.release_catalogue);

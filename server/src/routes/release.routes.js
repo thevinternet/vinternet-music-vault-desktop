@@ -39,9 +39,6 @@ router.get("/label/:id", ReleaseController.validate("checkReleaseId"), ReleaseCo
 // [GET] All Releases By Artist Id Endpoint
 router.get("/artist/:id", ReleaseController.validate("checkReleaseId"), ReleaseController.getReleasesByArtist);
 
-// [GET] Import Releases From Filesystem Endpoint
-//router.get("/import/webdav", ReleaseController.generateTree);
-
 //===============================================================================================================//
 // Routes - All Release [POST] Routes
 //===============================================================================================================//
@@ -65,6 +62,13 @@ router.post(
 	ReleaseController.validate("checkReleaseInput"),
 	ReleaseController.validate("checkTrackInput"),
 	ReleaseController.createNewRelease
+);
+
+// [POST] Import Tracks (To Create Releases) From User File System Endpoint
+router.post(
+	"/new/import",
+	ReleaseController.validate("checkTrackInput"),
+	ReleaseController.importNewReleases
 );
 
 //===============================================================================================================//

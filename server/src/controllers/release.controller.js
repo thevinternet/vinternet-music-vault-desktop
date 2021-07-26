@@ -1,7 +1,6 @@
 const ReleaseModel = require("../models/release.model");
 const { body, param, validationResult } = require('express-validator');
 const ReleaseUtilties = require("../utilities/release.utilities");
-const ImportUtilities = require("../utilities/import.utilities");
 const ReleaseController = {};
 
 //===============================================================================================================//
@@ -234,11 +233,12 @@ ReleaseController.getReleasesByArtist = async (req, res, next) => {
 }
 
 //===============================================================================================================//
-// Controller - Create New Releases Using Filesystem Import From Path
+// Controller - Create New Releases Using Track Import From User File System
 //===============================================================================================================//
 
 ReleaseController.importNewReleases = async (req, res, next) => {
-	const folderLocation = req.body.folderLocation;
+	
+	const tracks = req.body.tracks;
 
 	try {
 		let resultsMsg = "";
@@ -246,7 +246,7 @@ ReleaseController.importNewReleases = async (req, res, next) => {
 		let releaseImportId;
 		let releaseImport;
 
-		const filesToImport = await ImportUtilities.importReleasesFromFileSystem(folderLocation);
+		const filesToImport = await ReleaseUtilities.createImportedReleases(tracks);
 
 		// If all checks pass prepare each release object with linked properties
 		for (let index = 0; index < filesToImport.length; index++) {
