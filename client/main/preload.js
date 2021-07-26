@@ -10,6 +10,9 @@ contextBridge.exposeInMainWorld(
 		dialogFolder: async (arg) => {
 			return await ipcRenderer.invoke("elecDialogFolder", arg);
 		},
+		fileImport: async (arg) => {
+			return await ipcRenderer.invoke("elecFileImport", arg);
+		},
 		userAuth: async (arg) => {
 			return await ipcRenderer.invoke("elecUserAuth", arg);
 		},

@@ -3,6 +3,7 @@ const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const { createAuthWindow, createLogoutWindow } = require('./main/auth-process');
 const { createAppWindow, destroyAppWindow } = require('./main/app-process');
 const authService = require('./services/auth-service');
+const importService = require('./services/import-service');
 const isDev = require('electron-is-dev');
 
 //===============================================================================================================//
@@ -42,7 +43,6 @@ app.on('ready', () => {
 
 app.on("ready", createWindow);
 
-
 //===============================================================================================================//
 // Handle IPC (inter-process-communication) between Main & Renderer process
 //===============================================================================================================//
@@ -57,6 +57,17 @@ ipcMain.handle("elecDialogFolder", async (event, arg) => {
 	const dialogValues = await dialog.showOpenDialog(null, options);
 
 	return dialogValues.filePaths;
+});
+
+// IPC: Handle User Folder Selection Request Via Native Electron Dialog
+
+ipcMain.handle("elecFileImport", async (event, arg) => {
+
+	console.log(arg);
+	
+	const filesToImport = await importService.importTracks(arg);
+
+	return filesToImport;
 });
 
 //===============================================================================================================//
@@ -124,7 +135,6 @@ ipcMain.handle("elecUserLogout", async (event, arg) => {
 	
 	return isAuth;
 });
-
 
 //===============================================================================================================//
 // Handle App Closures

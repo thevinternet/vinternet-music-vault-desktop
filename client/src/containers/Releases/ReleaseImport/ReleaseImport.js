@@ -30,6 +30,14 @@ const ReleaseImport = props => {
 		})();
 	}
 
+	const importFilesHandler = event => {
+		event.preventDefault();
+		(async () => {
+			const importedFiles = await window.api.fileImport(getImportLocation);
+			console.log(importedFiles);
+		})();
+	}
+
 	//===============================================================================================================//
 
 	let releaseImportForm = <Loader />;
@@ -49,12 +57,24 @@ const ReleaseImport = props => {
 						/>
 					</Auxiliary>
 				) : null }
-				<div className="userform">
-					<Button type={"primary"} clicked={getImportLocationHandler}>
-						Choose Folder
-					</Button>
-					<p>{ getImportLocation }</p>
-				</div>
+				<form>
+					<div className={"userform"}>
+						<fieldset>
+							<p>{ getImportLocation }</p>
+						</fieldset>
+						<div className={"userform--actions"}>
+							<Button type={"primary"} clicked={getImportLocationHandler}>
+								Choose Folder
+							</Button>
+							<Button type={"success"} clicked={importFilesHandler}>
+								Import Files
+							</Button>
+							<Button type={"warning"}>
+								Cancel
+							</Button>
+						</div>
+					</div>
+				</form>
 			</div>
 		);
 	}
