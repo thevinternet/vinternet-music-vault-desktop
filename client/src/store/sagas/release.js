@@ -90,8 +90,22 @@ export function* addReleaseSendSaga(action) {
   try {
     let response;
     action.file === true
-      ? (response = yield axios.post("/api/release/new/file", action.label))
-      : (response = yield axios.post("/api/release/new/text", action.label));
+      ? (response = yield axios.post("/api/release/new/file", action.release))
+      : (response = yield axios.post("/api/release/new/text", action.release));
+    response.data.success
+      ? yield put(actions.addReleaseSuccess(response.data.success))
+      : yield put(actions.releaseReturnFailure(response.data.error));
+  } catch (error) {
+    yield put(actions.releaseReturnFailure(error.message));
+  }
+}
+
+//===============================================================================================================//
+
+export function* importReleaseSendSaga(action) {
+  yield put(actions.releaseStartLoading());
+  try {
+    let response = yield axios.post("/api/release/new/import", action.tracks);
     response.data.success
       ? yield put(actions.addReleaseSuccess(response.data.success))
       : yield put(actions.releaseReturnFailure(response.data.error));

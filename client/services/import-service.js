@@ -8,8 +8,9 @@ const musicMeta = require("music-metadata");
 async function importTracks(folderLocation) {
 
 	const tracks = [];
+	const regexArtist = /(?:&|&amp;|Feat\.)+/; // Return string values before any match criteria string
 	const regexLabel = /^[^[(]+/; // Match & return string value preceeding either '[' or '('
-	const regexExt = /\.(mp3|wav|flac|)$/; // Match & return string value ending with these extensions
+	const regexExtensions = /\.(mp3|wav|flac|)$/; // Match & return string value ending with these extensions
 	
 	//===============================================================================================================//
 
@@ -19,7 +20,7 @@ async function importTracks(folderLocation) {
 			const tracksToImportArray = [];
 			dirTree(
 				folderLocation,
-				{ extensions: regexExt },
+				{ extensions: regexExtensions },
 				(item, path, stats) => { tracksToImportArray.push(item.path) }
 			);
 			return tracksToImportArray;
@@ -78,6 +79,7 @@ async function importTracks(folderLocation) {
 			file_location: tracksToImport[index]
 		};
 
+		// If track has embedded picture prop add it to track item 
 		if (trackResult.picture) {
 			trackItem.picture.push({
 				filename: trackResult.title,
@@ -86,13 +88,17 @@ async function importTracks(folderLocation) {
 				data: trackResult.picture[0].data
 			});
 		}
-	
+
 		if (trackResult.artists.length) {
-			trackResult.artists.forEach(artist => {
+			// Create new array of Artist prop strings by spliting artists string using regex query
+			let splitArtists = trackResult.artists[0].split(regexArtist);
+
+			// For each remaining artist prop create own object prop in 'artist_name' array
+			splitArtists.forEach(artist => {
 				trackItem.artist_name.push({ name: artist });
 			});
 		}
-	
+
 		// Add new track object to array ready for processing and importing into database
 		tracks.push(trackItem);
 	};

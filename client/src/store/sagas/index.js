@@ -30,6 +30,7 @@ import {
   fetchReleasesByArtistSendSaga,
   fetchReleasesByLabelSendSaga,
   addReleaseSendSaga,
+	importReleaseSendSaga,
   updateReleaseSendSaga,
   deleteReleaseSendSaga
 } from "./release";
@@ -72,6 +73,7 @@ export function* watchRelease() {
   yield takeEvery(actionTypes.FETCH_RELEASES_BY_ARTIST_SEND, fetchReleasesByArtistSendSaga);
   yield takeEvery(actionTypes.FETCH_RELEASES_BY_LABEL_SEND, fetchReleasesByLabelSendSaga);
   yield takeEvery(actionTypes.ADD_RELEASE_SEND, addReleaseSendSaga);
+	yield takeEvery(actionTypes.IMPORT_RELEASE_SEND, importReleaseSendSaga);
   yield takeEvery(actionTypes.UPDATE_RELEASE_SEND, updateReleaseSendSaga);
   yield takeEvery(actionTypes.DELETE_RELEASE_SEND, deleteReleaseSendSaga);
 }

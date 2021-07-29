@@ -50,10 +50,10 @@
 	summary {
 		padding-bottom: $base-spacing-unit-medium;
 		outline: none;
-		@include fontsize(22);
+		@include fontsize(20);
 		&:hover,
 		&:focus {
-			color: $purple-1;		
+			color: $purple-1;
 			cursor: pointer;
 		}
 	}

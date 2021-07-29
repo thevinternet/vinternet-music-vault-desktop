@@ -8,6 +8,7 @@ button {
   padding: 0;
   border: 0;
   font-size: $base-font-size;
+	letter-spacing: 0.125em;
   &:hover,
   &:focus {
     text-decoration: underline;

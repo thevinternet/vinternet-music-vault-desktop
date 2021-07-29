@@ -416,7 +416,7 @@ const ReleaseEdit = props => {
 					<Button 
 						type={"primary"}
 						clicked={event =>
-							this.inputAddHandler(
+							inputAddHandler(
 								event,
 								props.stateTrackForm[trackIndex][arrayElement.id],
 								`[${trackIndex}][${[arrayElement.id]}]`,

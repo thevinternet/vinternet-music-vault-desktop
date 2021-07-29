@@ -126,6 +126,14 @@ const editReleaseClientInput = (state, action) => {
 
 //===============================================================================================================//
 
+// Import Releases Reducer Function
+
+const importReleaseSuccess = (state, action) => {
+  return updateObject(state, { success: action.success.status, response: action.success.response, feedback: action.success.feedback, loading: false });
+};
+
+//===============================================================================================================//
+
 // Update Release Reducer Functions
 
 const updateReleaseSuccess = (state, action) => {
@@ -168,6 +176,8 @@ const reducer = (state = initialState, action) => {
         return editReleaseClientPrep(state, action);
       case actionTypes.EDIT_RELEASE_CLIENT_INPUT:
         return editReleaseClientInput(state, action);
+			case actionTypes.IMPORT_RELEASE_SUCCESS:
+				return importReleaseSuccess(state, action);
       case actionTypes.UPDATE_RELEASE_SUCCESS:
         return updateReleaseSuccess(state, action);
       case actionTypes.DELETE_RELEASE_SUCCESS:

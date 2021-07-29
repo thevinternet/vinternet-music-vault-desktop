@@ -54,6 +54,8 @@ export {
   addReleaseSuccess,
   editReleaseClientPrep,
   editReleaseClientInput,
+	importReleaseSend,
+	importReleaseSuccess,
   updateReleaseSend,
   updateReleaseSuccess,
   deleteReleaseSend,

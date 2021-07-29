@@ -18,7 +18,7 @@ nav {
 			margin-right: $base-spacing-unit-extra-large;
 		}	
 		li {
-			@include fontsize(22);
+			@include fontsize(18);
 			padding-right: $base-spacing-unit-tiny;
 			color: $white;
 			> a {

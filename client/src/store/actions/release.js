@@ -121,8 +121,26 @@ export const addReleaseSuccess = success => {
 export const addReleaseSend = (releaseData, fileFlag) => {
   return {
     type: actionTypes.ADD_RELEASE_SEND,
-    label: releaseData,
+    release: releaseData,
     file: fileFlag
+  };
+};
+
+//===============================================================================================================//
+
+// Action Creators for importing Release Tracks to database
+
+export const importReleaseSuccess = success => {
+  return {
+    type: actionTypes.IMPORT_RELEASE_SUCCESS,
+    success: success
+  };
+};
+
+export const importReleaseSend = trackData => {
+  return {
+    type: actionTypes.IMPORT_RELEASE_SEND,
+    tracks: trackData
   };
 };
 
