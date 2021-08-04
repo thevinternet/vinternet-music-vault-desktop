@@ -1,6 +1,6 @@
 const ReleaseModel = require("../models/release.model");
 const { body, param, validationResult } = require('express-validator');
-const ReleaseUtilties = require("../utilities/release.utilities");
+const ReleaseUtilities = require("../utilities/release.utilities");
 const ReleaseController = {};
 
 //===============================================================================================================//
@@ -74,6 +74,8 @@ ReleaseController.validate = (method) => {
 				body("tracks.*.genre")
 					.optional().escape().trim(),
 				body("tracks.*.mixkey")
+					.optional().escape().trim(),
+				body("tracks.*.bpm")
 					.optional().escape().trim(),
 				body("tracks.*.label_name")
 					.isMongoId().optional()
@@ -241,28 +243,54 @@ ReleaseController.importNewReleases = async (req, res, next) => {
 	const tracks = req.body.tracks;
 
 	try {
-		let resultsMsg = "";
 		let releaseImportProps;
 		let releaseImportId;
 		let releaseImport;
+		let updatedCount = 0;
+		let updatedReleases= "";
+		let addedCount = 0;
+		let addedReleases = ""
 
 		const filesToImport = await ReleaseUtilities.createImportedReleases(tracks);
 
 		// If all checks pass prepare each release object with linked properties
 		for (let index = 0; index < filesToImport.length; index++) {
 
-			console.log(filesToImport[index].release);
-			console.log(filesToImport[index].tracks)
+			let releaseExists = await ReleaseModel.find({ catalogue : filesToImport[index].release.catalogue })
 
-			releaseImportProps = await ReleaseUtilties.createReleaseDocument(filesToImport[index].release, filesToImport[index].tracks);
+			if (!releaseExists.length) {
+				
+				//console.log("UNIQUE");
 
-			// Grab Id from new newly created release object
-			releaseImportId = releaseImportProps._id;
-			
-			// Submit release object to model and handle response
-			releaseImport = await ReleaseModel.createNewRelease(releaseImportId, releaseImportProps);
+				releaseImportProps = await ReleaseUtilities.createReleaseDocument(filesToImport[index].release, filesToImport[index].tracks);
+				
+				// Grab Id from new newly created release object
+				releaseImportId = releaseImportProps._id;
+				
+				// Submit release object to model and handle response
+				releaseImport = await ReleaseModel.createNewRelease(releaseImportId, releaseImportProps);
 
-			resultsMsg += `${releaseImportProps.catalogue}, `;
+				addedCount++;
+				addedReleases += `${releaseImportProps.catalogue}, `;
+
+
+			} else if (releaseExists.length === 1) {
+
+				//console.log("DUPLICATE");
+
+				releaseImportId = releaseExists[0]._id;
+
+				releaseImportProps = await ReleaseUtilities.updateReleaseDocument(releaseImportId, filesToImport[index].release, filesToImport[index].tracks);
+
+				releaseImport = await ReleaseModel.updateExistingImportedReleaseById(releaseImportId, releaseImportProps);
+
+				updatedCount++;
+				updatedReleases += `${releaseImportProps.catalogue}, `;
+
+
+			} else {
+				console.log("PROBLEM - DUPLICATE RELEASES WITH SAME CATALOGUE ID FOUND!!");
+			}
 		}
 		if (res.error) {
 			return res.json({
@@ -278,7 +306,7 @@ ReleaseController.importNewReleases = async (req, res, next) => {
 					response: "HTTP Status Code 200 (OK)",
 					feedback: [
 						{
-							msg: `${resultsMsg} successfully added`,
+							msg: `${addedCount} release(s) successfully added: ${addedReleases || 'none'}.\n ${updatedCount} release(s) successfully updated: ${updatedReleases || 'none'}.`,
 							value: filesToImport
 						}
 					]
@@ -330,19 +358,19 @@ ReleaseController.createNewRelease = async (req, res, next) => {
 		}
 
 		// If all checks pass prepare release object with linked properties
-		const props = await ReleaseUtilties.createReleaseDocument(req.body.release, req.body.tracks);
+		const props = await ReleaseUtilities.createReleaseDocument(req.body.release, req.body.tracks);
 
 		// Handle picture file props and append to release object
 		if (req.file) {
 			props.picture = [{
-				location: req.file.filename,
+				location: "releases",
 				filename: req.file.originalname,
 				format: req.file.mimetype
 			}]
 		} else {
 			props.picture = [{
-				location: "avatar.jpg",
-				filename: "avatar.jpg",
+				location: "site",
+				filename: "avatar-release.jpg",
 				format: "image/jpeg"
 			}]
 		}
@@ -420,12 +448,12 @@ ReleaseController.updateExistingReleaseById = async (req, res, next) => {
 		}
 
 		// If all checks pass prepare release object with linked properties
-		const props = await ReleaseUtilties.updateReleaseDocument(id, req.body.release, req.body.tracks);
+		const props = await ReleaseUtilities.updateReleaseDocument(id, req.body.release, req.body.tracks);
 
 		// Handle optional picture file and append to release object
 		if (req.file) {
 			props.picture = [{
-				location: req.file.filename,
+				location: "releases",
 				filename: req.file.originalname,
 				format: req.file.mimetype
 			}]

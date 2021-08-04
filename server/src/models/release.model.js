@@ -232,11 +232,11 @@ ReleaseModel.createNewRelease = async (id, props) => {
 }
 
 //===============================================================================================================//
-// Update Existing Release Document
+// Update Existing Release Document (Updating Via App Web Form)
 //===============================================================================================================//
 
 ReleaseModel.updateExistingReleaseById = async (id, props) => {
-	
+
 	// Create 'Set' Object with updated Release Props and optional Image File
 	const releaseUpdateProps = {
 		$set: {
@@ -262,7 +262,51 @@ ReleaseModel.updateExistingReleaseById = async (id, props) => {
 			releaseUpdateProps,
 			{ new: true }
 		);
+		await release.save();
+		return release;
 
+	} catch (err) {
+		return {
+			error : {
+				status: `Database Error (Mongoose): ${err.name}`,
+				response: "HTTP Status Code 200 (OK)",
+				errors: [
+					{
+						msg: err.message
+					}
+				]
+			}
+		}
+	}
+}
+
+//===============================================================================================================//
+// Update Existing Release Document (Updating Via Track Import From Computer)
+//===============================================================================================================//
+
+ReleaseModel.updateExistingImportedReleaseById = async (id, props) => {
+
+	// Create 'Set' Object with updated Release Props
+	const releaseUpdateProps = {
+		$set: {
+			title: props.title,
+			artist_name: props.artist_name,
+			label_name: props.label_name,
+			catalogue: props.catalogue,
+			year: props.year,
+			tracks: props.tracks,
+			picture: props.picture
+		}
+	}
+
+	// Submit release update object to model and handle response
+	try {
+		const release = await ReleaseModel.updateOne(
+			{ _id: id },
+			releaseUpdateProps,
+			{ new: true }
+		);
+		await release.save();
 		return release;
 
 	} catch (err) {

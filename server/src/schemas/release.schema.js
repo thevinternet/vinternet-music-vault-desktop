@@ -37,8 +37,8 @@ const ReleaseSchema = new Schema(
 		picture: [
 			{
 				filename: { type: String },
-				location: { type: String },
-				format: { type: String }
+				format: { type: String },
+				location: { type: String }
 			}
 		],
 		tracks: [

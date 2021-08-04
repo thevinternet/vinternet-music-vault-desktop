@@ -161,14 +161,14 @@ ArtistController.createNewArtist = async (req, res, next) => {
 		let file;
 		if (req.file) {
 			file = [{
-				location: req.file.filename,
+				location: "artists",
 				filename: req.file.originalname,
 				format: req.file.mimetype
 			}]
 		} else {
 			file = [{
-				location: "avatar.jpg",
-				filename: "avatar.jpg",
+				location: "site",
+				filename: "avatar-artist.jpg",
 				format: "image/jpeg"
 			}]
 		}
@@ -248,7 +248,7 @@ ArtistController.updateExistingArtistById = async (req, res, next) => {
 		// Handle optional picture file and append to artist object
 		if (req.file) {
 			props.picture = [{
-				location: req.file.filename,
+				location: "artists",
 				filename: req.file.originalname,
 				format: req.file.mimetype
 			}]

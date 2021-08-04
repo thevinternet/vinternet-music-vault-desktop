@@ -103,42 +103,55 @@ ReleaseUtilities.createImportedReleases = async (tracks) => {
 	const tracksArray = [...tracks];
 	let releaseArray = [];
 	let newReleases = [];
-	let regex = /(?<=\[)(.*?)(?=\])/; // Match & return string value between '[' and ']' characters
+	let regexReleaseTitle = /(?<=\[)(.*?)(?=\])/; // Match & return string value between '[' and ']' characters
 
+	//===============================================================================================================//
+
+	// Loop tracks & push each catalogue data prop to new array
 	tracksArray.forEach(track => {
 		releaseArray.push(track.release_catalogue);
 	});
 
+	// Filter new array leaving only unique catalogue data strings
 	const uniqueReleases = releaseArray.filter((object, index) => 
 		index === releaseArray.findIndex(obj => 
 			JSON.stringify(obj) === JSON.stringify(object)
 		)
 	);
 
-	//console.log(uniqueReleases);
-
+	// Loop filtered array and crate Release objects
 	uniqueReleases.forEach(release => {
-		const newRelease = {};
+		let newRelease = {};
+		let trackPictures = [];
 		newRelease.release = {};
 		newRelease.tracks = [];
 
+		// Loop tracks & push each track matching current catalogue prop to tracks array within Release object
 		tracksArray.forEach(track => {
 			if (track.release_catalogue === release) {
 				newRelease.tracks.push(track);
+
+				// If track has picture prop push it to isolated array
+				if (track.picture.length) {
+					trackPictures.push(track.picture[0]);
+				}
 			}
 		});
 
-		newRelease.release.title = regex.exec(newRelease.tracks[0].release_catalogue)[0];
+		// Add Release object props using associated track data props
+		newRelease.release.title = regexReleaseTitle.exec(newRelease.tracks[0].release_catalogue)[0];
 		newRelease.release.label_name = newRelease.tracks[0].release_label;
 		newRelease.release.catalogue = newRelease.tracks[0].release_catalogue;
 		newRelease.release.year = newRelease.tracks[0].year;
 		newRelease.release.format = [];
 		newRelease.release.discogs_url = "";
 		newRelease.release.discogs_id = "";
+
+		// Use isolated track array to populate Release picture prop (or assign default avatar) 
 		newRelease.release.picture = [{
-			location: "avatar.jpg",
-			filename: "avatar.jpg",
-			format: "image/jpeg"
+			filename: trackPictures[0] ? trackPictures[0].filename : "avatar.jpg",
+			format: trackPictures[0] ? trackPictures[0].format : "image/jpeg",
+			location: trackPictures[0] ? trackPictures[0].location : "releases"
 		}]
 
 		newReleases.push(newRelease);

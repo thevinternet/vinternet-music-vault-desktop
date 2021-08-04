@@ -10,14 +10,10 @@ const ArtistController = require("../controllers/artist.controller");
 
 const storage = multer.diskStorage({
 	destination: function(req, file, cb) {
-		cb(null, "../client/public/assets/images/artists")
+		cb(null, "../client/assets/images/artists")
 	},
 	filename: function(req, file, cb) {
-		let ext = file.originalname.substring(
-			file.originalname.lastIndexOf("."),
-			file.originalname.length
-		);
-	cb(null, Date.now() + ext);
+		cb(null, file.originalname);
 	}
 });
 

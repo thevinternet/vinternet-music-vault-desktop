@@ -15,6 +15,7 @@ TrackUtilities.createTrackDocuments = async (tracks, releaseId) => {
 		trackId: [],
 		artistId: [],
 	};
+	let updatedTrack;
 
 	if (tracksArray.length) {
 		for (let index = 0; index < tracksArray.length; index++) {
@@ -27,17 +28,32 @@ TrackUtilities.createTrackDocuments = async (tracks, releaseId) => {
 			tracksArray[index].release_picture = [{ _id: releaseId }];
 			tracksArray[index].release_ref = releaseId;
 
-			// Loop through updated tracksArray handling Track document creation & updating respectively
-			if (!tracksArray[index]._id) {
+			// Handle Track Document creation & updating respectively
 
-				// If Track has no existing ID, create new Track Document & push new ID to trackIds array
-				let newTrack = await TrackModel.createNewTrack(tracksArray[index]);
-				releaseTrackProps.trackId.push({ _id: newTrack._id });
-
-			} else {
+			if (tracksArray[index]._id) {
 				// If Track has existing ID, update existing Track Document & push existing ID to trackIds array
-				let updatedTrack = await TrackModel.updateExistingTrackById(tracksArray[index]._id, tracksArray[index]);
+				updatedTrack = await TrackModel.updateExistingTrackById(tracksArray[index]._id, tracksArray[index]);
 				releaseTrackProps.trackId.push({ _id: tracksArray[index]._id });
+			}
+
+			if (!tracksArray[index]._id) {
+				// If Track has no existing ID, search exisitng Track Documents to find possible match against existing release
+				let trackExists = await TrackModel.find({ name: tracksArray[index].name, catalogue: tracksArray[index].catalogue });
+
+				if (!trackExists.length) {
+					// If no existing track matches found against release create new Track Document and push new ID to props obj
+					let newTrack = await TrackModel.createNewTrack(tracksArray[index]);
+					releaseTrackProps.trackId.push({ _id: newTrack._id });
+				}
+
+				if (trackExists.length === 1) {
+					// If Track matach found grab existing ID, update existing Track Document & push ID to trackIds array
+					let trackId = trackExists[0]._id;
+					updatedTrack = await TrackModel.updateExistingTrackById(trackId, tracksArray[index]);
+					releaseTrackProps.trackId.push({ _id: trackId });
+				} else {
+					console.log("PROBLEM - DUPLICATE TRACKS ON RELEASE FOUND!!");
+				}
 			}
 
 			// Loop through updated artist_name Ids & push to artistId array
@@ -88,7 +104,7 @@ TrackUtilities.removeExistingTrackDocuments = async (updatedTracks, releaseId) =
 		}
 	}
 
-	next();
+	return;
 }
 
 //===============================================================================================================//

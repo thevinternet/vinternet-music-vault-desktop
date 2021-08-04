@@ -300,7 +300,9 @@ TrackModel.updateExistingTrackById = async (id, props) => {
 			release_ref: props.release_ref,
 			track_number: props.track_number,
 			genre: props.genre,
-			mixkey: props.mixkey
+			mixkey: props.mixkey,
+			bpm: props.bpm,
+			file_location: props.file_location
 		}
 	}
 
@@ -311,7 +313,7 @@ TrackModel.updateExistingTrackById = async (id, props) => {
 			trackUpdateProps,
 			{ new: true }
 		);
-
+		await track.save();
 		return track;
 
 	} catch (err) {

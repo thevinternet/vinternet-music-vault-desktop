@@ -145,7 +145,7 @@ LabelModel.updateExistingLabelById = async (id, props) => {
 			labelUpdateProps,
 			{ new: true }
 		);
-
+		await label.save();
 		return label;
 
 	} catch (err) {

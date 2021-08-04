@@ -142,7 +142,7 @@ ArtistModel.updateExistingArtistById = async (id, props) => {
 			artistUpdateProps,
 			{ new: true }
 		);
-
+		await artist.save();
 		return artist;
 
 	} catch (err) {
