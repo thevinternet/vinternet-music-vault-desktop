@@ -13,6 +13,9 @@ contextBridge.exposeInMainWorld(
 		fileImport: async (arg) => {
 			return await ipcRenderer.invoke("elecFileImport", arg);
 		},
+		imageImport: async (arg1, arg2) => {
+			return await ipcRenderer.invoke("elecImageImport", arg1, arg2);
+		},
 		userAuth: async (arg) => {
 			return await ipcRenderer.invoke("elecUserAuth", arg);
 		},

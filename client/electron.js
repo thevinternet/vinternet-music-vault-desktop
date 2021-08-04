@@ -59,15 +59,26 @@ ipcMain.handle("elecDialogFolder", async (event, arg) => {
 	return dialogValues.filePaths;
 });
 
-// IPC: Handle User Folder Selection Request Via Native Electron Dialog
+//===============================================================================================================//
+
+// IPC: Handle File Import Request From Given Folder Location
 
 ipcMain.handle("elecFileImport", async (event, arg) => {
 
-	console.log(arg);
-	
 	const filesToImport = await importService.importTracks(arg);
 
 	return filesToImport;
+});
+
+//===============================================================================================================//
+
+// IPC: Handle Single Picture Import Request From Given Folder Location
+
+ipcMain.handle("elecImageImport", async (event, arg1, arg2) => {
+
+	const pictureToImport = await importService.importPicture(arg1, arg2);
+
+	return pictureToImport;
 });
 
 //===============================================================================================================//

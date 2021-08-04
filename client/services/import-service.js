@@ -1,3 +1,6 @@
+const path = require("path");
+const fs = require("fs");
+
 const dirTree = require("directory-tree");
 const musicMeta = require("music-metadata");
 
@@ -11,6 +14,7 @@ async function importTracks(folderLocation) {
 	const regexArtist = /(?:&|&amp;|Feat\.)+/; // Return string values before any match criteria string
 	const regexLabel = /^[^[(]+/; // Match & return string value preceeding either '[' or '('
 	const regexExtensions = /\.(mp3|wav|flac|)$/; // Match & return string value ending with these extensions
+	const regexImageExtension = /(?<=\/).*/ // Match & retrun string values after match criteria string
 	
 	//===============================================================================================================//
 
@@ -42,6 +46,18 @@ async function importTracks(folderLocation) {
 			console.error(error.message);
 		}
 	};
+
+	//===============================================================================================================//
+
+	// Save picture file to disk and catch any error
+	async function saveTrackPicture(path, data) {
+			try {
+				fs.writeFileSync(path, data);
+
+			} catch (error) {
+				console.error(error.message);
+			}
+	}
 
 	//===============================================================================================================//
 
@@ -79,16 +95,6 @@ async function importTracks(folderLocation) {
 			file_location: tracksToImport[index]
 		};
 
-		// If track has embedded picture prop add it to track item 
-		if (trackResult.picture) {
-			trackItem.picture.push({
-				filename: trackResult.title,
-				format: trackResult.picture[0].format,
-				location: "",
-				data: trackResult.picture[0].data
-			});
-		}
-
 		if (trackResult.artists.length) {
 			// Create new array of Artist prop strings by spliting artists string using regex query
 			let splitArtists = trackResult.artists[0].split(regexArtist);
@@ -99,16 +105,56 @@ async function importTracks(folderLocation) {
 			});
 		}
 
+		// If track has embedded picture, save image to disk and props to track item 
+		if (trackResult.picture) {
+
+			// Create file format extension from embedded picture format prop
+			const fileFormat = regexImageExtension.exec(trackResult.picture[0].format);
+
+			// Create file name and desired save path
+			const fileName = `${trackResult.album}.${fileFormat}`;
+			const filePath = path.join('assets', 'images', 'releases', fileName);
+
+			// Save picture to disk
+			await saveTrackPicture(filePath, trackResult.picture[0].data);
+
+			// Add props to track item 
+			trackItem.picture.push({
+				filename: fileName,
+				format: trackResult.picture[0].format,
+				location: "releases"
+			});
+		}
+
 		// Add new track object to array ready for processing and importing into database
 		tracks.push(trackItem);
-	};
+	}
 
-	// If tracks objects in array equal number of original track names extracted return new array
+	//===============================================================================================================//
+
 	if (tracks.length === tracksToImport.length) {
 		return tracks;
+	}
+
+}
+
+//===============================================================================================================//
+// Utility - Return Base64 Encoded Picture From Given Folder
+//===============================================================================================================//
+
+async function importPicture(location, filename) {
+
+	const filePath = path.join('assets', 'images', location, filename);
+
+	try {
+		const file = fs.readFileSync(filePath, 'base64');
+		return file;
+
+	} catch (error) {
+		return false;
 	}
 }
 
 //===============================================================================================================//
 
-module.exports = { importTracks };
+module.exports = { importTracks, importPicture };
