@@ -35,8 +35,8 @@ const ReleaseImport = props => {
 	const [getReviewFileReady, setReviewFileReady] = useState(false);
 	const [getLoadingReviewStatus, setLoadingReviewStatus] = useState(false);
 	const [getImportFileArray, setImportFileArray] = useState("");
+	const [getExportFile, setExportFile] = useState("");
 	const { stateSuccess, history } = props;
-
 
 	//===============================================================================================================//
 	// Setup useEffect Functions
@@ -61,44 +61,40 @@ const ReleaseImport = props => {
 	// Obtain Import Folder Location From Host Computer
 	//===============================================================================================================//
 
-	const getImportLocationHandler = event => {
+	const getImportLocationHandler = async event => {
 		event.preventDefault();
-		(async () => {
-			setLoadingLocationStatus(true);
-			const importLocation = await window.api.dialogFolder();
-			if (importLocation.length) {
-				setImportLocation(importLocation[0]);
-				setImportLocationReady(true);
-				setImportFile("Location folder specified, ready to import tracks from your computer");
-				setImportFileReady(true);
-			} else {
-				setImportLocation("Folder selection cancelled, please choose a folder to import from your computer");	
-			}
-			setLoadingLocationStatus(false);
-		})();
+		setLoadingLocationStatus(true);
+		const importLocation = await window.api.dialogFolder();
+		if (importLocation.length) {
+			setImportLocation(importLocation[0]);
+			setImportLocationReady(true);
+			setImportFile("Location folder specified, ready to import tracks from your computer");
+			setImportFileReady(true);
+		} else {
+			setImportLocation("Folder selection cancelled, please choose a folder to import from your computer");	
+		}
+		setLoadingLocationStatus(false);
 	}
 
 	//===============================================================================================================//
 	// Handle File Import From Host Computer
 	//===============================================================================================================//
 
-	const getImportFilesHandler = event => {
+	const getImportFilesHandler = async event => {
 		event.preventDefault();
-		(async () => {
-			setLoadingImportStatus(true);
-			const importedFiles = await window.api.fileImport(getImportLocation);
-			if (importedFiles.length) {
-				const importedFilesSorted = await sortArrayByName(importedFiles, "release_catalogue", "track_number");
-				setImportFileArray(importedFilesSorted);
-				setImportFile("Success! Files have been imported and are ready for review");
-				setReviewFileReady(true);
-				setReviewFile(`There are currently ${importedFiles.length} track results awaiting review`);
-			} else {
-				setImportFileReady(false);
-				setImportFile("No valid files loacted in the folder specified, please choose another folder to import from your computer");
-			}
-			setLoadingImportStatus(false);
-		})();
+		setLoadingImportStatus(true);
+		const importedFiles = await window.api.fileImport(getImportLocation);
+		if (importedFiles.length) {
+			const importedFilesSorted = await sortArrayByName(importedFiles, "release_catalogue", "track_number");
+			setImportFileArray(importedFilesSorted);
+			setImportFile("Success! Files have been imported and are ready for review");
+			setReviewFileReady(true);
+			setReviewFile(`There are currently ${importedFiles.length} track results awaiting review`);
+		} else {
+			setImportFileReady(false);
+			setImportFile("No valid files loacted in the folder specified, please choose another folder to import from your computer");
+		}
+		setLoadingImportStatus(false);
 	}
 
 	//===============================================================================================================//
@@ -112,12 +108,29 @@ const ReleaseImport = props => {
 			tracks: getImportFileArray
 		};
 
-		console.log(trackData);
+		setExportFile(trackData);
 
 		setLoadingReviewStatus(true);
-		props.onSendImportedReleases(trackData);
+		//props.onSendImportedReleases(trackData);
 	}
 
+	//===============================================================================================================//
+	// Save JSON To File Helper
+	//===============================================================================================================//
+
+	const exportTrackData = event => {
+		event.preventDefault();
+
+		const a = document.createElement("a");
+		a.href = URL.createObjectURL(new Blob([JSON.stringify(getExportFile, null, 2)], {
+			type: "text/plain"
+		}));
+		a.setAttribute("download", "data.txt");
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+	}
+	
 	//===============================================================================================================//
 	// Track Import Action Helpers
 	//===============================================================================================================//
@@ -131,10 +144,13 @@ const ReleaseImport = props => {
 		event.preventDefault();
 		setImportLocation("No location specified, please choose a folder to import from your computer");
 		setImportLocationReady(false);
+		setLoadingLocationStatus(false);
 		setImportFile("No location specified, please choose a folder to import from your computer");
 		setImportFileReady(false);
+		setLoadingImportStatus(false);
 		setReviewFile("There are currently 0 track results awaiting review");
 		setReviewFileReady(false);
+		setLoadingReviewStatus(false);
 		setImportFileArray("");
 	};
 
@@ -195,7 +211,7 @@ const ReleaseImport = props => {
 						</div>
 					</fieldset>
 					<fieldset>
-						<legend>Step 3: Review Tracks & Submit To Database</legend>
+						<legend>Step 3: Review Tracks &amp; Submit To Database</legend>
 						<StatusPrompt
 							status={getReviewFileReady ? "success" : "warning"}
 							message={getReviewFile}
@@ -238,6 +254,9 @@ const ReleaseImport = props => {
 						</div>
 					</fieldset>
 					<div className={"userform--actions"}>
+					<Button type={"success"} clicked={exportTrackData}>
+							Export Track Data
+						</Button>
 						<Button type={"warning"} clicked={importResetHandler}>
 							Reset Import Form
 						</Button>

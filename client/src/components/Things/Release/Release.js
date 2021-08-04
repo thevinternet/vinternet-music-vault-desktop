@@ -1,18 +1,49 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import he from "he";
 
 import "./Release.scss";
 
 import { AuthContext } from "../../../context/AuthContext";
+import useGetEncodedPicture from "../../../hooks/ui/GetEncodedPicture";
+
 import Auxiliary from "../../../wrappers/Auxiliary/Auxiliary";
 
 //===============================================================================================================//
 
 const Release = props => {
 
+	//===============================================================================================================//
+	// Set Up Contexts
+	//===============================================================================================================//
+
 	const authContext = useContext(AuthContext);
 
+	//===============================================================================================================//
+	// Set Up Component STATE & Initialise HOOKS
+	//===============================================================================================================//
+
+	const [getImportedPicture, setImportedPicture] = useState(`${process.env.PUBLIC_URL}/assets/images/site/avatar-release.jpg`);
+	const { importedPicture, getEncodedPictureHandler } = useGetEncodedPicture();
+
+	//===============================================================================================================//
+	// Setup useEffect Functions
+	//===============================================================================================================//
+
+	useEffect(() => {
+		let mounted = true
+		if (mounted) {
+			console.log("Initial Import Release Picture Effect Running!");
+			getEncodedPictureHandler(props.releasePicture);
+			if (importedPicture) { setImportedPicture(importedPicture); }
+		}
+    return function cleanup() {
+      mounted = false
+    }
+	}, [getEncodedPictureHandler, props.releasePicture, setImportedPicture, importedPicture]);
+
+	//===============================================================================================================//
+	// Render Release Thing
 	//===============================================================================================================//
 
 	let release = (
@@ -20,11 +51,7 @@ const Release = props => {
 			<div className="profile__picture">
 				<img
 					key={props.releaseTitle ? he.decode(props.releaseTitle) : ""}
-					src={props.releasePicture.map(picture =>
-						picture.location
-							? process.env.PUBLIC_URL + `/assets/images/releases/${picture.location}`
-							: process.env.PUBLIC_URL + "/assets/images/site/avatar-release.jpg"
-					)}
+					src={getImportedPicture}
 					alt={props.releaseTitle ? he.decode(props.releaseTitle) : ""}
 					height="200px"
 					width="200px"
@@ -112,11 +139,7 @@ const Release = props => {
 									<figure>
 										<picture>
 											<img
-												src={props.releasePicture.map(picture =>
-													picture.location
-														? process.env.PUBLIC_URL + `/assets/images/releases/${picture.location}`
-														: process.env.PUBLIC_URL + "/assets/images/site/avatar-track.jpg"
-												)}
+												src={getImportedPicture}
 												alt={track.track_number}
 												width="60px"
 												height="60px"

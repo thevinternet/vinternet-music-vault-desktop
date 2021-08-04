@@ -1,24 +1,50 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import he from "he";
 
 import "./ReleaseListItem.scss";
 
+import useGetEncodedPicture from "../../../hooks/ui/GetEncodedPicture";
+
 //===============================================================================================================//
 
-const releaseListItem = props => {
-	return (
+const ReleaseListItem = props => {
+
+	//===============================================================================================================//
+	// Set Up Component STATE & Initialise HOOKS
+	//===============================================================================================================//
+
+	const [getImportedPicture, setImportedPicture] = useState(`${process.env.PUBLIC_URL}/assets/images/site/avatar-release.jpg`);
+	const { importedPicture, getEncodedPictureHandler } = useGetEncodedPicture();
+
+	//===============================================================================================================//
+	// Setup useEffect Functions
+	//===============================================================================================================//
+
+	useEffect(() => {
+		let mounted = true
+		if (mounted) {
+			console.log("Initial Import Release Pictures Effect Running!");
+			getEncodedPictureHandler(props.picture);
+			if (importedPicture) { setImportedPicture(importedPicture); }
+		}
+    return function cleanup() {
+      mounted = false
+    }
+	}, [getEncodedPictureHandler, props.picture, setImportedPicture, importedPicture]);
+
+	//===============================================================================================================//
+	// Render Release List Item
+	//===============================================================================================================//
+
+	let releaseListItem = (
 		<li>
 			<div className="card--small">
 				<figure>
 					<picture>
 						<img
 							key={props.releaseName ? he.decode(props.releaseName) : ""}
-							src={props.picture.map(picture =>
-								picture.location
-									? process.env.PUBLIC_URL + `/assets/images/releases/${picture.location}`
-									: process.env.PUBLIC_URL + "/assets/images/site/avatar-release.jpg"
-						)}
+							src={getImportedPicture}
 							alt={props.releaseName ? he.decode(props.releaseName) : ""}
 							width="60px"
 							height="60px"
@@ -39,8 +65,9 @@ const releaseListItem = props => {
 			</div>
 		</li>
 	);
+	return releaseListItem;
 };
 
 //===============================================================================================================//
 
-export default releaseListItem;
+export default ReleaseListItem;

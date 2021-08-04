@@ -79,7 +79,7 @@ const TrackList = props => {
 									trackName={track.name}
 									trackArtist={track.artist_name}
 									trackCat={track.release_catalogue}
-									trackPicture={track.release_picture}
+									trackPicture={track.release_picture[0].picture}
 								/>
 							))}
 						</ol>

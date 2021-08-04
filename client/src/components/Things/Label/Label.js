@@ -1,18 +1,49 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import he from "he";
 
 import "./Label.scss";
 
 import { AuthContext } from "../../../context/AuthContext";
+import useGetEncodedPicture from "../../../hooks/ui/GetEncodedPicture";
+
 import Auxiliary from "../../../wrappers/Auxiliary/Auxiliary";
 
 //===============================================================================================================//
 
 const Label = props => {
 
-	const authContext = useContext(AuthContext)
+	//===============================================================================================================//
+	// Set Up Contexts
+	//===============================================================================================================//
 
+	const authContext = useContext(AuthContext);
+
+	//===============================================================================================================//
+	// Set Up Component STATE & Initialise HOOKS
+	//===============================================================================================================//
+
+	const [getImportedPicture, setImportedPicture] = useState(`${process.env.PUBLIC_URL}/assets/images/site/avatar-label.jpg`);
+	const { importedPicture, getEncodedPictureHandler } = useGetEncodedPicture();
+
+	//===============================================================================================================//
+	// Setup useEffect Functions
+	//===============================================================================================================//
+
+	useEffect(() => {
+		let mounted = true
+		if (mounted) {
+			console.log("Initial Import Label Picture Effect Running!");
+			getEncodedPictureHandler(props.picture);
+			if (importedPicture) { setImportedPicture(importedPicture); }
+		}
+    return function cleanup() {
+      mounted = false
+    }
+	}, [getEncodedPictureHandler, props.picture, setImportedPicture, importedPicture]);
+
+	//===============================================================================================================//
+	// Render Label Thing
 	//===============================================================================================================//
 
 	let label = (
@@ -20,11 +51,7 @@ const Label = props => {
 			<div className="profile__picture">
 				<img
 					key={props.labelName ? he.decode(props.labelName) : ""}
-					src={props.picture.map(picture =>
-						picture.location
-							? process.env.PUBLIC_URL + `/assets/images/labels/${picture.location}`
-							: process.env.PUBLIC_URL + "/assets/images/site/avatar-label.jpg"
-					)}
+					src={getImportedPicture}
 					alt={props.labelName ? he.decode(props.labelName) : ""}
 					height="200px"
 					width="200px"

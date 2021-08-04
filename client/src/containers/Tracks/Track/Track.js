@@ -72,7 +72,7 @@ const Track = props => {
 							trackArtist={props.stateTrack.artist_name}
 							trackLabel={props.stateTrack.release_label}
 							trackCat={props.stateTrack.release_catalogue}
-							trackPicture={props.stateTrack.release_picture}
+							trackPicture={props.stateTrack.release_picture[0].picture}
 							trackGenre={props.stateTrack.genre}
 							trackMixkey={props.stateTrack.mixkey}
 						/>

@@ -12,12 +12,7 @@ npm-debug.log*
 *.tgz
 
 # Client
-client/public/assets/images/artists/*
-!client/public/assets/images/artists/avatar.jpg
-client/public/assets/images/labels/*
-!client/public/assets/images/labels/avatar.jpg
-client/public/assets/images/releases/*
-!client/public/assets/images/releases/avatar.jpg
+client/assets
 client/node_modules
 client/coverage
 client/build

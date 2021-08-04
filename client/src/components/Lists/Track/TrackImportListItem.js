@@ -1,12 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import "./TrackListItem.scss";
+
+import useGetEncodedPicture from "../../../hooks/ui/GetEncodedPicture";
 
 import Auxiliary from "../../../wrappers/Auxiliary/Auxiliary";
 
 //===============================================================================================================//
 
 const TrackImportListItem = props => {
+
+	//===============================================================================================================//
+	// Set Up Component STATE & Initialise HOOKS
+	//===============================================================================================================//
+
+	const [getImportedPicture, setImportedPicture] = useState(`${process.env.PUBLIC_URL}/assets/images/site/avatar-track.jpg`);
+	const { importedPicture, getEncodedPictureHandler } = useGetEncodedPicture();
+
+	//===============================================================================================================//
+	// Setup useEffect Functions
+	//===============================================================================================================//
+
+	useEffect(() => {
+		let mounted = true
+		if (mounted) {
+			console.log("Initial Import Track Pictures Effect Running!");
+			getEncodedPictureHandler(props.trackPicture);
+			if (importedPicture) { setImportedPicture(importedPicture); }
+		}
+    return function cleanup() {
+      mounted = false
+    }
+	}, [getEncodedPictureHandler, props.trackPicture, setImportedPicture, importedPicture]);
+
+	//===============================================================================================================//
+	// Render Imported Track List Item
+	//===============================================================================================================//
 
 	let trackImportListItem = (
 		<li>
@@ -15,11 +44,7 @@ const TrackImportListItem = props => {
 					<picture>
 						<img
 							key={props.trackName}
-							src={props.trackPicture.map(picture =>
-								picture.data
-									? `data:${picture.format};base64,${Buffer.from(picture.data).toString('base64')}`
-									: process.env.PUBLIC_URL + "/assets/images/site/avatar-track.jpg"
-							)}
+							src={getImportedPicture}
 							alt={props.trackName}
 							width="60px"
 							height="60px"

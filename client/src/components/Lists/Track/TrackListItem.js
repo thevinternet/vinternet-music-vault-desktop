@@ -1,28 +1,52 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import he from "he";
 
 import "./TrackListItem.scss";
 
+import useGetEncodedPicture from "../../../hooks/ui/GetEncodedPicture";
+
 import Auxiliary from "../../../wrappers/Auxiliary/Auxiliary";
 
 //===============================================================================================================//
 
-const trackListItem = props => {
-	return (
+const TrackListItem = props => {
+
+	//===============================================================================================================//
+	// Set Up Component STATE & Initialise HOOKS
+	//===============================================================================================================//
+
+	const [getImportedPicture, setImportedPicture] = useState(`${process.env.PUBLIC_URL}/assets/images/site/avatar-track.jpg`);
+	const { importedPicture, getEncodedPictureHandler } = useGetEncodedPicture();
+
+	//===============================================================================================================//
+	// Setup useEffect Functions
+	//===============================================================================================================//
+
+	useEffect(() => {
+		let mounted = true
+		if (mounted) {
+			console.log("Initial Import Track Pictures Effect Running!");
+			getEncodedPictureHandler(props.trackPicture);
+			if (importedPicture) { setImportedPicture(importedPicture); }
+		}
+    return function cleanup() {
+      mounted = false
+    }
+	}, [getEncodedPictureHandler, props.trackPicture, setImportedPicture, importedPicture]);
+
+	//===============================================================================================================//
+	// Render Track List Item
+	//===============================================================================================================//
+
+	let trackListItem = (
 		<li>
 			<div className="card--small">
 				<figure>
 					<picture>
 						<img
 							key={props.trackName ? he.decode(props.trackName) : ""}
-							src={props.trackPicture.map(pictures =>
-								pictures.picture.map(picture =>
-									picture.location
-										? process.env.PUBLIC_URL + `/assets/images/releases/${picture.location}`
-										: process.env.PUBLIC_URL + "/assets/images/site/avatar-track.jpg"
-								)
-							)}
+							src={getImportedPicture}
 							alt={props.trackName ? he.decode(props.trackName) : ""}
 							width="60px"
 							height="60px"
@@ -71,8 +95,9 @@ const trackListItem = props => {
 			</div>
 		</li>
 	);
+	return trackListItem;
 };
 
 //===============================================================================================================//
 
-export default trackListItem;
+export default TrackListItem;

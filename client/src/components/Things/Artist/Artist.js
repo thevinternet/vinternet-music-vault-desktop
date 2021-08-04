@@ -1,18 +1,49 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import he from "he";
 
 import "./Artist.scss";
 
 import { AuthContext } from "../../../context/AuthContext";
+import useGetEncodedPicture from "../../../hooks/ui/GetEncodedPicture";
+
 import Auxiliary from "../../../wrappers/Auxiliary/Auxiliary";
 
 //===============================================================================================================//
 
 const Artist = props => {
 
+	//===============================================================================================================//
+	// Set Up Contexts
+	//===============================================================================================================//
+
 	const authContext = useContext(AuthContext);
 
+	//===============================================================================================================//
+	// Set Up Component STATE & Initialise HOOKS
+	//===============================================================================================================//
+
+	const [getImportedPicture, setImportedPicture] = useState(`${process.env.PUBLIC_URL}/assets/images/site/avatar-artist.jpg`);
+	const { importedPicture, getEncodedPictureHandler } = useGetEncodedPicture();
+
+	//===============================================================================================================//
+	// Setup useEffect Functions
+	//===============================================================================================================//
+
+	useEffect(() => {
+		let mounted = true
+		if (mounted) {
+			console.log("Initial Import Artist Picture Effect Running!");
+			getEncodedPictureHandler(props.picture);
+			if (importedPicture) { setImportedPicture(importedPicture); }
+		}
+    return function cleanup() {
+      mounted = false
+    }
+	}, [getEncodedPictureHandler, props.picture, setImportedPicture, importedPicture]);
+
+	//===============================================================================================================//
+	// Render Artist Thing
 	//===============================================================================================================//
 
 	let artist = (
@@ -20,11 +51,7 @@ const Artist = props => {
 			<div className="profile__picture">
 				<img
 					key={props.artistName ? he.decode(props.artistName) : ""}
-					src={props.picture.map(picture =>
-						picture.location
-						? process.env.PUBLIC_URL + `/assets/images/artists/${picture.location}`
-						: process.env.PUBLIC_URL + "/assets/images/site/avatar-artist.jpg"
-					)}
+					src={getImportedPicture}
 					alt={props.artistName ? he.decode(props.artistName) : ""}
 					height="200px"
 					width="200px"

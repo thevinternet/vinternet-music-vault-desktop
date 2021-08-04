@@ -1,26 +1,50 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import he from "he";
 
 import "./Track.scss";
 
+import useGetEncodedPicture from "../../../hooks/ui/GetEncodedPicture";
+
 import Auxiliary from "../../../wrappers/Auxiliary/Auxiliary";
 
 //===============================================================================================================//
 
-const track = props => {
-	return (
+const Track = props => {
+
+	//===============================================================================================================//
+	// Set Up Component STATE & Initialise HOOKS
+	//===============================================================================================================//
+
+	const [getImportedPicture, setImportedPicture] = useState(`${process.env.PUBLIC_URL}/assets/images/site/avatar-track.jpg`);
+	const { importedPicture, getEncodedPictureHandler } = useGetEncodedPicture();
+
+	//===============================================================================================================//
+	// Setup useEffect Functions
+	//===============================================================================================================//
+
+	useEffect(() => {
+		let mounted = true
+		if (mounted) {
+			console.log("Initial Import Track Picture Effect Running!");
+			getEncodedPictureHandler(props.trackPicture);
+			if (importedPicture) { setImportedPicture(importedPicture); }
+		}
+    return function cleanup() {
+      mounted = false
+    }
+	}, [getEncodedPictureHandler, props.trackPicture, setImportedPicture, importedPicture]);
+
+	//===============================================================================================================//
+	// Render Track Thing
+	//===============================================================================================================//
+
+	let track = (
 		<Auxiliary>
 			<div className="profile__picture">
 				<img
 					key={props.trackName ? he.decode(props.trackName) : ""}
-					src={props.trackPicture.map(pictures =>
-						pictures.picture.map(picture =>
-							picture.location
-								? process.env.PUBLIC_URL + `/assets/images/releases/${picture.location}`
-								: process.env.PUBLIC_URL + "/assets/images/site/avatar-track.jpg"
-						)
-					)}
+					src={getImportedPicture}
 					alt={props.trackName ? he.decode(props.trackName) : ""}
 					height="200px"
 					width="200px"
@@ -86,8 +110,9 @@ const track = props => {
 			</div>
 		</Auxiliary>
 	);
+	return track;
 };
 
 //===============================================================================================================//
 
-export default track;
+export default Track;
