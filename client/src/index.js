@@ -34,15 +34,15 @@ const rootReducer = combineReducers({
 const sagaMiddleware = createSagaMiddleware();
 
 // Set Redux dev tools in development mode only
-// const composeEnhancers =
-// 	process.env.NODE_ENV === "development"
-// 		? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-// 		: null || compose;
+const composeEnhancers =
+	process.env.NODE_ENV === "development"
+		? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+		: null || compose;
 
 // Create & configure Redux store with reducers and middleware
 const store = createStore(
 	rootReducer,
-	compose(applyMiddleware(thunk, sagaMiddleware))
+	composeEnhancers(applyMiddleware(thunk, sagaMiddleware))
 );
 
 // Call Redux Saga middleware functions

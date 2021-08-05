@@ -13,10 +13,18 @@ import SetElementFocus from "../../../hooks/accessibility/SetElementFocus";
 
 const Modal = props => {
 
-	const modalButton = useRef(null);
-	SetElementFocus(modalButton, "Modal Effect Running!")
+	//===============================================================================================================//
+	// Initiate Element Focus Hook
+	//===============================================================================================================//
 
-	return (
+	const modalButton = useRef(null);
+	SetElementFocus(modalButton);
+
+	//===============================================================================================================//
+	// Render Modal
+	//===============================================================================================================//
+
+	let modal = (
 		<Auxiliary>
 			<Backdrop show={props.show} clicked={props.hide} />
 			<div
@@ -46,7 +54,11 @@ const Modal = props => {
 						)	: null }
 						{ props.bespokeText ? <p>{ he.decode(props.bespokeText) }</p> : null }
 					</div>
-					<Button type={props.status} clicked={props.action} elmRef={modalButton}>
+					<Button
+						type={props.status}
+						clicked={props.action}
+						elmRef={modalButton}
+					>
 						{props.buttonText}
 					</Button>
 				</Auxiliary>
@@ -54,6 +66,7 @@ const Modal = props => {
 			</div>
 		</Auxiliary>
 	);
+	return modal;
 };
 
 //===============================================================================================================//

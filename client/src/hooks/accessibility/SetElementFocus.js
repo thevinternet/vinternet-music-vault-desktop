@@ -1,14 +1,13 @@
 import { useEffect } from 'react';
 
 //===============================================================================================================//
-// Hook to set element focus using Ref
+// Set Element's Focus Attribute Using A Reference
 //===============================================================================================================//
 
-const SetElementFocus = (ref, message) => {
-		useEffect(() => {
-			ref.current.focus();
-			console.log(message);
-		}, [ref, message]);
+const SetElementFocus = (elmRef) => {
+	useEffect(() => {
+		elmRef.current.focus();
+	}, [elmRef]);
 };
 
 //===============================================================================================================//

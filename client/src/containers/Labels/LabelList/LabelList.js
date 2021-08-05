@@ -17,7 +17,7 @@ import * as labelActions from "../../../store/actions/index";
 const LabelList = props => {
 
 	//===============================================================================================================//
-	// Set Up Component STATE & Initialise HOOKS
+	// Set Up Component STATE
 	//===============================================================================================================//
 
 	const { onFetchLabels, history } = props;
@@ -27,13 +27,16 @@ const LabelList = props => {
 	// Setup useEffect Functions
 	//===============================================================================================================//
 
+	// Get All Labels Effect
 	useEffect(() => {
-		console.log("Initial Get Labels Effect Running!")
 		onFetchLabels();
 	}, [onFetchLabels]);
 
+	// Redirect To Labels List Effect
 	useEffect(() => {
-		if(getShouldRedirect) { history.push({ pathname: "/labels/" }); }
+		if (getShouldRedirect) { 
+			history.push({ pathname: "/labels/" }); 
+		}
 	}, [getShouldRedirect, history])
 
 	//===============================================================================================================//

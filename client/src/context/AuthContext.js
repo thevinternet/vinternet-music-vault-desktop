@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 
 //===============================================================================================================//
-// Create Auth Context used in function components (Object propulated with values from Provider)
+// Create Auth Context For Functional Components (Object Populated With Values From Auth Context Provider)
 //===============================================================================================================//
 
 export const AuthContext = React.createContext({
@@ -16,18 +16,23 @@ export const AuthContext = React.createContext({
 });
 
 //===============================================================================================================//
-// Create Auth Context Provider passing on functionality to any component listening 
+// Create Auth Context Provider (Passes Through Functionality To Any Component Subscribed 
 //===============================================================================================================//
 
 const AuthContextProvider = props => {
 
-	// Set up state
+	//===============================================================================================================//
+	// Set Up Component STATE
+	//===============================================================================================================//
+
 	const [getAuthenticatedStatus, setAutenticatedStatus] = useState(false);
 	const [getAuthUserName, setAuthUserName] = useState("Unregistered User");
 	const [getAuthUserEmail, setAuthUserEmail] = useState("");
 	const [getAuthUserPicture, setAuthUserPicture] = useState(process.env.PUBLIC_URL + "/assets/images/site/avatar-artist.jpg");
 	const [getAuthText, setAuthText] = useState("No user currently logged into Vinternet Music Vault");
 
+	//===============================================================================================================//
+	// Setup Auth Functions Using Electron IPC Service
 	//===============================================================================================================//
 
 	// Return profile details user currently held via Electron app & update state
@@ -72,16 +77,19 @@ const AuthContextProvider = props => {
 	};
 
 	//===============================================================================================================//
-
-	// Initiate hook to check Auth status if AuthenticatedStatus state changes
+	// Setup useEffect Functions
+	//===============================================================================================================//
+	
+	// Authenticated User Status State Change Effect
 	useEffect(() => {
-		console.log("Get Auth Status Effect Running!");
 		checkAuthStatus();
 	}, [checkAuthStatus, getAuthenticatedStatus]);
 
 	//===============================================================================================================//
+	// Render Auth Context Provider Component
+	//===============================================================================================================//
 
-	return (
+	let authContextProvider = (
 		<AuthContext.Provider value={{
 			authStatus: checkAuthStatus,
 			authDetails: checkAuthDetails,
@@ -96,8 +104,9 @@ const AuthContextProvider = props => {
 			{ props.children }
 		</AuthContext.Provider>
 	);
+	return authContextProvider;
 }
 
-	//===============================================================================================================//
+//===============================================================================================================//
 
 export default AuthContextProvider;

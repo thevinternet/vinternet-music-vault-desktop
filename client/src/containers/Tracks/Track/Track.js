@@ -15,7 +15,7 @@ import * as trackActions from "../../../store/actions/index";
 const Track = props => {
 
 	//===============================================================================================================//
-	// Set Up Component STATE & Initialise HOOKS
+	// Set Up Component STATE
 	//===============================================================================================================//
 
 	const { onFetchTrack, match, history } = props;
@@ -25,11 +25,12 @@ const Track = props => {
 	// Setup useEffect Functions
 	//===============================================================================================================//
 
+	// Get Track Effect
 	useEffect(() => {
-		console.log("Initial Get Track Effect Running!")
 		onFetchTrack(match.params.id, false);
 	}, [onFetchTrack, match]);
 
+	// Redirect To Tracks List Effect
 	useEffect(() => {
 		if(getShouldRedirect) { history.push({ pathname: "/tracks" }); }
 	}, [getShouldRedirect, history])

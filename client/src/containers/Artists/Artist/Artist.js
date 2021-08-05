@@ -19,29 +19,30 @@ import * as artistActions from "../../../store/actions/index";
 const Artist = props => {
 
 	//===============================================================================================================//
-	// Set Up Component STATE & Initialise HOOKS
+	// Set Up Component STATE
 	//===============================================================================================================//
 
 	const { onFetchArtist, onFetchReleases, onReleaseResetStatus, onReleaseResetResults, stateReleaseError,  history, match } = props;
 	const [getShouldRedirect, setShouldRedirect] = useState(false);
 
-
 	//===============================================================================================================//
 	// Setup useEffect Functions
 	//===============================================================================================================//
 
+	// Get Artists & Releases Effect
 	useEffect(() => {
-		console.log("Initial Get Artists & Releases Effect Running!")
 		onFetchArtist(match.params.id, false);
 		onFetchReleases(match.params.id);
 	}, [onFetchArtist, onFetchReleases, match]);
 
+	// Redirect To Artists List Effect
 	useEffect(() => {
 		if (getShouldRedirect) { 
 			history.push({ pathname: "/artists/" }); 
 		}
 	}, [getShouldRedirect, history]);
 
+	// Reset Release Results & Status Props Effect
 	useEffect(() => {
 		if (stateReleaseError) { 
 			onReleaseResetStatus();

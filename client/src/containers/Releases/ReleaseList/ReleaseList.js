@@ -17,7 +17,7 @@ import * as releaseActions from "../../../store/actions/index";
 const ReleaseList = props => {
 
 	//===============================================================================================================//
-	// Set Up Component STATE & Initialise HOOKS
+	// Set Up Component STATE
 	//===============================================================================================================//
 
 	const { onFetchReleases, history } = props;
@@ -27,11 +27,12 @@ const ReleaseList = props => {
 	// Setup useEffect Functions
 	//===============================================================================================================//
 
+	// Get Releases Effect
 	useEffect(() => {
-		console.log("Initial Get Releases Effect Running!")
 		onFetchReleases();
 	}, [onFetchReleases]);
 
+	// Redirect To Releases List Effect
 	useEffect(() => {
 		if(getShouldRedirect) { history.push({ pathname: "/releases/" }); }
 	}, [getShouldRedirect, history])

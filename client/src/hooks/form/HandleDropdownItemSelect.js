@@ -11,7 +11,7 @@ import { focusNextDataOption } from "../../utilities/formHelpers/formFuzzyDropdo
 
 const useHandleDropdownItemSelect = () => {
 
-	const [getUpdatedFormDds, setUpdatedFormDds] = useState('')
+	const [getUpdatedFormDds, setUpdatedFormDds] = useState("");
 
 	const dropdownItemSelectHandler = useCallback((event, inputLocation, inputLocationString, baseState, fuzzyDataList=null) => {
 

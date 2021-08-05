@@ -52,8 +52,8 @@ const ReleaseEdit = props => {
 	// Setup useEffect Functions
 	//===============================================================================================================//
 
+	// Get Release, Tracks, Artists & Labels Effect
 	useEffect(() => {
-		console.log("Initial Get Release, Tracks, Artists & Labels Effect Running!");
 		onFetchRelease(match.params.id, true);
 		onFetchTracks(match.params.id, true);
 		onFetchArtists();
@@ -63,17 +63,15 @@ const ReleaseEdit = props => {
 
 	//===============================================================================================================//
 	
+	// Handle Standard Input Change (Release & Tracks) Effect
 	useEffect(() => {
-		console.log("Standard Input Effect Initialised!");
 		if (updatedFormStd) {
 			setFormIsValid(formIsValidStd);
 
 			if (updatedFormStd.releaseForm) {
-				console.log("Handle Standard Release Input Effect Running!");
 				onEditLocalRelease(updatedFormStd); 
 			}
 			else if (updatedFormStd[0].trackForm) {
-				console.log("Handle Standard Track Input Effect Running!");
 				onEditLocalTrack(updatedFormStd); 
 			}
 		}
@@ -81,56 +79,54 @@ const ReleaseEdit = props => {
 
 	//===============================================================================================================//
 
+	// Handle Fuzzy Input Change (Release & Tracks) Effect
 	useEffect(() => {
-		console.log("Fuzzy Input Effect Initialised!");
 		if (updatedFormFzy && dataListIdFzy) {
 			dropdownDatalistSetup(dataListIdFzy);
 			setFormIsValid(formIsValidFzy);
 
 			if (updatedFormFzy.releaseForm) {
-				console.log("Handle Fuzzy Release Input Effect Running!");
 				onEditLocalRelease(updatedFormFzy); 
 			}
 			else if (updatedFormFzy[0].trackForm) {
-				console.log("Handle Fuzzy Track Input Effect Running!");
 				onEditLocalTrack(updatedFormFzy); 
 			}
 		}
 	}, [dataListIdFzy, formIsValidFzy, updatedFormFzy, onEditLocalRelease, onEditLocalTrack]);
 
-	//===============================================================================================================//
-
+	// Handle Fuzzy DropDown Selection (Release & Tracks) Effect
 	useEffect(() => {
-		console.log("Add / Delete / DropDown Effect Initialised!");
-		if (updatedFormAdd) {
-			console.log("Handle Add Input Effect Running!");
-			onEditLocalTrack(updatedFormAdd);
-
-		}
-		if (updatedFormDel) {
-			console.log("Handle Delete Input Effect Running!");
-			onEditLocalTrack(updatedFormDel);
-
-		}
 		if (updatedFormDds) {
-
 			if (updatedFormDds.releaseForm) {
-				console.log("Handle Fuzzy Release DropDown Select Effect Running!");
 				onEditLocalRelease(updatedFormDds); 
 			}
 			else if (updatedFormDds[0].trackForm) {
-				console.log("Handle Fuzzy Track DropDown Select Effect Running!");
 				onEditLocalTrack(updatedFormDds); 
 			}
 		}
-	}, [updatedFormAdd, updatedFormDel, updatedFormDds, onEditLocalRelease, onEditLocalTrack]);
+	}, [updatedFormDds, onEditLocalRelease, onEditLocalTrack]);
 
 	//===============================================================================================================//
-
+	
+	// Handle Add New Input Element (Track Only) Effect
 	useEffect(() => {
-		console.log("POST Form Effect Initialised!");
+		if (updatedFormAdd) {
+			onEditLocalTrack(updatedFormAdd);
+		}
+	}, [updatedFormAdd, onEditLocalTrack]);
+
+	// Handle Delete Input Element (Track Only) Effect
+	useEffect(() => {
+		if (updatedFormDel) {
+			onEditLocalTrack(updatedFormDel);
+		}
+	}, [updatedFormDel, onEditLocalTrack]);
+	
+	//===============================================================================================================//
+
+	// Handle Form POST Submission Effect
+	useEffect(() => {
 		if (stateSuccess !== null) {
-			console.log("Successful POST Effect Running!");
 			history.push({ pathname: "/releases/" + stateRelease._id });
 		}
 	}, [stateRelease, stateSuccess, history]);
@@ -242,7 +238,6 @@ const ReleaseEdit = props => {
 		};
 
 		let updatedReleaseData = releaseData;
-		console.log(updatedReleaseData);
 
 		if (getAvatarFile) { 
 			updatedReleaseData = new FormData();
@@ -513,7 +508,6 @@ const ReleaseEdit = props => {
 			}
 			trackFormElements.push(trackElement);
 		});
-		console.log(trackFormElements);
 	}
 
 	//===============================================================================================================//
@@ -561,10 +555,20 @@ const ReleaseEdit = props => {
 								<legend>Tracks ({trackFormElements.length})</legend>
 									{trackFormElements.map((trackElement, trackIndex) =>
 										<details key={trackIndex}>
-											<summary aria-expanded="false" data-accordion-control="true" aria-controls={`accordionContainer${trackIndex}`} id={`accordionControl${trackIndex}`}>
+											<summary
+												aria-expanded="false"
+												data-accordion-control="true"
+												aria-controls={`accordionContainer${trackIndex}`}
+												id={`accordionControl${trackIndex}`}
+											>
 												Edit Track {trackIndex + 1}: {trackElement[3].value}
 											</summary>
-											<div id={`accordionContainer${trackIndex}`} role="region" aria-labelledby={`accordionControl${trackIndex}`} data-accordion-content="true">
+											<div
+												id={`accordionContainer${trackIndex}`}
+												role="region"
+												aria-labelledby={`accordionControl${trackIndex}`}
+												data-accordion-content="true"
+											>
 												{trackElement.map((element, index) =>
 													trackFormRender(element, index, trackIndex)
 												)}

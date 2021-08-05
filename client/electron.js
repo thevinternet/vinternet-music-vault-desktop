@@ -64,9 +64,7 @@ ipcMain.handle("elecDialogFolder", async (event, arg) => {
 // IPC: Handle File Import Request From Given Folder Location
 
 ipcMain.handle("elecFileImport", async (event, arg) => {
-
 	const filesToImport = await importService.importTracks(arg);
-
 	return filesToImport;
 });
 
@@ -75,9 +73,7 @@ ipcMain.handle("elecFileImport", async (event, arg) => {
 // IPC: Handle Single Picture Import Request From Given Folder Location
 
 ipcMain.handle("elecImageImport", async (event, arg1, arg2) => {
-
 	const pictureToImport = await importService.importPicture(arg1, arg2);
-
 	return pictureToImport;
 });
 

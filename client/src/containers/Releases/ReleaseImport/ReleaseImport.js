@@ -35,6 +35,7 @@ const ReleaseImport = props => {
 	const [getReviewFileReady, setReviewFileReady] = useState(false);
 	const [getLoadingReviewStatus, setLoadingReviewStatus] = useState(false);
 	const [getImportFileArray, setImportFileArray] = useState("");
+	const [getExportFileStatus, setExportFileStatus] = useState(false);
 	const [getExportFile, setExportFile] = useState("");
 	const { stateSuccess, history } = props;
 
@@ -109,6 +110,7 @@ const ReleaseImport = props => {
 		};
 
 		setExportFile(trackData);
+		setExportFileStatus(true);
 
 		setLoadingReviewStatus(true);
 		//props.onSendImportedReleases(trackData);
@@ -151,6 +153,7 @@ const ReleaseImport = props => {
 		setReviewFile("There are currently 0 track results awaiting review");
 		setReviewFileReady(false);
 		setLoadingReviewStatus(false);
+		setExportFileStatus(false);
 		setImportFileArray("");
 	};
 
@@ -254,7 +257,9 @@ const ReleaseImport = props => {
 						</div>
 					</fieldset>
 					<div className={"userform--actions"}>
-					<Button type={"success"} clicked={exportTrackData}>
+						<Button type={getExportFileStatus ? "success" : "disabled"}
+							disabled={!getExportFileStatus}
+							clicked={exportTrackData}>
 							Export Track Data
 						</Button>
 						<Button type={"warning"} clicked={importResetHandler}>

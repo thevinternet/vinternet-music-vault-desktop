@@ -16,32 +16,34 @@ import * as releaseActions from "../../../store/actions/index";
 const Release = props => {
 
 	//===============================================================================================================//
-	// Set Up Component STATE & Initialise HOOKS
+	// Set Up Component STATE
 	//===============================================================================================================//
 
 	const { onFetchRelease, onFetchTracks, onTrackResetStatus, onTrackResetResults, stateTrackError, history, match } = props;
 	const [getShouldRedirect, setShouldRedirect] = useState(false);
 
-	if (props.stateTrackError) { 
-		props.onTrackResetStatus();
+	if (stateTrackError) { 
+		onTrackResetStatus();
 	}
 
 	//===============================================================================================================//
 	// Setup useEffect Functions
 	//===============================================================================================================//
 
+	// Get Release & Tracks Effect
 	useEffect(() => {
-		console.log("Initial Get Release & Tracks Effect Running!")
 		onFetchRelease(match.params.id, false);
 		onFetchTracks(match.params.id);
 	}, [onFetchRelease, onFetchTracks, match]);
 
+	// Redirect To Releases List Effect
 	useEffect(() => {
 		if (getShouldRedirect) { 
 			history.push({ pathname: "/releases/" }); 
 		}
 	}, [getShouldRedirect, history]);
 
+	// Reset Track Results & Status Props Effect
 	useEffect(() => {
 		if (stateTrackError) { 
 			onTrackResetStatus();

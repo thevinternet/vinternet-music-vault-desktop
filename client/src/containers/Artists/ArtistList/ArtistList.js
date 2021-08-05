@@ -17,7 +17,7 @@ import * as artistActions from "../../../store/actions/index";
 const ArtistList = props => {
 
 	//===============================================================================================================//
-	// Set Up Component STATE & Initialise HOOKS
+	// Set Up Component STATE
 	//===============================================================================================================//
 
 	const { onFetchArtists, history } = props;
@@ -27,11 +27,12 @@ const ArtistList = props => {
 	// Setup useEffect Functions
 	//===============================================================================================================//
 
+	// Get Artists Effect
 	useEffect(() => {
-		console.log("Initial Get Artists Effect Running!")
 		onFetchArtists();
 	}, [onFetchArtists]);
 
+	// Redirect To Artists List Effect
 	useEffect(() => {
 		if(getShouldRedirect) { history.push({ pathname: "/artists/" }); }
 	}, [getShouldRedirect, history])

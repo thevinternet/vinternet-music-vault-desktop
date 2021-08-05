@@ -19,7 +19,7 @@ import * as labelActions from "../../../store/actions/index";
 const Label = props => {
 
 	//===============================================================================================================//
-	// Set Up Component STATE & Initialise HOOKS
+	// Set Up Component STATE
 	//===============================================================================================================//
 
 	const { onFetchLabel, onFetchReleases, onReleaseResetStatus, onReleaseResetResults, stateReleaseError, history, match } = props;
@@ -29,18 +29,20 @@ const Label = props => {
 	// Setup useEffect Functions
 	//===============================================================================================================//
 
+	// Get Labels & Releases Effect
 	useEffect(() => {
-		console.log("Initial Get Labels & Releases Effect Running!")
 		onFetchLabel(match.params.id, false);
 		onFetchReleases(match.params.id);
 	}, [onFetchLabel, onFetchReleases, match]);
 
+	// Redirect To Labels List Effect
 	useEffect(() => {
 		if (getShouldRedirect) { 
 			history.push({ pathname: "/labels/" }); 
 		}
 	}, [getShouldRedirect, history]);
 
+	// Reset Release Results & Status Props Effect
 	useEffect(() => {
 		if (stateReleaseError) { 
 			onReleaseResetStatus();

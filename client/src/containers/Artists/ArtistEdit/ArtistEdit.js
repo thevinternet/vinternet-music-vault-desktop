@@ -51,18 +51,17 @@ const ArtistEdit = props => {
 	// Setup useEffect Functions
 	//===============================================================================================================//
 
+	// Get Single Artist & All Artists Effect
 	useEffect(() => {
-		console.log("Initial Get Single Artist & All Artists Effect Running!");
 		onFetchArtist(match.params.id, true);
 		onFetchArtists();
 	}, [onFetchArtist, onFetchArtists, match]);
 
 	//===============================================================================================================//
 
+	// Handle Standard Input Change Effect
 	useEffect(() => {
-		console.log("Standard Input Effect Initialised!");
 		if (updatedFormStd) {
-			console.log("Handle Standard Input Effect Running!");
 			setFormIsValid(formIsValidStd);
 			onEditLocalArtist(updatedFormStd);
 		}
@@ -70,40 +69,43 @@ const ArtistEdit = props => {
 
 	//===============================================================================================================//
 
+	// Handle Fuzzy Input Change Effect
 	useEffect(() => {
-		console.log("Fuzzy Input Effect Initialised!");
 		if (updatedFormFzy && dataListIdFzy) {
-			console.log("Handle Fuzzy Input Effect Running!");
 			dropdownDatalistSetup(dataListIdFzy);
 			setFormIsValid(formIsValidFzy);
 			onEditLocalArtist(updatedFormFzy);
 		}
 	}, [dataListIdFzy, formIsValidFzy, updatedFormFzy, onEditLocalArtist]);
 
-	//===============================================================================================================//
-
+	// Handle Fuzzy DropDown Selection Effect
 	useEffect(() => {
-		console.log("Add / Delete / DropDown Effect Initialised!");
-		if (updatedFormAdd) {
-			console.log("Handle Add Input Effect Running!");
-			onEditLocalArtist(updatedFormAdd); 
-		}
-		if (updatedFormDel) {
-			console.log("Handle Delete Input Effect Running!");
-			onEditLocalArtist(updatedFormDel); 
-		}
 		if (updatedFormDds) {
-			console.log("Handle Fuzzy DropDown Select Effect Running!");
 			onEditLocalArtist(updatedFormDds); 
 		}
-	}, [updatedFormAdd, updatedFormDel, updatedFormDds, onEditLocalArtist]);
+	}, [updatedFormDds, onEditLocalArtist]);
 
 	//===============================================================================================================//
 
+	// Handle Add New Input Element Effect
 	useEffect(() => {
-		console.log("POST Form Effect Initialised!");
+		if (updatedFormAdd) {
+			onEditLocalArtist(updatedFormAdd); 
+		}
+	}, [updatedFormAdd, onEditLocalArtist]);
+
+	// Handle Delete Input Element Effect
+	useEffect(() => {
+		if (updatedFormDel) {
+			onEditLocalArtist(updatedFormDel); 
+		}
+	}, [updatedFormDel, onEditLocalArtist]);
+
+	//===============================================================================================================//
+
+	// Handle Form POST Submission Effect
+	useEffect(() => {
 		if (stateSuccess !== null) {
-			console.log("Successful POST Effect Running!");
 			history.push({ pathname: "/artists/" + stateArtist._id });
 		}
 	}, [stateArtist, stateSuccess, history]);
@@ -169,7 +171,6 @@ const ArtistEdit = props => {
 			fileFlag = true;
 		}
 
-		//console.log(updatedArtistData)
 		props.onUpdateArtist(artistId, updatedArtistData, fileFlag);
 	};
 

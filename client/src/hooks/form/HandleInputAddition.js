@@ -15,8 +15,6 @@ const useHandleInputAddition =() => {
 	const inputAddHandler = useCallback((event, inputLocation, inputLocationString, baseState, arrayId) => {
 		event.preventDefault();
 
-		console.log(event);
-
 		const updatedArray = addNewArrayItem(inputLocation, arrayId);
 
 		// Use Immer 'produce' helper for immutable object creation
