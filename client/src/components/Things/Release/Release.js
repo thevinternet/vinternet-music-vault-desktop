@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import he from "he";
 
 import "./Release.scss";
+import releaseAvatar from "../../../assets/images/site/avatar-release.jpg";
 
 import { AuthContext } from "../../../context/AuthContext";
 import useGetEncodedPicture from "../../../hooks/ui/GetEncodedPicture";
 
+import TrackListItem from "../../Lists/Track/TrackListItem";
 import Auxiliary from "../../../wrappers/Auxiliary/Auxiliary";
 
 //===============================================================================================================//
@@ -23,23 +25,22 @@ const Release = props => {
 	// Set Up Component STATE & Initialise HOOKS
 	//===============================================================================================================//
 
-	const [getImportedPicture, setImportedPicture] = useState(`${process.env.PUBLIC_URL}/assets/images/site/avatar-release.jpg`);
+	const [getImportedPicture, setImportedPicture] = useState(releaseAvatar);
 	const { importedPicture, getEncodedPictureHandler } = useGetEncodedPicture();
 
 	//===============================================================================================================//
 	// Setup useEffect Functions
 	//===============================================================================================================//
 
+	// Import Release Pictures Via Electron IPC Effect
 	useEffect(() => {
-		let mounted = true
-		if (mounted) {
-			console.log("Initial Import Release Picture Effect Running!");
-			getEncodedPictureHandler(props.releasePicture);
-			if (importedPicture) { setImportedPicture(importedPicture); }
+		getEncodedPictureHandler(props.releasePicture);
+		if (importedPicture) { 
+			setImportedPicture(importedPicture);
 		}
-    return function cleanup() {
-      mounted = false
-    }
+		return function cleanup() {
+			setImportedPicture(releaseAvatar);
+		}
 	}, [getEncodedPictureHandler, props.releasePicture, setImportedPicture, importedPicture]);
 
 	//===============================================================================================================//
@@ -134,41 +135,18 @@ const Release = props => {
 				{props.releaseTracks.length ? (
 					<ol className={"list--block"}>
 						{props.releaseTracks.map((track, index) =>
-							<li key={track.name ? he.decode(track.name) : ""}>
-								<div className="card--small">
-									<figure>
-										<picture>
-											<img
-												src={getImportedPicture}
-												alt={track.track_number}
-												width="60px"
-												height="60px"
-											/>
-										</picture>
-									</figure>
-									<div className="card__details">
-										<h2>
-											{track.artist_name.map((artist, index, array) =>
-												array.length - 1 === index ? (
-													<span key={artist.name ? he.decode(artist.name) : ""}>
-														{artist.name ? he.decode(artist.name) : ""}
-													</span>
-												) : (
-													<span key={artist.name ? he.decode(artist.name) : ""}>
-														{artist.name ? he.decode(artist.name) : ""}{" & "}
-													</span>
-												)
-											)}
-											{" - "}{track.name ? he.decode(track.name) : ""}
-										</h2>
-										<ul className="details--inline">
-											<li><strong>Track:</strong> {track.track_number}</li>
-											<li><strong>Genre:</strong> {track.genre ? he.decode(track.genre) : ""}</li>
-											<li><strong>Key:</strong> {track.mixkey ? he.decode(track.mixkey) : ""}</li>
-										</ul>
-									</div>
-								</div>
-							</li>
+							<TrackListItem
+								key={track._id}
+								trackId={track._id}
+								trackName={track.name}
+								trackArtist={track.artist_name}
+								trackCat={track.release_catalogue}
+								trackPicture={track.release_picture[0].picture}
+								trackNumber={track.track_number}
+								trackGenre={track.genre}
+								trackMixKey={track.mixkey}
+								trackBpm={track.bpm}
+							/>
 						)}
 					</ol>
 				) : (

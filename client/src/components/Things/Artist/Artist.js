@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import he from "he";
 
 import "./Artist.scss";
+import artistAvatar from "../../../assets/images/site/avatar-artist.jpg";
 
 import { AuthContext } from "../../../context/AuthContext";
 import useGetEncodedPicture from "../../../hooks/ui/GetEncodedPicture";
@@ -23,23 +24,22 @@ const Artist = props => {
 	// Set Up Component STATE & Initialise HOOKS
 	//===============================================================================================================//
 
-	const [getImportedPicture, setImportedPicture] = useState(`${process.env.PUBLIC_URL}/assets/images/site/avatar-artist.jpg`);
+	const [getImportedPicture, setImportedPicture] = useState(artistAvatar);
 	const { importedPicture, getEncodedPictureHandler } = useGetEncodedPicture();
 
 	//===============================================================================================================//
 	// Setup useEffect Functions
 	//===============================================================================================================//
 
+	// Import Artist Pictures Via Electron IPC Effect
 	useEffect(() => {
-		let mounted = true
-		if (mounted) {
-			console.log("Initial Import Artist Picture Effect Running!");
-			getEncodedPictureHandler(props.picture);
-			if (importedPicture) { setImportedPicture(importedPicture); }
+		getEncodedPictureHandler(props.picture);
+		if (importedPicture) { 
+			setImportedPicture(importedPicture);
 		}
-    return function cleanup() {
-      mounted = false
-    }
+		return function cleanup() {
+			setImportedPicture(artistAvatar);
+		}
 	}, [getEncodedPictureHandler, props.picture, setImportedPicture, importedPicture]);
 
 	//===============================================================================================================//

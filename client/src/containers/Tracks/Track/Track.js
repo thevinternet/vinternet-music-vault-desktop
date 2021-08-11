@@ -68,6 +68,7 @@ const Track = props => {
 				<div className="container">
 					<div className="panel">
 						<TrackComponent
+							key={props.stateTrack._id}
 							trackId={props.stateTrack._id}
 							trackName={props.stateTrack.name}
 							trackArtist={props.stateTrack.artist_name}

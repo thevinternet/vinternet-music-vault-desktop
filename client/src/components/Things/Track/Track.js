@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import he from "he";
 
 import "./Track.scss";
+import trackAvatar from "../../../assets/images/site/avatar-track.jpg";
 
 import useGetEncodedPicture from "../../../hooks/ui/GetEncodedPicture";
 
@@ -16,23 +17,22 @@ const Track = props => {
 	// Set Up Component STATE & Initialise HOOKS
 	//===============================================================================================================//
 
-	const [getImportedPicture, setImportedPicture] = useState(`${process.env.PUBLIC_URL}/assets/images/site/avatar-track.jpg`);
+	const [getImportedPicture, setImportedPicture] = useState(trackAvatar);
 	const { importedPicture, getEncodedPictureHandler } = useGetEncodedPicture();
 
 	//===============================================================================================================//
 	// Setup useEffect Functions
 	//===============================================================================================================//
 
+	// Import Track Pictures Via Electron IPC Effect
 	useEffect(() => {
-		let mounted = true
-		if (mounted) {
-			console.log("Initial Import Track Picture Effect Running!");
-			getEncodedPictureHandler(props.trackPicture);
-			if (importedPicture) { setImportedPicture(importedPicture); }
+		getEncodedPictureHandler(props.trackPicture);
+		if (importedPicture) { 
+			setImportedPicture(importedPicture);
 		}
-    return function cleanup() {
-      mounted = false
-    }
+		return function cleanup() {
+			setImportedPicture(trackAvatar);
+		}
 	}, [getEncodedPictureHandler, props.trackPicture, setImportedPicture, importedPicture]);
 
 	//===============================================================================================================//

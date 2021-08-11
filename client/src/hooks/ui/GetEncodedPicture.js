@@ -6,7 +6,7 @@ import { useState, useCallback } from "react";
 
 const useGetEncodedPicture = () => {
 
-	const [getImportedPicture, setImportedPicture] = useState('')
+	const [getImportedPicture, setImportedPicture] = useState("")
 	
 	const getEncodedPictureHandler = useCallback(async (picture) => {
 

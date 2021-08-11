@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import he from "he";
 
 import "./ReleaseListItem.scss";
+import releaseAvatar from "../../../assets/images/site/avatar-release.jpg";
 
 import useGetEncodedPicture from "../../../hooks/ui/GetEncodedPicture";
 
@@ -14,23 +15,22 @@ const ReleaseListItem = props => {
 	// Set Up Component STATE & Initialise HOOKS
 	//===============================================================================================================//
 
-	const [getImportedPicture, setImportedPicture] = useState(`${process.env.PUBLIC_URL}/assets/images/site/avatar-release.jpg`);
+	const [getImportedPicture, setImportedPicture] = useState(releaseAvatar);
 	const { importedPicture, getEncodedPictureHandler } = useGetEncodedPicture();
 
 	//===============================================================================================================//
 	// Setup useEffect Functions
 	//===============================================================================================================//
 
+	// Import Release Pictures Via Electron IPC Effect
 	useEffect(() => {
-		let mounted = true
-		if (mounted) {
-			console.log("Initial Import Release Pictures Effect Running!");
-			getEncodedPictureHandler(props.picture);
-			if (importedPicture) { setImportedPicture(importedPicture); }
+		getEncodedPictureHandler(props.picture);
+		if (importedPicture) { 
+			setImportedPicture(importedPicture);
 		}
-    return function cleanup() {
-      mounted = false
-    }
+		return function cleanup() {
+			setImportedPicture(releaseAvatar);
+		}
 	}, [getEncodedPictureHandler, props.picture, setImportedPicture, importedPicture]);
 
 	//===============================================================================================================//

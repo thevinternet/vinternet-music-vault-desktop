@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import he from "he";
 
 import "./Label.scss";
+import labelAvatar from "../../../assets/images/site/avatar-label.jpg";
 
 import { AuthContext } from "../../../context/AuthContext";
 import useGetEncodedPicture from "../../../hooks/ui/GetEncodedPicture";
@@ -23,23 +24,22 @@ const Label = props => {
 	// Set Up Component STATE & Initialise HOOKS
 	//===============================================================================================================//
 
-	const [getImportedPicture, setImportedPicture] = useState(`${process.env.PUBLIC_URL}/assets/images/site/avatar-label.jpg`);
+	const [getImportedPicture, setImportedPicture] = useState(labelAvatar);
 	const { importedPicture, getEncodedPictureHandler } = useGetEncodedPicture();
 
 	//===============================================================================================================//
 	// Setup useEffect Functions
 	//===============================================================================================================//
 
+	// Import Label Pictures Via Electron IPC Effect
 	useEffect(() => {
-		let mounted = true
-		if (mounted) {
-			console.log("Initial Import Label Picture Effect Running!");
-			getEncodedPictureHandler(props.picture);
-			if (importedPicture) { setImportedPicture(importedPicture); }
+		getEncodedPictureHandler(props.picture);
+		if (importedPicture) { 
+			setImportedPicture(importedPicture);
 		}
-    return function cleanup() {
-      mounted = false
-    }
+		return function cleanup() {
+			setImportedPicture(labelAvatar);
+		}
 	}, [getEncodedPictureHandler, props.picture, setImportedPicture, importedPicture]);
 
 	//===============================================================================================================//
