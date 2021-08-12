@@ -7,12 +7,12 @@ import Navigation from "../Navigation/Navigation";
 //===============================================================================================================//
 
 const header = props => {
-  return (
-    <header>
-      <Navigation />
-      <div>{props.children}</div>
-    </header>
-  );
+	return (
+		<header>
+			<Navigation />
+			<div>{props.children}</div>
+		</header>
+	);
 };
 
 //===============================================================================================================//

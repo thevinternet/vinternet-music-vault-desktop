@@ -51,17 +51,17 @@ const Release = props => {
 		<Auxiliary>
 			<div className="profile__picture">
 				<img
-					key={props.releaseTitle ? he.decode(props.releaseTitle) : ""}
-					src={getImportedPicture}
-					alt={props.releaseTitle ? he.decode(props.releaseTitle) : ""}
+					key={ props.releaseTitle ? he.decode(props.releaseTitle) : "" }
+					src={ getImportedPicture }
+					alt={ props.releaseTitle ? he.decode(props.releaseTitle) : "" }
 					height="200px"
 					width="200px"
 				/>
 			</div>
 			<div className="profile__details">
-				<h1>{props.releaseTitle ? he.decode(props.releaseTitle) : ""}</h1>
+				<h1>{ props.releaseTitle ? he.decode(props.releaseTitle) : "" }</h1>
 				<dl>
-					{props.releaseArtist.length ? (
+					{ props.releaseArtist.length ? (
 						<Auxiliary>
 							<dt>Artists</dt>
 							<dd>
@@ -69,13 +69,13 @@ const Release = props => {
 									arr.length - 1 === index ? (
 										<span key={artist.name ? he.decode(artist.name) + index : index}>
 											<Link to={`/artists/${artist._id}`}>
-												{artist.name ? he.decode(artist.name) : ""}
+												{ artist.name ? he.decode(artist.name) : "" }
 											</Link>
 										</span>
 									) : (
 										<span key={artist.name ? he.decode(artist.name) + index : index}>
 											<Link to={`/artists/${artist._id}`}>
-												{artist.name ? he.decode(artist.name) : ""}
+												{ artist.name ? he.decode(artist.name) : "" }
 											</Link>
 											,{" "}
 										</span>
@@ -83,46 +83,46 @@ const Release = props => {
 								)}
 							</dd>
 						</Auxiliary>
-					) : null}
-					{props.releaseLabel.length ? (
+					) : null }
+					{ props.releaseLabel.length ? (
 						<Auxiliary>
 							<dt>Label</dt>
 							<dd>
 								{props.releaseLabel.map((label, index, arr) =>
 									<Link key={label.name ? he.decode(label.name) : ""} to={`/labels/${label._id}`}>
-										{label.name ? he.decode(label.name) : ""}
+										{ label.name ? he.decode(label.name) : "" }
 									</Link>
 								)}
 							</dd>
 							<dt>Catalogue</dt>
-							<dd>{props.releaseCat ? he.decode(props.releaseCat) : ""}</dd>
+							<dd>{ props.releaseCat ? he.decode(props.releaseCat) : "" }</dd>
 							<dt>Year</dt>
-							<dd>{props.releaseYear}</dd>
+							<dd>{ props.releaseYear }</dd>
 						</Auxiliary>
 					) : null }
-					{props.releaseFormat.length ? (
+					{ props.releaseFormat.length ? (
 						<Auxiliary>
 							<dt>Format</dt>
 							<dd>
-								{ props.releaseFormat.map((format, index, arr) =>
+								{props.releaseFormat.map((format, index, arr) =>
 									arr.length - 1 === index ? (
 										format.released === "yes" ? (
 											<span key={format.name ? he.decode(format.name) : ""}>
-												{format.name ? he.decode(format.name) : ""}
+												{ format.name ? he.decode(format.name) : "" }
 											</span>
 										) : null
 									) : (
 										format.released === "yes" ? (
 											<span key={format.name ? he.decode(format.name) : ""}>
-												{format.name ? he.decode(format.name) : ""}{", "}
+												{ format.name ? he.decode(format.name) : "" }{", "}
 											</span>
 										) : null
 									)
 								)}
 							</dd>
 						</Auxiliary>
-					) : null}
-					{props.releaseLink ? (
+					) : null }
+					{ props.releaseLink ? (
 						<Auxiliary>
 							<dt>Reference Website</dt>
 							<dd>
@@ -132,7 +132,7 @@ const Release = props => {
 					) : null }
 				</dl>
 				<h2>Tracks</h2>
-				{props.releaseTracks.length ? (
+				{ props.releaseTracks.length ? (
 					<ol className={"list--block"}>
 						{props.releaseTracks.map((track, index) =>
 							<TrackListItem
@@ -151,7 +151,7 @@ const Release = props => {
 					</ol>
 				) : (
 					<p className="list--block">There are currently no tracks associated with this release.</p>
-				)}
+				) }
 				{ authContext.isAuth ? (
 					<div className="profile__actions">
 						<Link

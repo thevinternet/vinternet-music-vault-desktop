@@ -50,24 +50,24 @@ const Artist = props => {
 		<Auxiliary>
 			<div className="profile__picture">
 				<img
-					key={props.artistName ? he.decode(props.artistName) : ""}
-					src={getImportedPicture}
-					alt={props.artistName ? he.decode(props.artistName) : ""}
+					key={ props.artistName ? he.decode(props.artistName) : "" }
+					src={ getImportedPicture }
+					alt={ props.artistName ? he.decode(props.artistName) : "" }
 					height="200px"
 					width="200px"
 				/>
 			</div>
 			<div className="profile__details">
-				<h1>{props.artistName ? he.decode(props.artistName) : ""}</h1>
-				{props.realName || props.aliasName.length ? (
+				<h1>{ props.artistName ? he.decode(props.artistName) : "" }</h1>
+				{ props.realName || props.aliasName.length ? (
 					<dl>
-						{props.realName ? (
+						{ props.realName ? (
 							<Auxiliary>
 								<dt>Real Name</dt>
-								<dd>{props.realName ? he.decode(props.realName) : ""}</dd>
+								<dd>{ props.realName ? he.decode(props.realName) : "" }</dd>
 							</Auxiliary>
 						) : null }
-						{props.aliasName.length ? (
+						{ props.aliasName.length ? (
 							<Auxiliary>
 								<dt>Aliases</dt>
 								<dd>
@@ -75,13 +75,13 @@ const Artist = props => {
 										arr.length - 1 === index ? (
 											<span key={alias.name ? he.decode(alias.name) + index : index}>
 												<Link to={`/artists/${alias._id}`}>
-													{alias.name ? he.decode(alias.name) : ""}
+													{ alias.name ? he.decode(alias.name) : "" }
 												</Link>
 											</span>
 										) : (
 											<span key={alias.name ? he.decode(alias.name) + index : index}>
 												<Link to={`/artists/${alias._id}`}>
-													{alias.name ? he.decode(alias.name) : ""}
+													{ alias.name ? he.decode(alias.name) : "" }
 												</Link>
 												,{" "}
 											</span>
@@ -93,8 +93,8 @@ const Artist = props => {
 					</dl>
 				) : null }
 				<h2>Profile</h2>
-				<p>{props.profile ? he.decode(props.profile) : ""}</p>
-				{props.website.length ? (
+				<p>{ props.profile ? he.decode(props.profile) : "" }</p>
+				{ props.website.length ? (
 					<Auxiliary>
 						<h3>Websites</h3>
 						<ul>
@@ -102,11 +102,11 @@ const Artist = props => {
 								site.url ? (
 									<li key={site.name ? he.decode(site.name) : ""}>
 										<a
-											href={site.url ? he.decode(site.url) : ""}
+											href={ site.url ? he.decode(site.url) : "" }
 											target="_blank"
 											rel="noopener noreferrer"
 										>
-											{site.name ? he.decode(site.name) : ""}
+											{ site.name ? he.decode(site.name) : "" }
 										</a>
 									</li>
 								) : null

@@ -43,9 +43,9 @@ const LabelListItem = props => {
 				<figure>
 					<picture>
 						<img
-							key={props.labelName ? he.decode(props.labelName) : ""}
-							src={getImportedPicture}
-							alt={props.labelName ? he.decode(props.labelName) : ""}
+							key={ props.labelName ? he.decode(props.labelName) : "" }
+							src={ getImportedPicture }
+							alt={ props.labelName ? he.decode(props.labelName) : "" }
 							width="60px"
 							height="60px"
 						/>
@@ -54,7 +54,7 @@ const LabelListItem = props => {
 				<div className="card__details">
 					<h2>
 						<Link to={{ pathname: `/labels/${props.labelId}` }}>
-							{props.labelName ? he.decode(props.labelName) : ""}
+							{ props.labelName ? he.decode(props.labelName) : "" }
 						</Link>
 					</h2>
 				</div>

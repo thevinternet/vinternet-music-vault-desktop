@@ -43,9 +43,9 @@ const ReleaseListItem = props => {
 				<figure>
 					<picture>
 						<img
-							key={props.releaseName ? he.decode(props.releaseName) : ""}
-							src={getImportedPicture}
-							alt={props.releaseName ? he.decode(props.releaseName) : ""}
+							key={ props.releaseName ? he.decode(props.releaseName) : "" }
+							src={ getImportedPicture }
+							alt={ props.releaseName ? he.decode(props.releaseName) : "" }
 							width="60px"
 							height="60px"
 						/>
@@ -54,12 +54,12 @@ const ReleaseListItem = props => {
 				<div className="card__details">
 					<h2>
 						<Link to={{ pathname: `/releases/${props.releaseId}` }}>
-							{props.releaseName ? he.decode(props.releaseName) : ""}
+							{ props.releaseName ? he.decode(props.releaseName) : "" }
 						</Link>
 					</h2>
 					<ul className="details--inline">
-						{props.releaseCat ? <li><strong>Label: </strong>{props.releaseCat ? he.decode(props.releaseCat) : ""}</li> : null }
-						{props.releaseYear ? <li><strong>Released: </strong>{props.releaseYear}</li> : null}
+						{ props.releaseCat ? <li><strong>Label: </strong>{ he.decode(props.releaseCat) }</li> : null }
+						{ props.releaseYear ? <li><strong>Released: </strong>{ props.releaseYear }</li> : null }
 					</ul>
 				</div>
 			</div>

@@ -45,9 +45,9 @@ const TrackListItem = props => {
 				<figure>
 					<picture>
 						<img
-							key={props.trackName ? he.decode(props.trackName) : ""}
-							src={getImportedPicture}
-							alt={props.trackName ? he.decode(props.trackName) : ""}
+							key={ props.trackName ? he.decode(props.trackName) : "" }
+							src={ getImportedPicture }
+							alt={ props.trackName ? he.decode(props.trackName) : "" }
 							width="60px"
 							height="60px"
 						/>
@@ -59,21 +59,21 @@ const TrackListItem = props => {
 							array.length - 1 === index ? (
 								<span key={artist._id}>
 									<Link to={`/artists/${artist._id}`}>
-										{artist.name ? he.decode(artist.name) : ""}
+										{ artist.name ? he.decode(artist.name) : "" }
 									</Link>
 									{" - "}
 								</span>
 							) : (
 								<span key={artist._id}>
 									<Link to={`/artists/${artist._id}`}>
-										{artist.name ? he.decode(artist.name) : ""}
+										{ artist.name ? he.decode(artist.name) : "" }
 									</Link>
 									{" & "}
 								</span>
 							)
 						) }
 						<Link to={`/tracks/${props.trackId}`}>
-							{props.trackName ? he.decode(props.trackName) : ""}
+							{ props.trackName ? he.decode(props.trackName) : "" }
 						</Link>
 					</h2>
 					{ props.trackCat.length ? (
@@ -81,11 +81,9 @@ const TrackListItem = props => {
 							<ul className="details--inline">
 								{ props.trackCat.map((catalogue) =>
 									<li key={catalogue._id}>
-										<span>
-											<Link to={`/releases/${catalogue._id}`}>
-												{catalogue.catalogue ? he.decode(catalogue.catalogue) : ""}
-											</Link>
-										</span>
+										<Link to={`/releases/${catalogue._id}`}>
+											{ catalogue.catalogue ? he.decode(catalogue.catalogue) : "" }
+										</Link>
 									</li>
 								) }
 							</ul>
@@ -93,10 +91,10 @@ const TrackListItem = props => {
 					) : null }
 					<Auxiliary>
 						<ul className="details--inline">
-							{ props.trackNumber ? <li><strong>Track:</strong> { props.trackNumber } </li> : "" }
-							{ props.trackGenre ? <li><strong>Genre:</strong> { he.decode(props.trackGenre) } </li> : "" }
-							{ props.trackMixKey ? <li><strong>Key:</strong> { he.decode(props.trackMixKey) } </li> : "" }
-							{ props.trackBpm ? <li><strong>BPM:</strong> { props.trackBpm } </li> : "" }
+							{ props.trackNumber ? <li><strong>Track:</strong> { props.trackNumber } </li> : null }
+							{ props.trackGenre ? <li><strong>Genre:</strong> { he.decode(props.trackGenre) } </li> : null }
+							{ props.trackMixKey ? <li><strong>Key:</strong> { he.decode(props.trackMixKey) } </li> : null }
+							{ props.trackBpm ? <li><strong>BPM:</strong> { props.trackBpm } </li> : null }
 						</ul>
 					</Auxiliary>
 				</div>

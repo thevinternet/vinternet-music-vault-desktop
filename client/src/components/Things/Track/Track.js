@@ -43,17 +43,17 @@ const Track = props => {
 		<Auxiliary>
 			<div className="profile__picture">
 				<img
-					key={props.trackName ? he.decode(props.trackName) : ""}
-					src={getImportedPicture}
-					alt={props.trackName ? he.decode(props.trackName) : ""}
+					key={ props.trackName ? he.decode(props.trackName) : "" }
+					src={ getImportedPicture }
+					alt={ props.trackName ? he.decode(props.trackName) : "" }
 					height="200px"
 					width="200px"
 				/>
 			</div>
 			<div className="profile__details">
-				<h1>{props.trackName ? he.decode(props.trackName) : ""}</h1>
+				<h1>{ props.trackName ? he.decode(props.trackName) : "" }</h1>
 				<dl>
-					{props.trackArtist.length ? (
+					{ props.trackArtist.length ? (
 						<Auxiliary>
 							<dt>Artists</dt>
 							<dd>
@@ -61,13 +61,13 @@ const Track = props => {
 									array.length - 1 === index ? (
 										<span key={artist.name ? he.decode(artist.name) : ""}>
 											<Link to={`/artists/${artist._id}`}>
-												{artist.name ? he.decode(artist.name) : ""}
+												{ artist.name ? he.decode(artist.name) : "" }
 											</Link>
 										</span>
 									) : (
 										<span key={artist.name ? he.decode(artist.name) : ""}>
 											<Link to={`/artists/${artist._id}`}>
-												{artist.name ? he.decode(artist.name) : ""}
+												{ artist.name ? he.decode(artist.name) : "" }
 											</Link>
 											,{" "}
 										</span>
@@ -75,36 +75,38 @@ const Track = props => {
 								)}
 							</dd>
 						</Auxiliary>
-					) : null}
-					{props.trackLabel.length ? (
+					) : null }
+					{ props.trackLabel.length ? (
 						<Auxiliary>
 							<dt>Label</dt>
 							<dd>
 								{props.trackLabel.map((label) =>
 									<Link key={label.name ? he.decode(label.name) : ""} to={`/labels/${label._id}`}>
-										{label.name ? he.decode(label.name) : ""}
+										{ label.name ? he.decode(label.name) : "" }
 									</Link>
 								)}
 							</dd>
 						</Auxiliary>
 					) : null }
-					{props.trackCat.length ? (
+					{ props.trackCat.length ? (
 						<Auxiliary>
 							<dt>Release</dt>
 							<dd>
 								{props.trackCat.map((catalogue) =>
 									<Link key={catalogue.catalogue_id} to={`/releases/${catalogue._id}`}>
-										{catalogue.catalogue ? he.decode(catalogue.catalogue) : ""}
+										{ catalogue.catalogue ? he.decode(catalogue.catalogue) : "" }
 									</Link>
 								)}
 							</dd>
 						</Auxiliary>
-					) : null}
+					) : null }
 					<Auxiliary>
 						<dt>Genre</dt>
-						<dd>{props.trackGenre ? he.decode(props.trackGenre) : ""}</dd>
+						<dd>{ props.trackGenre ? he.decode(props.trackGenre) : "Unknown" }</dd>
 						<dt>Key</dt>
-						<dd>{props.trackMixkey ? he.decode(props.trackMixkey) : ""}</dd>
+						<dd>{ props.trackMixkey ? he.decode(props.trackMixkey) : "Unknown" }</dd>
+						<dt>BPM</dt>
+						<dd>{ props.trackBpm ? props.trackBpm : "Unknown" }</dd>
 					</Auxiliary>
 				</dl>
 			</div>

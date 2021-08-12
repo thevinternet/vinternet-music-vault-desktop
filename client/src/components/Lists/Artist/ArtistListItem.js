@@ -43,9 +43,9 @@ const ArtistListItem = props => {
 				<figure>
 					<picture>
 						<img
-							key={props.artistName ? he.decode(props.artistName) : ""}
-							src={getImportedPicture}
-							alt={props.artistName ? he.decode(props.artistName) : ""}
+							key={ props.artistName ? he.decode(props.artistName) : "" }
+							src={ getImportedPicture }
+							alt={ props.artistName ? he.decode(props.artistName) : "" }
 							width="60px"
 							height="60px"
 						/>
@@ -54,7 +54,7 @@ const ArtistListItem = props => {
 				<div className="card__details">
 					<h2>
 						<Link to={{ pathname: `/artists/${props.artistId}` }}>
-							{props.artistName ? he.decode(props.artistName) : ""}
+							{ props.artistName ? he.decode(props.artistName) : "" }
 						</Link>
 					</h2>
 				</div>

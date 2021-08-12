@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+
 import "./Navigation.scss";
 
 import { AuthContext } from "../../../context/AuthContext";
@@ -13,18 +14,32 @@ import Modal from "../../../components/Utilities/Modal/Modal";
 
 const Navigation = props => {
 
-	// Create Component CONTEXT
+	//===============================================================================================================//
+	// Set Up Contexts
+	//===============================================================================================================//
+
 	const authContext = useContext(AuthContext);
 
-	// Setup Component STATE
+	//===============================================================================================================//
+	// Set Up Component STATE
+	//===============================================================================================================//
+
 	const [getShowModal, setShowModal] = useState(false);
 
-	// Setup Component EFFECT to reset Modal when auth status changes
+	//===============================================================================================================//
+	// Setup useEffect Functions
+	//===============================================================================================================//
+
+	// Reset Modal On Auth Status Change Effect
 	useEffect(() => {
 		if (authContext.isAuth === false) {
 			setShowModal(false);
 		}
 	}, [authContext.isAuth])
+
+	//===============================================================================================================//
+	// Navigation Action Helpers
+	//===============================================================================================================//
 
 	// Open Logout Modal Handler
 	const logoutCheckHandler = event => {
@@ -38,6 +53,8 @@ const Navigation = props => {
 		setShowModal(false);
 	};
 
+	//===============================================================================================================//
+	// Render Navigation Component
 	//===============================================================================================================//
 
 	let navigation = (

@@ -50,30 +50,30 @@ const Label = props => {
 		<Auxiliary>
 			<div className="profile__picture">
 				<img
-					key={props.labelName ? he.decode(props.labelName) : ""}
-					src={getImportedPicture}
-					alt={props.labelName ? he.decode(props.labelName) : ""}
+					key={ props.labelName ? he.decode(props.labelName) : "" }
+					src={ getImportedPicture }
+					alt={ props.labelName ? he.decode(props.labelName) : "" }
 					height="200px"
 					width="200px"
 				/>
 			</div>
 			<div className="profile__details">
-				<h1>{props.labelName ? he.decode(props.labelName) : ""}</h1>
-				{props.parentLabel.length || props.subsidiaryLabel.length ? (
+				<h1>{ props.labelName ? he.decode(props.labelName) : "" }</h1>
+				{ props.parentLabel.length || props.subsidiaryLabel.length ? (
 					<dl>
-						{props.parentLabel.length ? (
+						{ props.parentLabel.length ? (
 							<Auxiliary>
 								<dt>Parent Label</dt>
 								<dd>
 									{props.parentLabel.map(parent => (
 										<Link key={parent._id} to={`/labels/${parent._id}`}>
-											{parent.name ? he.decode(parent.name) : ""}
+											{ parent.name ? he.decode(parent.name) : "" }
 										</Link>
 									))}
 								</dd>
 							</Auxiliary>
-						) : null}
-						{props.subsidiaryLabel.length ? (
+						) : null }
+						{ props.subsidiaryLabel.length ? (
 							<Auxiliary>
 								<dt>Subsidiary Labels</dt>
 								<dd>
@@ -81,13 +81,13 @@ const Label = props => {
 										arr.length - 1 === index ? (
 											<span key={subsidiary.name ? he.decode(subsidiary.name) + index : index}>
 												<Link to={`/labels/${subsidiary._id}`}>
-													{subsidiary.name ? he.decode(subsidiary.name) : ""}
+													{ subsidiary.name ? he.decode(subsidiary.name) : "" }
 												</Link>
 											</span>
 										) : (
 											<span key={subsidiary.name ? he.decode(subsidiary.name) + index : index}>
 												<Link to={`/labels/${subsidiary._id}`}>
-													{subsidiary.name ? he.decode(subsidiary.name) : ""}
+													{ subsidiary.name ? he.decode(subsidiary.name) : "" }
 												</Link>
 												,{" "}
 											</span>
@@ -95,12 +95,12 @@ const Label = props => {
 									)}
 								</dd>
 							</Auxiliary>
-						) : null}
+						) : null }
 					</dl>
-				) : null}
+				) : null }
 				<h2>Profile</h2>
-				<p>{props.profile ? he.decode(props.profile) : ""}</p>
-				{props.website.length ? (
+				<p>{ props.profile ? he.decode(props.profile) : "" }</p>
+				{ props.website.length ? (
 					<Auxiliary>
 						<h3>Websites</h3>
 						<ul>
@@ -108,18 +108,18 @@ const Label = props => {
 								site.url ? (
 									<li key={site.name ? he.decode(site.name) : ""}>
 										<a
-											href={site.url ? he.decode(site.url) : ""}
+											href={ site.url ? he.decode(site.url) : "" }
 											target="_blank"
 											rel="noopener noreferrer"
 										>
-											{site.name ? he.decode(site.name) : ""}
+											{ site.name ? he.decode(site.name) : "" }
 										</a>
 									</li>
 								) : null
 							)}
 						</ul>
 					</Auxiliary>
-				) : null}
+				) : null }
 				{ authContext.isAuth ? (
 					<div className="profile__actions">
 						<Link
