@@ -8,7 +8,7 @@ import TrackListItem from "../../../components/Lists/Track/TrackListItem";
 import Auxiliary from "../../../wrappers/Auxiliary/Auxiliary";
 
 import Loader from "../../../components/Utilities/UI/Loader/Loader";
-import StatusMessage from "../../../components/Utilities/UI/StatusMessage/StatusMessage";
+import StatusPrompt from "../../../components/Utilities/UI/StatusPrompt/StatusPrompt";
 
 import * as trackActions from "../../../store/actions/index";
 
@@ -54,7 +54,7 @@ const TrackList = props => {
 		trackList = (
 			<div className="container">
 				<h1>There was a problem with your request</h1>
-				<StatusMessage
+				<StatusPrompt
 					status={"warning"}
 					headline={props.stateError}
 					response={props.stateResponse}

@@ -1,5 +1,11 @@
 import React, { useContext } from "react";
 
+import "./Dashboard.scss";
+import artistAvatar from "../../assets/images/site/avatar-artist.jpg";
+import labelAvatar from "../../assets/images/site/avatar-label.jpg";
+import releaseAvatar from "../../assets/images/site/avatar-release.jpg";
+import trackAvatar from "../../assets/images/site/avatar-track.jpg";
+
 import { AuthContext } from "../../context/AuthContext";
 import DashboardListItem from "../../components/Lists/Dashboard/DashboardListItem";
 
@@ -7,7 +13,15 @@ import DashboardListItem from "../../components/Lists/Dashboard/DashboardListIte
 
 const Dashboard = props => {
 
+	//===============================================================================================================//
+	// Set Up Contexts
+	//===============================================================================================================//
+
 	const authContext = useContext(AuthContext);
+
+	//===============================================================================================================//
+	// Render Dashboard Utility
+	//===============================================================================================================//
 
 	let dashboard = (
 		<div className="container">
@@ -27,14 +41,14 @@ const Dashboard = props => {
 				<DashboardListItem
 					name={"View All Artists"}
 					altName={"Artists"}
-					picture={ process.env.PUBLIC_URL + "/assets/images/site/avatar-artist.jpg" }
+					picture={artistAvatar}
 					link={"/artists"}
 				/>
 				{ authContext.isAuth ? (
 					<DashboardListItem
 						name={"Add New Artist"}
 						altName={"Artists"}
-						picture={ process.env.PUBLIC_URL + "/assets/images/site/avatar-artist.jpg" }
+						picture={artistAvatar}
 						link={"/artists/new"}
 					/>
 				) : null }
@@ -44,14 +58,14 @@ const Dashboard = props => {
 				<DashboardListItem
 					name={"View All Labels"}
 					altName={"Labels"}
-					picture={ process.env.PUBLIC_URL + "/assets/images/site/avatar-label.jpg" }
+					picture={labelAvatar}
 					link={"/labels"}
 				/>
 				{ authContext.isAuth ? (
 					<DashboardListItem
 						name={"Add New Label"}
 						altName={"Labels"}
-						picture={ process.env.PUBLIC_URL + "/assets/images/site/avatar-label.jpg" }
+						picture={labelAvatar}
 						link={"/labels/new"}
 					/>
 				) : null }
@@ -61,14 +75,14 @@ const Dashboard = props => {
 				<DashboardListItem
 					name={"View All Releases"}
 					altName={"Releases"}
-					picture={ process.env.PUBLIC_URL + "/assets/images/site/avatar-release.jpg" }
+					picture={releaseAvatar}
 					link={"/releases"}
 				/>
 				{ authContext.isAuth ? (
 					<DashboardListItem
 						name={"Add New Release"}
 						altName={"Releases"}
-						picture={ process.env.PUBLIC_URL + "/assets/images/site/avatar-release.jpg" }
+						picture={releaseAvatar}
 						link={"/releases/new"}
 					/>
 				) : null }
@@ -76,7 +90,7 @@ const Dashboard = props => {
 					<DashboardListItem
 						name={"Import Releases"}
 						altName={"Releases"}
-						picture={ process.env.PUBLIC_URL + "/assets/images/site/avatar-release.jpg" }
+						picture={releaseAvatar}
 						link={"/releases/import"}
 					/>
 				)	: null }
@@ -86,7 +100,7 @@ const Dashboard = props => {
 				<DashboardListItem
 					name={"View All Tracks"}
 					altName={"Tracks"}
-					picture={ process.env.PUBLIC_URL + "/assets/images/site/avatar-track.jpg" }
+					picture={trackAvatar}
 					link={"/tracks"}
 				/>
 			</ol>
@@ -94,5 +108,7 @@ const Dashboard = props => {
 	);
 	return dashboard;
 }
+
+//===============================================================================================================//
 
 export default Dashboard;

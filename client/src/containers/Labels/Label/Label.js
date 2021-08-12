@@ -10,7 +10,7 @@ import ReleaseListItem from "../../../components/Lists/Release/ReleaseListItem";
 
 import Loader from "../../../components/Utilities/UI/Loader/Loader";
 import Modal from "../../../components/Utilities/Modal/Modal";
-import StatusMessage from "../../../components/Utilities/UI/StatusMessage/StatusMessage";
+import StatusPrompt from "../../../components/Utilities/UI/StatusPrompt/StatusPrompt";
 
 import * as labelActions from "../../../store/actions/index";
 
@@ -69,7 +69,7 @@ const Label = props => {
 		label = (
 			<div className="container">
 				<h1>There was a problem with your request</h1>
-				<StatusMessage
+				<StatusPrompt
 					status={"warning"}
 					headline={props.stateLabelError}
 					response={props.stateResponse}

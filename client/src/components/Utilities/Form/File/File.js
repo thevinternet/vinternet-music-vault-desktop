@@ -6,8 +6,9 @@ import Auxiliary from "../../../../wrappers/Auxiliary/Auxiliary";
 
 //===============================================================================================================//
 
-const file = props => {
-	return (
+const File = props => {
+
+	let file = (
 		<Auxiliary>
 			<fieldset>
 				<legend>Profile Image</legend>
@@ -18,7 +19,7 @@ const file = props => {
 								src={
 									props.hasUpload
 										? props.imageUpload
-										: process.env.PUBLIC_URL + `/assets/images/${props.elementImage}`
+										: props.elementImage
 								}
 								alt={props.title}
 								height="100px"
@@ -44,8 +45,9 @@ const file = props => {
 			</fieldset>
 		</Auxiliary>
 	);
+	return file;
 };
 
 //===============================================================================================================//
 
-export default file;
+export default File;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import "./ArtistAdd.scss";
+import artistAvatar from "../../../assets/images/site/avatar-artist.jpg";
 
 import Auxiliary from "../../../wrappers/Auxiliary/Auxiliary";
 
@@ -12,7 +13,7 @@ import FuzzyInputDelete from "../../../components/Utilities/Form/FuzzyInput/Fuzz
 
 import Button from "../../../components/Utilities/UI/Button/Button";
 import Loader from "../../../components/Utilities/UI/Loader/Loader";
-import StatusMessage from "../../../components/Utilities/UI/StatusMessage/StatusMessage";
+import StatusPrompt from "../../../components/Utilities/UI/StatusPrompt/StatusPrompt";
 
 import * as objBuilderArtist from "../../../utilities/objectHelpers/objectBuilderArtist";
 import { dropdownDatalistSetup } from "../../../utilities/formHelpers/formFuzzyDropdown";
@@ -33,7 +34,7 @@ const ArtistAdd = props => {
 	// Set Up Component STATE & Initialise HOOKS
 	//===============================================================================================================//
 
-	const [getAvatar, setAvatar] = useState("site/avatar-artist.jpg");
+	const [getAvatar, setAvatar] = useState(artistAvatar);
 	const [getAvatarName, setAvatarName] = useState("No file(s) selected");
 	const [getAvatarFile, setAvatarFile] = useState("");
 	const [getFormIsValid, setFormIsValid] = useState(false);
@@ -365,7 +366,7 @@ const ArtistAdd = props => {
 				<h1>Add New Artist</h1>
 				{ props.stateError ? (
 					<Auxiliary>
-						<StatusMessage
+						<StatusPrompt
 							status={"warning"}
 							headline={props.stateError}
 							response={props.stateResponse}

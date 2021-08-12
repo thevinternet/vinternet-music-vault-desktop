@@ -22,7 +22,7 @@ import * as releaseActions from "../../../store/actions/index";
 const ReleaseImport = props => {
 
 	//===============================================================================================================//
-	// Set Up Component STATE & Initialise HOOKS
+	// Set Up Component STATE
 	//===============================================================================================================//
 
 	const [getImportLocation, setImportLocation] = useState("No location specified, please choose a folder to import from your computer");
@@ -43,15 +43,14 @@ const ReleaseImport = props => {
 	// Setup useEffect Functions
 	//===============================================================================================================//
 
+	// Setup Accordion Effect
 	useEffect(() => {
-		console.log("Initial Setup Accordion Effect Running!");
 		accordion();
 	}, []);
 
+	// Handle Form POST Submission Effect
 	useEffect(() => {
-		console.log("POST Import Releases Effect Initialised!");
 		if (stateSuccess !== null) {
-			console.log("Successful POST Effect Running!");
 			setLoadingReviewStatus(false);
 			importResetHandler();
 			history.push({ pathname: "/releases" });
@@ -168,7 +167,7 @@ const ReleaseImport = props => {
 				<h1>Import Releases</h1>
 				{ props.stateError ? (
 					<Auxiliary>
-						<StatusMessage
+						<StatusPrompt
 							status={"warning"}
 							headline={props.stateError}
 							response={props.stateResponse}
@@ -181,7 +180,7 @@ const ReleaseImport = props => {
 				<div className={"importform"}>
 					<fieldset>
 						<legend>Step 1: Choose Folder Location</legend>
-						<StatusPrompt
+						<StatusMessage
 							status={getImportLocationReady ? "success" : "warning"}
 							message={getImportLocation}
 						/>
@@ -197,7 +196,7 @@ const ReleaseImport = props => {
 					</fieldset>
 					<fieldset>
 						<legend>Step 2: Import Tracks From Folder Location</legend>
-						<StatusPrompt
+						<StatusMessage
 							status={getImportFileReady ? "success" : "warning"}
 							message={getImportFile}
 						/>
@@ -215,7 +214,7 @@ const ReleaseImport = props => {
 					</fieldset>
 					<fieldset>
 						<legend>Step 3: Review Tracks &amp; Submit To Database</legend>
-						<StatusPrompt
+						<StatusMessage
 							status={getReviewFileReady ? "success" : "warning"}
 							message={getReviewFile}
 						/>

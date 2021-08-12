@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import "./ArtistEdit.scss";
+import artistAvatar from "../../../assets/images/site/avatar-artist.jpg";
 
 import Auxiliary from "../../../wrappers/Auxiliary/Auxiliary";
 
@@ -13,7 +14,7 @@ import FuzzyInputDelete from "../../../components/Utilities/Form/FuzzyInput/Fuzz
 import Button from "../../../components/Utilities/UI/Button/Button";
 import Loader from "../../../components/Utilities/UI/Loader/Loader";
 import Modal from "../../../components/Utilities/Modal/Modal";
-import StatusMessage from "../../../components/Utilities/UI/StatusMessage/StatusMessage";
+import StatusPrompt from "../../../components/Utilities/UI/StatusPrompt/StatusPrompt";
 
 import * as objBuilderArtist from "../../../utilities/objectHelpers/objectBuilderArtist";
 import { dropdownDatalistSetup } from "../../../utilities/formHelpers/formFuzzyDropdown";
@@ -23,6 +24,7 @@ import useHandleFuzzyInputChange from "../../../hooks/form/HandleFuzzyInputChang
 import useHandleInputAddition from "../../../hooks/form/HandleInputAddition";
 import useHandleInputDeletion from "../../../hooks/form/HandleInputDeletion";
 import useHandleDropdownItemSelect from "../../../hooks/form/HandleDropdownItemSelect";
+import useGetEncodedPicture from "../../../hooks/ui/GetEncodedPicture";
 
 import * as artistActions from "../../../store/actions/index";
 
@@ -34,7 +36,7 @@ const ArtistEdit = props => {
 	// Set Up Component STATE & Initialise HOOKS
 	//===============================================================================================================//
 
-	const [getAvatar, setAvatar] = useState("site/avatar-artist.jpg");
+	const [getAvatar, setAvatar] = useState(artistAvatar);
 	const [getAvatarName, setAvatarName] = useState("No file(s) selected");
 	const [getAvatarFile, setAvatarFile] = useState("");
 	const [getFormIsValid, setFormIsValid] = useState(true);
@@ -46,6 +48,8 @@ const ArtistEdit = props => {
 	const { updatedFormAdd, inputAddHandler } = useHandleInputAddition();
 	const { updatedFormDel, inputDeleteHandler } = useHandleInputDeletion();
 	const { updatedFormDds, dropdownItemSelectHandler } = useHandleDropdownItemSelect();
+	const { importedPicture, getEncodedPictureHandler } = useGetEncodedPicture();
+
 
 	//===============================================================================================================//
 	// Setup useEffect Functions
@@ -56,6 +60,21 @@ const ArtistEdit = props => {
 		onFetchArtist(match.params.id, true);
 		onFetchArtists();
 	}, [onFetchArtist, onFetchArtists, match]);
+
+	//===============================================================================================================//
+	
+	// Import Artist Picture Via Electron IPC Effect
+	useEffect(() => {
+		if (stateArtist.picture.length) {
+			getEncodedPictureHandler(stateArtist.picture);
+		}
+		if (importedPicture) { 
+			setAvatar(importedPicture);
+		}
+		return function cleanup() {
+			setAvatar(artistAvatar);
+		}
+	}, [getEncodedPictureHandler, stateArtist.picture, setAvatar, importedPicture]);
 
 	//===============================================================================================================//
 
@@ -186,11 +205,7 @@ const ArtistEdit = props => {
 				return <FileInput
 					key={arrayIndex}
 					elementAttributes={arrayElement.attributes}
-					elementImage={
-						arrayElement.attributes.pictureLocation
-							? `artists/${arrayElement.attributes.pictureLocation}`
-							: getAvatar
-					}
+					elementImage={getAvatar}
 					elementImageName={
 						arrayElement.attributes.pictureName
 							? arrayElement.attributes.pictureName
@@ -397,7 +412,7 @@ const ArtistEdit = props => {
 		artistForm = (
 			<Auxiliary>
 				<h1>There was a problem with your request</h1>
-				<StatusMessage
+				<StatusPrompt
 					status={"warning"}
 					headline={props.stateError}
 					response={props.stateResponse}
@@ -414,7 +429,7 @@ const ArtistEdit = props => {
 				<h1>{props.stateArtist.name}</h1>
 				{props.stateError ? (
 					<Auxiliary>
-						<StatusMessage
+						<StatusPrompt
 							status={"warning"}
 							headline={props.stateError}
 							response={props.stateResponse}

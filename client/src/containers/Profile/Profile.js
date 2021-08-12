@@ -4,14 +4,20 @@ import { AuthContext } from "../../context/AuthContext";
 import UserComponent from "../../components/Things/User/User";
 
 import Loader from "../../components/Utilities/UI/Loader/Loader";
-import StatusMessage from "../../components/Utilities/UI/StatusMessage/StatusMessage";
+import StatusPrompt from "../../components/Utilities/UI/StatusPrompt/StatusPrompt";
 
 //===============================================================================================================//
 
 const Profile = props => {
 
+	//===============================================================================================================//
+	// Set Up Contexts
+	//===============================================================================================================//
+
 	const authContext = useContext(AuthContext);
 
+	//===============================================================================================================//
+	// Render User Profile Thing
 	//===============================================================================================================//
 
 	let profile = <Loader />;
@@ -19,7 +25,7 @@ const Profile = props => {
 		profile = (
 			<div className="container">
 				<h1>There was a problem with your request</h1>
-				<StatusMessage
+				<StatusPrompt
 					status={"primary"}
 					headline={"Unregistered User"}
 					message={""}
@@ -45,5 +51,7 @@ const Profile = props => {
 	}
 	return profile;
 }
+
+//===============================================================================================================//
 
 export default Profile;

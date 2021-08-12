@@ -8,7 +8,7 @@ import ArtistListItem from "../../../components/Lists/Artist/ArtistListItem";
 
 import Loader from "../../../components/Utilities/UI/Loader/Loader";
 import Modal from "../../../components/Utilities/Modal/Modal";
-import StatusMessage from "../../../components/Utilities/UI/StatusMessage/StatusMessage";
+import StatusPrompt from "../../../components/Utilities/UI/StatusPrompt/StatusPrompt";
 
 import * as artistActions from "../../../store/actions/index";
 
@@ -56,7 +56,7 @@ const ArtistList = props => {
 		artistList = (
 			<div className="container">
 				<h1>There was a problem with your request</h1>
-				<StatusMessage
+				<StatusPrompt
 					status={"warning"}
 					headline={props.stateError}
 					response={props.stateResponse}

@@ -6,7 +6,7 @@ import "./Track.scss";
 import TrackComponent from "../../../components/Things/Track/Track";
 
 import Loader from "../../../components/Utilities/UI/Loader/Loader";
-import StatusMessage from "../../../components/Utilities/UI/StatusMessage/StatusMessage";
+import StatusPrompt from "../../../components/Utilities/UI/StatusPrompt/StatusPrompt";
 
 import * as trackActions from "../../../store/actions/index";
 
@@ -52,7 +52,7 @@ const Track = props => {
 			track = (
 				<div className="container">
 					<h1>There was a problem with your request</h1>
-					<StatusMessage
+					<StatusPrompt
 						status={"warning"}
 						headline={props.stateError}
 						response={props.stateResponse}
@@ -69,7 +69,6 @@ const Track = props => {
 					<div className="panel">
 						<TrackComponent
 							key={props.stateTrack._id}
-							trackId={props.stateTrack._id}
 							trackName={props.stateTrack.name}
 							trackArtist={props.stateTrack.artist_name}
 							trackLabel={props.stateTrack.release_label}
@@ -77,6 +76,7 @@ const Track = props => {
 							trackPicture={props.stateTrack.release_picture[0].picture}
 							trackGenre={props.stateTrack.genre}
 							trackMixkey={props.stateTrack.mixkey}
+							trackBpm={props.stateTrack.bpm}
 						/>
 					</div>
 				</div>
