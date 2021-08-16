@@ -11,10 +11,13 @@
 ### Running Standalone Server API (Development)
 
 1. Install server dependencies by running `yarn install` from the [/server](/server) directory in the command line.
-2. Navigate to the [/server](/server) directory and create your own `.env` file (see `.env.server.example` for guidance).
-    > Ensure to set `MONGO_HOST_LOCATION=localhost` variable.
-3. To build and initiate the backend server API run `yarn run development` from the [/server](/server) directory in the command line.
-4. Use [http://localhost:8000](http://localhost:8000) to interact with the API via your chosen browser or API development platform.
+2. Ensure [MongoDB][mongodb] is either running on your operating system or setup as a hosted service in order to manage data through the API.
+3. Navigate to the [/server](/server) directory and create your own `.env` file (see `.env.server.example` for guidance).
+
+    - Ensure ALL environmental variables copied from the example are provided appropriate values in your own `.env` file.
+
+4. Build and initiate the backend server API by running `yarn run development` from the [/server](/server) directory in the command line.
+5. Use [http://localhost:8000](http://localhost:8000) to interact with the API via your chosen browser or API development platform.
 
 [mongodb]: https://www.mongodb.com
 [nodejs]: https://nodejs.org

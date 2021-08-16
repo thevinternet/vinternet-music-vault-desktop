@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 
+import artistAvatar from "../assets/images/site/avatar-artist.jpg";
+
 //===============================================================================================================//
 // Create Auth Context For Functional Components (Object Populated With Values From Auth Context Provider)
 //===============================================================================================================//
@@ -28,11 +30,11 @@ const AuthContextProvider = props => {
 	const [getAuthenticatedStatus, setAutenticatedStatus] = useState(false);
 	const [getAuthUserName, setAuthUserName] = useState("Unregistered User");
 	const [getAuthUserEmail, setAuthUserEmail] = useState("");
-	const [getAuthUserPicture, setAuthUserPicture] = useState(process.env.PUBLIC_URL + "/assets/images/site/avatar-artist.jpg");
+	const [getAuthUserPicture, setAuthUserPicture] = useState(artistAvatar);
 	const [getAuthText, setAuthText] = useState("No user currently logged into Vinternet Music Vault");
 
 	//===============================================================================================================//
-	// Setup Auth Functions Using Electron IPC Service
+	// Auth Functions Utilising Electron IPC Service
 	//===============================================================================================================//
 
 	// Return profile details user currently held via Electron app & update state
@@ -45,7 +47,7 @@ const AuthContextProvider = props => {
 			setAuthText(`Hi ${profile.name} (${profile.email}), welcome to the Vinternet Music Vault.`);
 		} else {
 			setAuthUserName("Unregistered User");
-			setAuthUserPicture(process.env.PUBLIC_URL + "/assets/images/site/avatar-artist.jpg");
+			setAuthUserPicture(artistAvatar);
 			setAuthUserEmail("");
 			setAuthText("No user currently logged into Vinternet Music Vault");
 		};

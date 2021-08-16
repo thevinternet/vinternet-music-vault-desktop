@@ -10,11 +10,4 @@ module.exports = function(app) {
       changeOrigin: false
     })
 	);
-	app.use(
-    '/mongoexpress',
-    createProxyMiddleware({
-			target: `${process.env.REACT_APP_MONGO_EXPRESS_PROXY_HOST}:${process.env.REACT_APP_MONGO_EXPRESS_PROXY_PORT}`,
-      changeOrigin: false
-    })
-  );
 };
