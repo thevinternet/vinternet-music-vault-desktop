@@ -25,10 +25,9 @@ TrackModel.getAllTracks = async () => {
 				.populate("release_title", "title")
 				.populate("artist_name", "name")
 				.populate("release_label", "name")
-				.populate("release_catalogue", "catalogue")
 				.populate("release_picture", "picture")
 				.lean()
-				.sort("release_catalogue")
+				.sort({ catalogue: 1, track_number: 1 })
 				.exec();
 		}
 
@@ -75,7 +74,6 @@ TrackModel.getTrackById = async (id) => {
 				.populate("release_title", "title")
 				.populate("artist_name", "name")
 				.populate("release_label", "name")
-				.populate("release_catalogue", "catalogue")
 				.populate("release_picture", "picture")
 				.lean()
 				.exec();
@@ -124,10 +122,9 @@ TrackModel.getTracksByArtist = async (id) => {
 				.populate("release_title", "title")
 				.populate("artist_name", "name")
 				.populate("release_label", "name")
-				.populate("release_catalogue", "catalogue")
 				.populate("release_picture", "picture")
 				.lean()
-				.sort("release_catalogue")
+				.sort({ catalogue: 1, track_number: 1 })
 				.exec();
 		}
 
@@ -174,10 +171,9 @@ TrackModel.getTracksByLabel = async (id) => {
 				.populate("release_title", "title")
 				.populate("artist_name", "name")
 				.populate("release_label", "name")
-				.populate("release_catalogue", "catalogue")
 				.populate("release_picture", "picture")
 				.lean()
-				.sort("release_catalogue")
+				.sort({ catalogue: 1, track_number: 1 })
 				.exec();
 		}
 
@@ -224,10 +220,9 @@ TrackModel.getTracksByRelease = async (id) => {
 				.populate("release_title", "title")
 				.populate("artist_name", "name")
 				.populate("release_label", "name")
-				.populate("release_catalogue", "catalogue")
 				.populate("release_picture", "picture")
 				.lean()
-				.sort("release_catalogue")
+				.sort({ catalogue: 1, track_number: 1 })
 				.exec();
 		}
 
@@ -257,12 +252,13 @@ TrackModel.createNewTrack = async (props) => {
 			artist_name: props.artist_name,
 			release_title: props.release_title,
 			release_label: props.release_label,
-			release_catalogue: props.release_catalogue,
 			release_picture: props.release_picture,
-			release_ref: props.release_ref,
+			release_id: props.release_id,
+			catalogue: props.catalogue,
 			track_number: props.track_number,
 			genre: props.genre,
-			mixkey: props.mixkey
+			mixkey: props.mixkey,
+			bpm: props.bpm
 		});
 
 		return track;
@@ -295,9 +291,9 @@ TrackModel.updateExistingTrackById = async (id, props) => {
 			artist_name: props.artist_name,
 			release_title: props.release_title,
 			release_label: props.release_label,
-			release_catalogue: props.release_catalogue,
 			release_picture: props.release_picture,
-			release_ref: props.release_ref,
+			release_id: props.release_id,
+			catalogue: props.catalogue,
 			track_number: props.track_number,
 			genre: props.genre,
 			mixkey: props.mixkey,

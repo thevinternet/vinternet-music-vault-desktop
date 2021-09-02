@@ -349,7 +349,7 @@ ReleaseModel.removeReleaseById = async (id) => {
 			}
 		} else {
 			ReleaseModel.deleteOne({ _id: id }).exec();
-			TrackModel.deleteMany({ release_ref: id }).exec();
+			TrackModel.deleteMany({ release_id: id }).exec();
 		}
 
 	} catch (err) {

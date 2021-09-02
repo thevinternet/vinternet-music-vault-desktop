@@ -24,9 +24,8 @@ TrackUtilities.createTrackDocuments = async (tracks, releaseId) => {
 			tracksArray[index].artist_name = await DocumentUtilities.manageLinkedData(tracksArray[index].artist_name, ArtistModel);
 			tracksArray[index].release_title = [{ _id: releaseId }];
 			tracksArray[index].release_label = await DocumentUtilities.manageLinkedData(tracksArray[index].release_label, LabelModel);
-			tracksArray[index].release_catalogue = [{ _id: releaseId }];
 			tracksArray[index].release_picture = [{ _id: releaseId }];
-			tracksArray[index].release_ref = releaseId;
+			tracksArray[index].release_id = releaseId;
 
 			// Handle Track Document creation & updating respectively
 

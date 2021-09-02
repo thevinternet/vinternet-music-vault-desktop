@@ -55,43 +55,58 @@ ReleaseController.validate = (method) => {
 		}
 		case "checkTrackInput": {
 			return [
+				// Track ID
 				body("tracks.*._id")
 					.optional().isMongoId()
 					.withMessage("The value for the Track Id provided is not valid"),
+				// Track Name
 				body("tracks.*.name")
 					.notEmpty().escape().trim()
 					.withMessage("Please provide the name of the track"),
+				// Artist Name
 				body("tracks.*.artist_name")
 					.isArray()
 					.withMessage("Artist Name array is malformed and not valid"),
 				body("tracks.*.artist_name.*._id")
-					.isMongoId().optional()
+					.optional().isMongoId()
 					.withMessage("The value for the Artist Id provided is not valid"),
 				body("tracks.*.artist_name.*.name")
 					.optional().escape().trim(),
+				// Track Number
 				body("tracks.*.track_number")
 					.optional().escape().trim(),
+				// Track Genre
 				body("tracks.*.genre")
 					.optional().escape().trim(),
+				// Track Mixkey
 				body("tracks.*.mixkey")
 					.optional().escape().trim(),
+				// Track BPM
 				body("tracks.*.bpm")
 					.optional().escape().trim(),
-				body("tracks.*.label_name")
-					.isMongoId().optional()
+				// Release Label
+				body("tracks.*.release_label")
+					.isArray()
+					.withMessage("Release Label Name array is malformed and not valid"),
+				body("tracks.*.release_label.*._id")
+					.optional().isMongoId()
 					.withMessage("The value for the Label Id provided is not valid"),
+				body("tracks.*.release_label.*.name")
+					.optional().escape().trim(),
+				// Release Title
 				body("tracks.*.release_title")
-					.isMongoId().optional()
-					.withMessage("The value for the Label Id provided is not valid"),
-				body("tracks.*.release_catalogue")
-					.isMongoId().optional()
-					.withMessage("The value for the Label Id provided is not valid"),
-				body("tracks.*.release_ref")
-					.isMongoId().optional()
-					.withMessage("The value for the Label Id provided is not valid"),
-				body("tracks.*.release_picture")
-					.isMongoId().optional()
-					.withMessage("The value for the Label Id provided is not valid")
+					.isArray().optional({ nullable: true, checkFalsy: true })
+					.withMessage("Release Title array is malformed and not valid"),
+				body("tracks.*.release_title.*._id")
+					.optional().isMongoId()
+					.withMessage("The value for the Release Title Id provided is not valid"),
+				// Track Catalogue
+				body("tracks.*.catalogue")
+					.optional().escape().trim(),
+				// Release Id
+				body("tracks.*.release_id")
+					.isMongoId().optional({ nullable: true, checkFalsy: true })
+					.withMessage("The value for the Release Reference Id provided is not valid")
 			]
 		}
 	}
@@ -139,7 +154,7 @@ ReleaseController.getReleaseById = async (req, res, next) => {
 			});
 		}
 
-		// If no validation errors run query request and return result
+		// If no validation errors, run query request and return result
 		const id = req.params.id;
 		let release = await ReleaseModel.getReleaseById(id);
 
@@ -177,7 +192,7 @@ ReleaseController.getReleasesByLabel = async (req, res, next) => {
 			});
 		}
 
-		// If no validation errors run query request and return result
+		// If no validation errors, run query request and return result
 		const id = req.params.id;
 		let releases = await ReleaseModel.getReleasesByLabel(id);
 
@@ -215,7 +230,7 @@ ReleaseController.getReleasesByArtist = async (req, res, next) => {
 			});
 		}
 
-		// If no validation errors run query request and return result
+		// If no validation errors, run query request and return result
 		const id = req.params.id;
 		let releases = await ReleaseModel.getReleasesByArtist(id);
 
@@ -239,28 +254,44 @@ ReleaseController.getReleasesByArtist = async (req, res, next) => {
 //===============================================================================================================//
 
 ReleaseController.importNewReleases = async (req, res, next) => {
-	
-	const tracks = req.body.tracks;
 
 	try {
 		let releaseImportProps;
 		let releaseImportId;
 		let releaseImport;
 		let updatedCount = 0;
-		let updatedReleases= "";
+		let updatedReleases = "";
+		let updatedReleasesList = "";
 		let addedCount = 0;
-		let addedReleases = ""
+		let addedReleases = "";
+		let addedReleasesList = "";
 
-		const filesToImport = await ReleaseUtilities.createImportedReleases(tracks);
+		// If validation errors in request return error object
+		const errors = validationResult(req);
 
-		// If all checks pass prepare each release object with linked properties
+		if (!errors.isEmpty()) {
+			return res.json({ 
+				error: {
+					status: "Request Failed",
+					response: "HTTP Status Code 422 (Unprocessable Entities)",
+					errors: errors.array()
+				}
+			});
+		}
+
+		// If all checks pass prepare release objects with linked properties from imported Tracks
+		const filesToImport = await ReleaseUtilities.createImportedReleases(req.body.tracks);
+
+		// Loop through each release object, adding or updating Release documents accordingly
 		for (let index = 0; index < filesToImport.length; index++) {
 
+			// Check to see if release catalogue identifier prop already exists in the database
 			let releaseExists = await ReleaseModel.find({ catalogue : filesToImport[index].release.catalogue })
 
+			//===============================================================================================================//
+
+			// If release to import is unique create new Release Document
 			if (!releaseExists.length) {
-				
-				//console.log("UNIQUE");
 
 				releaseImportProps = await ReleaseUtilities.createReleaseDocument(filesToImport[index].release, filesToImport[index].tracks);
 				
@@ -270,28 +301,42 @@ ReleaseController.importNewReleases = async (req, res, next) => {
 				// Submit release object to model and handle response
 				releaseImport = await ReleaseModel.createNewRelease(releaseImportId, releaseImportProps);
 
+				// Increase added release counter and add catalogue prop to list item variable
 				addedCount++;
-				addedReleases += `${releaseImportProps.catalogue}, `;
+				addedReleases += `<li>${releaseImportProps.catalogue}<\/li>`;
 
+			//===============================================================================================================//
 
+			// If the release to import already exists update existing Release Document
 			} else if (releaseExists.length === 1) {
 
-				//console.log("DUPLICATE");
-
+				// Grab existing Release Id
 				releaseImportId = releaseExists[0]._id;
 
+				// Create updated Release Document with imported data
 				releaseImportProps = await ReleaseUtilities.updateReleaseDocument(releaseImportId, filesToImport[index].release, filesToImport[index].tracks);
 
+				// Submit updated release object to model and handle response
 				releaseImport = await ReleaseModel.updateExistingImportedReleaseById(releaseImportId, releaseImportProps);
 
+				// Increase update release counter and add catalogue prop to list item variable
 				updatedCount++;
-				updatedReleases += `${releaseImportProps.catalogue}, `;
+				updatedReleases += `<li>${releaseImportProps.catalogue}<\/li>`;
 
+			//===============================================================================================================//
 
 			} else {
-				console.log("PROBLEM - DUPLICATE RELEASES WITH SAME CATALOGUE ID FOUND!!");
+				return res.json({
+					error: {
+						status: "Duplicate Release Error",
+						errors: ["Duplicate Releases with the same Catalogue Id found!"]
+					}
+				});
 			}
 		}
+
+		//===============================================================================================================//
+
 		if (res.error) {
 			return res.json({
 				error: {
@@ -300,15 +345,22 @@ ReleaseController.importNewReleases = async (req, res, next) => {
 				}
 			});
 		} else {
+
+			addedCount !== 0
+			? addedReleasesList = `Releases successfully added: <b>${addedCount}<\/b><ol>${addedReleases}<\/ol>`
+			: addedReleasesList = `Releases added: <b>0<\/b>`;
+
+			updatedCount !== 0
+			? updatedReleasesList = `Releases successfully updated: <b>${updatedCount}<\/b><ol>${updatedReleases}<\/ol>`
+			: updatedReleasesList = `Releases updated: <b>0<\/b>`;
+
 			return res.json({
 				success: {
-					status: "Request Successful",
+					status: "Import Successful",
 					response: "HTTP Status Code 200 (OK)",
 					feedback: [
-						{
-							msg: `${addedCount} release(s) successfully added: ${addedReleases || 'none'}.\n ${updatedCount} release(s) successfully updated: ${updatedReleases || 'none'}.`,
-							value: filesToImport
-						}
+						{ msg: addedReleasesList },
+						{ msg: updatedReleasesList }
 					]
 				}
 			});

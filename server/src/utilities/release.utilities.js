@@ -22,6 +22,7 @@ ReleaseUtilities.createReleaseDocument = async (release, tracks) => {
 		format: release.format,
 		discogs_url: release.discogs_url,
 		discogs_id: release.discogs_id,
+		picture: release.picture ? release.picture : ""
 	});
 
 	// Grab new Release ID
@@ -44,7 +45,7 @@ ReleaseUtilities.createReleaseDocument = async (release, tracks) => {
 
 	// Append unique Artist IDs array to newRelease object
 	newRelease.artist_name = uniqueArtistIds;
-  
+
 	return newRelease;
 }
 
@@ -91,6 +92,7 @@ ReleaseUtilities.updateReleaseDocument = async (id, release, tracks) => {
 	// Append unique Artist IDs array to updatedRelease object
 	updatedRelease.artist_name = uniqueArtistIds;
 
+	//console.log(updatedRelease);
 	return updatedRelease;
 }
 
@@ -109,7 +111,7 @@ ReleaseUtilities.createImportedReleases = async (tracks) => {
 
 	// Loop tracks & push each catalogue data prop to new array
 	tracksArray.forEach(track => {
-		releaseArray.push(track.release_catalogue);
+		releaseArray.push(track.catalogue);
 	});
 
 	// Filter new array leaving only unique catalogue data strings
@@ -128,20 +130,20 @@ ReleaseUtilities.createImportedReleases = async (tracks) => {
 
 		// Loop tracks & push each track matching current catalogue prop to tracks array within Release object
 		tracksArray.forEach(track => {
-			if (track.release_catalogue === release) {
+			if (track.catalogue === release) {
 				newRelease.tracks.push(track);
 
 				// If track has picture prop push it to isolated array
-				if (track.picture.length) {
-					trackPictures.push(track.picture[0]);
+				if (track.release_picture.length) {
+					trackPictures.push(track.release_picture[0]);
 				}
 			}
 		});
 
 		// Add Release object props using associated track data props
-		newRelease.release.title = regexReleaseTitle.exec(newRelease.tracks[0].release_catalogue)[0];
+		newRelease.release.title = regexReleaseTitle.exec(newRelease.tracks[0].catalogue)[0];
 		newRelease.release.label_name = newRelease.tracks[0].release_label;
-		newRelease.release.catalogue = newRelease.tracks[0].release_catalogue;
+		newRelease.release.catalogue = newRelease.tracks[0].catalogue;
 		newRelease.release.year = newRelease.tracks[0].year;
 		newRelease.release.format = [];
 		newRelease.release.discogs_url = "";
@@ -154,6 +156,8 @@ ReleaseUtilities.createImportedReleases = async (tracks) => {
 			location: trackPictures[0] ? trackPictures[0].location : "releases"
 		}]
 
+		//console.log(newRelease.release.title);
+		console.log(newRelease.release.picture);
 		newReleases.push(newRelease);
 	})
 

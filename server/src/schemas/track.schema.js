@@ -27,21 +27,18 @@ const TrackSchema = new Schema(
 				ref: "Label"
 			}
 		],
-		release_catalogue: [
-			{ 
-				type: Schema.Types.ObjectId,
-				ref: "Release"
-			}
-		],
 		release_picture: [
 			{
 				type: Schema.Types.ObjectId,
 				ref: "Release"
 			}
 		],
-		release_ref: {
+		release_id: {
 			type: Schema.Types.ObjectId,
 			ref: "Release"
+		},
+		catalogue: { 
+			type: String
 		},
 		track_number: { 
 			type: Number
