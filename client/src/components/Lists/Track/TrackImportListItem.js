@@ -43,35 +43,35 @@ const TrackImportListItem = props => {
 				<figure>
 					<picture>
 						<img
-							key={props.trackName}
-							src={getImportedPicture}
-							alt={props.trackName}
+							key={ props.trackName }
+							src={ getImportedPicture }
+							alt={ props.trackName }
 							width="60px"
 							height="60px"
 						/>
 					</picture>
 				</figure>
 				<div className="card__details">
-						<h2>
-							{ props.trackArtist.map((artist, index, array) =>
-								array.length - 1 === index ? (
-									<span key={index}>
-										{ artist.name }{" - "}
-									</span>
-								) : (
-									<span key={index}>
-										{ artist.name }{" & "}
-									</span>
-								)
-							)}
-							{ props.trackName }
-						</h2>
-						{ props.trackCat ? (
+					<h2>
+						{ props.trackArtist.map((artist, index, array) =>
+							array.length - 1 === index ? (
+								<span key={index}>
+									{ artist.name }{" - "}
+								</span>
+							) : (
+								<span key={index}>
+									{ artist.name }{" & "}
+								</span>
+							)
+						)}
+						{ props.trackName }
+					</h2>
+					{ props.trackCat ? (
 						<Auxiliary>
-							<ul className="details--inline" key={props.trackCat}>
+							<ul className="details--inline" key={ props.trackCat }>
 								<li><strong>Label/Release:</strong> { props.trackCat }</li>
-								<li><strong>Genre:</strong> {props.trackGenre}</li>
-								<li><strong>Year:</strong> {props.trackYear}</li>
+								<li><strong>Genre:</strong> { props.trackGenre }</li>
+								<li><strong>Year:</strong> { props.trackYear }</li>
 							</ul>
 						</Auxiliary>
 					) : null }

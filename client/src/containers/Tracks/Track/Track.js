@@ -57,6 +57,7 @@ const Track = props => {
 						headline={props.stateError}
 						response={props.stateResponse}
 						message={props.stateFeedback}
+						textContent={true}
 						action={event => trackMessageHandler(event, true)}
 						buttonText={`OK`}
 					/>
@@ -72,7 +73,8 @@ const Track = props => {
 							trackName={props.stateTrack.name}
 							trackArtist={props.stateTrack.artist_name}
 							trackLabel={props.stateTrack.release_label}
-							trackCat={props.stateTrack.release_catalogue}
+							trackCatalogue={props.stateTrack.catalogue}
+							trackReleaseId={props.stateTrack.release_id}
 							trackPicture={props.stateTrack.release_picture[0].picture}
 							trackGenre={props.stateTrack.genre}
 							trackMixkey={props.stateTrack.mixkey}

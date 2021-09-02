@@ -371,6 +371,7 @@ const ArtistAdd = props => {
 							headline={props.stateError}
 							response={props.stateResponse}
 							message={props.stateFeedback}
+							textContent={true}
 							action={artistMessageHandler}
 							buttonText={`Close`}
 						/>

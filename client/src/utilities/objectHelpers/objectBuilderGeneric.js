@@ -75,6 +75,8 @@ export const updateFuzzyElementSelected = (inputLocation, inputValue, linkedObje
 		inputLocation,
 		{
 			value: inputValue,
+			id: linkedObjectId,
+			labelFor: linkedObjectId,
 			fuzzyRef: linkedObjectId,
 			linkedRecord: true,
 			showDropdown: "false"

@@ -88,15 +88,13 @@ const Track = props => {
 							</dd>
 						</Auxiliary>
 					) : null }
-					{ props.trackCat.length ? (
+					{ props.trackCatalogue ? (
 						<Auxiliary>
 							<dt>Release</dt>
 							<dd>
-								{props.trackCat.map((catalogue) =>
-									<Link key={catalogue.catalogue_id} to={`/releases/${catalogue._id}`}>
-										{ catalogue.catalogue ? he.decode(catalogue.catalogue) : "" }
-									</Link>
-								)}
+								<Link to={`/releases/${props.trackReleaseId}`}>
+									{ props.trackCatalogue }
+								</Link>
 							</dd>
 						</Auxiliary>
 					) : null }

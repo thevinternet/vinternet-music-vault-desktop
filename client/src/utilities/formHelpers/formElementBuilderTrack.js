@@ -19,11 +19,11 @@ export const trackNumberFormElement = (action="", id) => {
 export const trackArtistFormElement = (element, index) => {
 	const trackArtist = Object.assign(
 		{},
-		feAttrBuilder.feBaseAttributes("input", "text", `trackArtist${index}`, "trackArtist"),
+		feAttrBuilder.feBaseAttributes("input", "text", element._id ? element._id : `trackArtist${index}`, "trackArtist"),
 		feAttrBuilder.feLabelAttribute("artistName"),
 		feAttrBuilder.feValueAttribute(element.name ? he.decode(element.name) : ""),
 		feAttrBuilder.feValidationTrueAttributes(element.name, true, "Please enter the name of the artist"),
-		feAttrBuilder.feFuzzySearchAttributes(element._id || `trackArtist${index}`, element._id ? true : false)
+		feAttrBuilder.feFuzzySearchAttributes(element._id ? element._id : "", element._id ? true : false)
 	);
 	return trackArtist
 }

@@ -74,6 +74,7 @@ const Artist = props => {
 					headline={props.stateArtistError}
 					response={props.stateResponse}
 					message={props.stateFeedback}
+					textContent={true}
 					action={event => artistMessageHandler(event, true)}
 					buttonText={`OK`}
 				/>

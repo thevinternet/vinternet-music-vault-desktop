@@ -28,16 +28,18 @@ const ReleaseImport = props => {
 	const [getImportLocation, setImportLocation] = useState("No location specified, please choose a folder to import from your computer");
 	const [getImportLocationReady, setImportLocationReady] = useState(false);
 	const [getLoadingLocationStatus, setLoadingLocationStatus] = useState(false);
+
 	const [getImportFile, setImportFile] = useState("No location specified, please choose a folder to import from your computer");
 	const [getImportFileReady, setImportFileReady] = useState(false);
 	const [getLoadingImportStatus, setLoadingImportStatus] = useState(false);
+
 	const [getReviewFile, setReviewFile] = useState("There are currently 0 track results awaiting review");
 	const [getReviewFileReady, setReviewFileReady] = useState(false);
 	const [getLoadingReviewStatus, setLoadingReviewStatus] = useState(false);
+
 	const [getImportFileArray, setImportFileArray] = useState("");
-	const [getExportFileStatus, setExportFileStatus] = useState(false);
-	const [getExportFile, setExportFile] = useState("");
-	const { stateSuccess, history } = props;
+
+	const { stateError, stateSuccess, history } = props;
 
 	//===============================================================================================================//
 	// Setup useEffect Functions
@@ -48,14 +50,19 @@ const ReleaseImport = props => {
 		accordion();
 	}, []);
 
-	// Handle Form POST Submission Effect
+	// Handle Form POST Submission Return Success Effect
 	useEffect(() => {
 		if (stateSuccess !== null) {
-			setLoadingReviewStatus(false);
-			importResetHandler();
-			history.push({ pathname: "/releases" });
+			importReset();
 		}
-	}, [stateSuccess, history]);
+	}, [stateSuccess]);
+	
+	// Handle Form POST Submission Return Errors Effect
+	useEffect(() => {
+		if (stateError !== null) {
+			importReset();
+		}
+	}, [stateError]);
 
 	//===============================================================================================================//
 	// Obtain Import Folder Location From Host Computer
@@ -85,7 +92,7 @@ const ReleaseImport = props => {
 		setLoadingImportStatus(true);
 		const importedFiles = await window.api.fileImport(getImportLocation);
 		if (importedFiles.length) {
-			const importedFilesSorted = await sortArrayByName(importedFiles, "release_catalogue", "track_number");
+			const importedFilesSorted = await sortArrayByName(importedFiles, "catalogue", "track_number");
 			setImportFileArray(importedFilesSorted);
 			setImportFile("Success! Files have been imported and are ready for review");
 			setReviewFileReady(true);
@@ -103,35 +110,41 @@ const ReleaseImport = props => {
 
 	const trackImportHandler = event => {
 		event.preventDefault();
+		//const updatedTrackData = [];
+
+		//console.log(getImportFileArray);
+
+		// Create Track Object Array for API submission
+
+		// for (let index = 0; index < getImportFileArray.length; index++) {
+			
+		// 	let trackDataItem = {}
+		// 	let trackDataMap = new Map(Object.entries(getImportFileArray[index]));
+
+		// 	trackDataMap.forEach(function(value, key) {
+		// 		switch (key) {
+		// 			case "release_catalogue":
+		// 				trackDataItem[key] = [{ name: value }];
+		// 				break;
+		// 			default:
+		// 				trackDataItem[key] = value;
+		// 		}
+		// 	});
+		// 	updatedTrackData.push(trackDataItem);
+		// }
+
+		// Prepare API submission (Plain Object)
 
 		const trackData = { 
 			tracks: getImportFileArray
 		};
 
-		setExportFile(trackData);
-		setExportFileStatus(true);
+		console.log(trackData);
 
 		setLoadingReviewStatus(true);
-		//props.onSendImportedReleases(trackData);
+		props.onSendImportedReleases(trackData);
 	}
 
-	//===============================================================================================================//
-	// Save JSON To File Helper
-	//===============================================================================================================//
-
-	const exportTrackData = event => {
-		event.preventDefault();
-
-		const a = document.createElement("a");
-		a.href = URL.createObjectURL(new Blob([JSON.stringify(getExportFile, null, 2)], {
-			type: "text/plain"
-		}));
-		a.setAttribute("download", "data.txt");
-		document.body.appendChild(a);
-		a.click();
-		document.body.removeChild(a);
-	}
-	
 	//===============================================================================================================//
 	// Track Import Action Helpers
 	//===============================================================================================================//
@@ -139,10 +152,21 @@ const ReleaseImport = props => {
 	const importMessageHandler = event => {
 		event.preventDefault();
 		props.onResetStatus();
+		importReset();
+	};
+
+	const importSuccessHandler = event => {
+		event.preventDefault();
+		props.onResetStatus();
+		history.push({ pathname: "/releases" });
 	};
 
 	const importResetHandler = event => {
 		event.preventDefault();
+		importReset();
+	}
+
+	const importReset = () => {
 		setImportLocation("No location specified, please choose a folder to import from your computer");
 		setImportLocationReady(false);
 		setLoadingLocationStatus(false);
@@ -152,7 +176,6 @@ const ReleaseImport = props => {
 		setReviewFile("There are currently 0 track results awaiting review");
 		setReviewFileReady(false);
 		setLoadingReviewStatus(false);
-		setExportFileStatus(false);
 		setImportFileArray("");
 	};
 
@@ -172,8 +195,22 @@ const ReleaseImport = props => {
 							headline={props.stateError}
 							response={props.stateResponse}
 							message={props.stateFeedback}
+							textContent={true}
 							action={importMessageHandler}
 							buttonText={`Close`}
+						/>
+					</Auxiliary>
+				) : null }
+				{ props.stateSuccess ? (
+					<Auxiliary>
+						<StatusPrompt
+							status={"success"}
+							headline={props.stateSuccess}
+							response={props.stateResponse}
+							message={props.stateFeedback}
+							htmlContent={true}
+							action={importSuccessHandler}
+							buttonText={`OK`}
 						/>
 					</Auxiliary>
 				) : null }
@@ -230,10 +267,10 @@ const ReleaseImport = props => {
 												key={index}
 												trackName={track.name}
 												trackArtist={track.artist_name}
-												trackCat={track.release_catalogue}
+												trackCat={track.catalogue}
 												trackGenre={track.genre}
 												trackYear={track.year}
-												trackPicture={track.picture}
+												trackPicture={track.release_picture}
 											/>
 										))}
 									</ol>
@@ -256,11 +293,6 @@ const ReleaseImport = props => {
 						</div>
 					</fieldset>
 					<div className={"userform--actions"}>
-						<Button type={getExportFileStatus ? "success" : "disabled"}
-							disabled={!getExportFileStatus}
-							clicked={exportTrackData}>
-							Export Track Data
-						</Button>
 						<Button type={"warning"} clicked={importResetHandler}>
 							Reset Import Form
 						</Button>

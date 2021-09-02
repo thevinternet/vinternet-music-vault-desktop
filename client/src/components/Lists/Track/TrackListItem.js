@@ -76,19 +76,15 @@ const TrackListItem = props => {
 							{ props.trackName ? he.decode(props.trackName) : "" }
 						</Link>
 					</h2>
-					{ props.trackCat.length ? (
-						<Auxiliary>
-							<ul className="details--inline">
-								{ props.trackCat.map((catalogue) =>
-									<li key={catalogue._id}>
-										<Link to={`/releases/${catalogue._id}`}>
-											{ catalogue.catalogue ? he.decode(catalogue.catalogue) : "" }
-										</Link>
-									</li>
-								) }
-							</ul>
-						</Auxiliary>
-					) : null }
+					<Auxiliary>
+						<ul className="details--inline">
+							<li key={props.trackCatalogue}>
+								<Link to={`/releases/${props.trackReleaseId}`}>
+									{ he.decode(props.trackCatalogue) }
+								</Link>
+							</li>
+						</ul>
+					</Auxiliary>
 					<Auxiliary>
 						<ul className="details--inline">
 							{ props.trackNumber ? <li><strong>Track:</strong> { props.trackNumber } </li> : null }

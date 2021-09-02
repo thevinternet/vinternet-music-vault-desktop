@@ -21,11 +21,11 @@ export const labelNameFormElement = (action="", id) => {
 export const parentLabelFormElement = (element, index) => {
 	const parentLabel = Object.assign(
 		{},
-		feAttrBuilder.feBaseAttributes("input", "text", element._id || "parentLabel", "parentLabel"),
+		feAttrBuilder.feBaseAttributes("input", "text", element._id ? element._id : "parentLabel", "parentLabel"),
 		feAttrBuilder.feLabelAttribute("parentLabel"),
 		feAttrBuilder.feValueAttribute(element.name ? he.decode(element.name) : ""),
 		feAttrBuilder.feValidationFalseAttributes(false),
-		feAttrBuilder.feFuzzySearchAttributes(element._id || "parentLabel", element._id ? true : false)
+		feAttrBuilder.feFuzzySearchAttributes(element._id ? element._id : "", element._id ? true : false)
 	);
 	return parentLabel;
 }
@@ -45,11 +45,11 @@ export const parentLabelForm = (action) => {
 export const subsidiaryLabelFormElement = (element, index) => {
 	const subsidiaryLabel = Object.assign(
 		{},
-		feAttrBuilder.feBaseAttributes("input", "text", element._id || `subsidiaryLabel${index}`, `subsidiaryLabel`),
+		feAttrBuilder.feBaseAttributes("input", "text", element._id ? element._id : `subsidiaryLabel${index}`, `subsidiaryLabel`),
 		feAttrBuilder.feLabelAttribute("subsidiaryLabel"),
 		feAttrBuilder.feValueAttribute(element.name ? he.decode(element.name) : ""),
 		feAttrBuilder.feValidationFalseAttributes(false),
-		feAttrBuilder.feFuzzySearchAttributes(element._id || `subsidiaryLabel${index}`)
+		feAttrBuilder.feFuzzySearchAttributes(element._id ? element._id : "", element._id ? true : false)
 	);
 	return subsidiaryLabel;
 }

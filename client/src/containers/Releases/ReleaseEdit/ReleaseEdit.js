@@ -237,10 +237,10 @@ const ReleaseEdit = props => {
 					default : 
 						track[key] = value[key].value;
 				}
-				track.release_title = releaseId;
-				track.release_catalogue = releaseId;
-				track.release_ref = releaseId;
+				track.release_title = [{ _id: releaseId }];
+				track.release_id = releaseId;
 				track.release_picture = releaseId;
+				track.catalogue = releaseDataObject.catalogue;
 			}
 			if (releaseDataObject.label_name[0]._id) {
 				track.release_label.push({ _id: releaseDataObject.label_name[0]._id });
@@ -536,6 +536,7 @@ const ReleaseEdit = props => {
 					headline={props.stateError}
 					response={props.stateResponse}
 					message={props.stateFeedback}
+					textContent={true}
 					action={releaseRedirectHandler}
 					buttonText={`OK`}
 				/>
@@ -553,6 +554,7 @@ const ReleaseEdit = props => {
 							headline={props.stateError}
 							response={props.stateResponse}
 							message={props.stateFeedback}
+							textContent={true}
 							action={releaseMessageHandler}
 							buttonText={`Close`}
 						/>

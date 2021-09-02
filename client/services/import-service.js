@@ -61,7 +61,7 @@ async function importTracks(folderLocation) {
 
 	//===============================================================================================================//
 
-	// Spilt the tracks 'album' meta data prop to create release label prop fro track object
+	// Spilt the tracks 'album' meta data prop to create release label prop from track object
 	function createReleaseLabelProp(trackAlbumString) {
 		let releaseLabel = regexLabel.exec(trackAlbumString)[0];
 		return releaseLabel.trim();
@@ -84,20 +84,20 @@ async function importTracks(folderLocation) {
 			artist_name: [],
 			release_title: [],
 			release_label: trackResult.album ? [{ name: createReleaseLabelProp(trackResult.album) }] : "",
-			release_catalogue: trackResult.album ? trackResult.album : "",
-			release_ref: "",
+			release_id: "",
+			release_picture: [],
+			catalogue: trackResult.album ? trackResult.album : "",
 			track_number: trackResult.track.no ? trackResult.track.no : "",
 			genre: trackResult.genre.length ? trackResult.genre[0] : "",
 			mixkey: trackResult.key ? trackResult.key : "",
 			bpm: trackResult.bpm ? trackResult.bpm : "",
 			year: trackResult.year ? trackResult.year : "",
-			picture: [],
 			file_location: tracksToImport[index]
 		};
 
 		if (trackResult.artists.length) {
 			// Create new array of Artist prop strings by spliting artists string using regex query
-			let splitArtists = trackResult.artists[0].split(regexArtist);
+			let splitArtists = trackResult.artist.split(regexArtist);
 
 			// For each remaining artist prop create own object prop in 'artist_name' array
 			splitArtists.forEach(artist => {
@@ -119,7 +119,7 @@ async function importTracks(folderLocation) {
 			await saveTrackPicture(filePath, trackResult.picture[0].data);
 
 			// Add props to track item 
-			trackItem.picture.push({
+			trackItem.release_picture.push({
 				filename: fileName,
 				format: trackResult.picture[0].format,
 				location: "releases"

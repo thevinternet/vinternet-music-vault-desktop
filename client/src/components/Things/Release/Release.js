@@ -140,7 +140,8 @@ const Release = props => {
 								trackId={track._id}
 								trackName={track.name}
 								trackArtist={track.artist_name}
-								trackCat={track.release_catalogue}
+								trackCatalogue={track.catalogue}
+								trackReleaseId={track.release_id}
 								trackPicture={track.release_picture[0].picture}
 								trackNumber={track.track_number}
 								trackGenre={track.genre}

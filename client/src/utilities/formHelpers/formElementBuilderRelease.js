@@ -19,11 +19,11 @@ export const releaseTitleFormElement = (action="", id) => {
 export const releaseLabelFormElement = (element, index) => {
 	const releaseLabel = Object.assign(
 		{},
-		feAttrBuilder.feBaseAttributes("input", "text", `releaseLabel${index}`, "label"),
+		feAttrBuilder.feBaseAttributes("input", "text", element._id ? element._id : `releaseLabel${index}`, "label"),
 		feAttrBuilder.feLabelAttribute("Label"),
 		feAttrBuilder.feValueAttribute(element.name ? he.decode(element.name) : ""),
 		feAttrBuilder.feValidationFalseAttributes(false),
-		feAttrBuilder.feFuzzySearchAttributes(element._id || `releaseLabel${index}`, element._id ? true : false)
+		feAttrBuilder.feFuzzySearchAttributes(element._id ? element._id : "", element._id ? true : false)
 	);
 	return releaseLabel;
 

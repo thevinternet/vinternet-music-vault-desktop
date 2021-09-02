@@ -34,11 +34,11 @@ export const realNameFormElement = (action="", id) => {
 export const aliasNameFormElement = (element, index) => {
 	const aliasName = Object.assign(
 		{},
-		feAttrBuilder.feBaseAttributes("input", "text", element._id || `aliasName${index}`, `aliasName`),
+		feAttrBuilder.feBaseAttributes("input", "text", element._id ? element._id : `aliasName${index}`, `aliasName`),
 		feAttrBuilder.feLabelAttribute("aliasName"),
 		feAttrBuilder.feValueAttribute(element.name ? he.decode(element.name) : ""),
 		feAttrBuilder.feValidationFalseAttributes(false),
-		feAttrBuilder.feFuzzySearchAttributes(element._id || `aliasName${index}`)
+		feAttrBuilder.feFuzzySearchAttributes(element._id ? element._id : "", element._id ? true : false)
 	);
 	return aliasName;
 }

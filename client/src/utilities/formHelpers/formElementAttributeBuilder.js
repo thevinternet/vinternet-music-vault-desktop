@@ -23,13 +23,13 @@ export const feBaseAttributes = (element, type, id, name) => {
 
 export const feLabelAttribute = (id) => {
 	return {
-		label: feLabelCreator(id),		
+		label: feLabelCreator(id),
 	}	
 }
 
 export const feValueAttribute = (action="") => {
 	return {
-		value: action		
+		value: action
 	}	
 }
 
@@ -116,7 +116,7 @@ export const feImageUploadAttributes = (location, filename) => {
 
 // Fuzzy Search Form Element Attributes
 
-export const feFuzzySearchAttributes = (id, linkedRecord = false) => {
+export const feFuzzySearchAttributes = (id, linkedRecord) => {
 	return {
 			isFuzzy: true,
 			fuzzyRef: id,

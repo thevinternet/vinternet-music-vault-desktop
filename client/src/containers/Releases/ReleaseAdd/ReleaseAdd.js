@@ -192,9 +192,9 @@ const ReleaseAdd = props => {
 				switch (key) {
 					case "artists": 
 						value[key].forEach(function(element) {
-							element.linkedRecord ?
-							track.artist_name.push({ _id: element.fuzzyRef }) :
-							track.artist_name.push({ name: element.value });
+							element.linkedRecord
+							? track.artist_name.push({ _id: element.fuzzyRef })
+							: track.artist_name.push({ name: element.value });
 						});
 					break;
 					case "trackTitle":
@@ -212,6 +212,7 @@ const ReleaseAdd = props => {
 					default : 
 						track[key] = value[key].value;
 				}
+				track.catalogue = releaseDataObject.catalogue;
 			}
 			if (releaseDataObject.label_name[0]._id) {
 				track.release_label.push({ _id: releaseDataObject.label_name[0]._id });
@@ -485,6 +486,7 @@ const ReleaseAdd = props => {
 							headline={props.stateError}
 							response={props.stateResponse}
 							message={props.stateFeedback}
+							textContent={true}
 							action={releaseMessageHandler}
 							buttonText={`Close`}
 						/>

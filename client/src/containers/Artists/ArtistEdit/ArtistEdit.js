@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import "./ArtistEdit.scss";
 import artistAvatar from "../../../assets/images/site/avatar-artist.jpg";
 
+import he from "he";
+
 import Auxiliary from "../../../wrappers/Auxiliary/Auxiliary";
 
 import Input from "../../../components/Utilities/Form/Input/Input";
@@ -49,7 +51,6 @@ const ArtistEdit = props => {
 	const { updatedFormDel, inputDeleteHandler } = useHandleInputDeletion();
 	const { updatedFormDds, dropdownItemSelectHandler } = useHandleDropdownItemSelect();
 	const { importedPicture, getEncodedPictureHandler } = useGetEncodedPicture();
-
 
 	//===============================================================================================================//
 	// Setup useEffect Functions
@@ -426,7 +427,7 @@ const ArtistEdit = props => {
 	if (!props.stateLoading && props.stateArtist) {
 		artistForm = (
 			<div className="container">
-				<h1>{props.stateArtist.name}</h1>
+				<h1>{ he.decode(props.stateArtist.name) }</h1>
 				{props.stateError ? (
 					<Auxiliary>
 						<StatusPrompt
@@ -434,6 +435,7 @@ const ArtistEdit = props => {
 							headline={props.stateError}
 							response={props.stateResponse}
 							message={props.stateFeedback}
+							textContent={true}
 							action={artistMessageHandler}
 							buttonText={`Close`}
 						/>
