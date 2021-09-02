@@ -11,6 +11,31 @@
 	h2 {
 		@include fontsize(22);
 	}
+	ol {
+		margin-bottom: $base-spacing-unit-medium;
+		padding-top: $base-spacing-unit-medium;
+		padding-bottom: $base-spacing-unit-medium;
+		padding-left: $base-spacing-unit-large;
+		border-top-style: solid;
+		border-top-width: 2px;
+		border-top-color: inherit; 
+		border-bottom-style: solid;
+		border-bottom-width: 2px;
+		border-bottom-color: inherit;
+		li > ul,
+		li > ol {
+			margin-top: $base-spacing-unit-tiny;
+			margin-bottom: $base-spacing-unit-tiny;
+			padding-top: $base-spacing-unit-tiny;
+			padding-bottom: $base-spacing-unit-tiny;	
+			border-top-style: dashed;
+			border-top-width: 1px;
+			border-top-color: $grey-3; 
+			border-bottom-style: dashed;
+			border-bottom-width: 1px;
+			border-bottom-color: $grey-3;
+		}
+	}
 }
 
 .theme--purple--light {

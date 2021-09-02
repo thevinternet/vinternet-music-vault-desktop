@@ -1,5 +1,7 @@
 import React from "react";
 
+import he from "he";
+
 import "./FuzzyInput.scss";
 
 //===============================================================================================================//
@@ -36,12 +38,12 @@ const fuzzyInput = props => {
 						key={match.item._id}
 						onClick={props.clicked}
 						onKeyUp={props.keyup}
-						value={match.item.name}
+						value={he.decode(match.item.name)}
 						id={match.item._id}
-						name={match.item.name}
+						name={he.decode(match.item.name)}
 						tabIndex="0"
 					>
-						{match.item.name}
+						{he.decode(match.item.name)}
 					</option>
 				))}
 			</datalist>

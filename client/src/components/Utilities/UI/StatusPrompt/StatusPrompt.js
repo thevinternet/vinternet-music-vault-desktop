@@ -3,6 +3,9 @@ import he from "he";
 
 import "./StatusPrompt.scss";
 
+import ContentHtml from "../StatusContent/ContentHtml";
+import ContentText from "../StatusContent/ContentText";
+
 import Button from "../Button/Button";
 
 import SetElementFocus from "../../../../hooks/accessibility/SetElementFocus";
@@ -29,16 +32,13 @@ const StatusPrompt = props => {
 			role="status"
 		>
 			<h2>{he.decode(props.headline)}</h2>
-			<ul>
-				{props.message.length ? (
-					props.message.map((message, index) =>
-						<li key={index}>
-							{he.decode(`${message.msg} | value passed = '${message.value}'`)}
-						</li>
-					)
-				) : null }
-				<li>{he.decode(props.response)}</li>
-			</ul>
+			<p>{he.decode(props.response)}</p>
+			{ props.htmlContent ? 
+				<ContentHtml message={props.message} />
+			: null }
+			{ props.textContent ? 
+				<ContentText message={props.message} />
+			: null }
 			<Button
 				type={props.status}
 				clicked={props.action}
