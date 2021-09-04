@@ -61,6 +61,7 @@ const ReleaseList = props => {
 					headline={props.stateError}
 					response={props.stateResponse}
 					message={props.stateFeedback}
+					textContent={true}
 					action={event => releaseMessageHandler(event, true)}
 					buttonText={`OK`}
 				/>

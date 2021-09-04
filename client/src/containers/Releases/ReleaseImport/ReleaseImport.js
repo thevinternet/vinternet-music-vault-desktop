@@ -110,36 +110,12 @@ const ReleaseImport = props => {
 
 	const trackImportHandler = event => {
 		event.preventDefault();
-		//const updatedTrackData = [];
-
-		//console.log(getImportFileArray);
-
-		// Create Track Object Array for API submission
-
-		// for (let index = 0; index < getImportFileArray.length; index++) {
-			
-		// 	let trackDataItem = {}
-		// 	let trackDataMap = new Map(Object.entries(getImportFileArray[index]));
-
-		// 	trackDataMap.forEach(function(value, key) {
-		// 		switch (key) {
-		// 			case "release_catalogue":
-		// 				trackDataItem[key] = [{ name: value }];
-		// 				break;
-		// 			default:
-		// 				trackDataItem[key] = value;
-		// 		}
-		// 	});
-		// 	updatedTrackData.push(trackDataItem);
-		// }
-
+		
 		// Prepare API submission (Plain Object)
 
 		const trackData = { 
 			tracks: getImportFileArray
 		};
-
-		console.log(trackData);
 
 		setLoadingReviewStatus(true);
 		props.onSendImportedReleases(trackData);

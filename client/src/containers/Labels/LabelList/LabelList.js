@@ -63,6 +63,7 @@ const LabelList = props => {
 					headline={props.stateError}
 					response={props.stateResponse}
 					message={props.stateFeedback}
+					textContent={true}
 					action={event => labelMessageHandler(event, true)}
 					buttonText={`OK`}
 				/>

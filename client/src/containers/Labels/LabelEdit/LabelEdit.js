@@ -459,6 +459,7 @@ const LabelEdit = props => {
 						headline={props.stateError}
 						response={props.stateResponse}
 						message={props.stateFeedback}
+						textContent={true}
 						action={labelRedirectHandler}
 						buttonText={`OK`}
 					/>
@@ -476,6 +477,7 @@ const LabelEdit = props => {
 								headline={props.stateError}
 								response={props.stateResponse}
 								message={props.stateFeedback}
+								textContent={true}
 								action={labelMessageHandler}
 								buttonText={`Close`}
 							/>

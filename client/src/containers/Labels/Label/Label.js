@@ -74,6 +74,7 @@ const Label = props => {
 					headline={props.stateLabelError}
 					response={props.stateResponse}
 					message={props.stateFeedback}
+					textContent={true}
 					action={event => labelMessageHandler(event, true)}
 					buttonText={`OK`}
 				/>

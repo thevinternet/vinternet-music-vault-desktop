@@ -418,6 +418,7 @@ const ArtistEdit = props => {
 					headline={props.stateError}
 					response={props.stateResponse}
 					message={props.stateFeedback}
+					textContent={true}
 					action={artistRedirectHandler}
 					buttonText={`OK`}
 				/>

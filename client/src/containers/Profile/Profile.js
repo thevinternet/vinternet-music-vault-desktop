@@ -30,6 +30,7 @@ const Profile = props => {
 					headline={"Unregistered User"}
 					message={""}
 					response={"No user is currently logged into Vinternet Music Vault. Please login to view your profile."}
+					textContent={true}
 					action={authContext.login}
 					buttonText={`Login`}
 				/>

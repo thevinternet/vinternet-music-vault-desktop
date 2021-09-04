@@ -92,7 +92,6 @@ ReleaseUtilities.updateReleaseDocument = async (id, release, tracks) => {
 	// Append unique Artist IDs array to updatedRelease object
 	updatedRelease.artist_name = uniqueArtistIds;
 
-	//console.log(updatedRelease);
 	return updatedRelease;
 }
 
@@ -156,8 +155,6 @@ ReleaseUtilities.createImportedReleases = async (tracks) => {
 			location: trackPictures[0] ? trackPictures[0].location : "releases"
 		}]
 
-		//console.log(newRelease.release.title);
-		console.log(newRelease.release.picture);
 		newReleases.push(newRelease);
 	})
 
