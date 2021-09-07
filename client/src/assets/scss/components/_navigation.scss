@@ -1,4 +1,61 @@
-nav {
+
+/*--- Navigation Letter & Number ---*/
+
+.navigation--letter,
+.navigation--number {
+  ol {
+		@include list--inline;
+		flex-flow: row wrap;
+		justify-content: flex-start;
+		align-content: flex-start;
+		list-style: none;
+
+		> li {
+			min-width: 42px;
+			max-width: 42px;
+			flex: 1 0 auto;
+			text-align: center;
+			text-transform: capitalize;
+			text-decoration: none;
+			margin: 0 ($base-spacing-unit / 2) ($base-spacing-unit / 2) 0;
+			display: block;
+			padding: ($base-spacing-unit + 3px) 0;
+			@include media($medium) {
+				padding: $base-spacing-unit-tiny $base-spacing-unit-tiny;
+			}
+
+			> span {
+				display: block;
+				padding: ($base-spacing-unit + 3px) 0;
+				@include media($medium) {
+					padding: $base-spacing-unit-tiny $base-spacing-unit-tiny;
+				}
+			}
+		}
+  }
+}
+
+/*--- Navigation Letter ---*/
+
+.navigation--letter ol {
+	li {
+		background-color: $white;
+		color: $purple-1;
+	}
+  li:first-child {
+    min-width: 87px; // 2x button width including the margin to the left of first
+  }
+	li:hover,
+  li.active {
+		cursor: pointer;
+    color: $white;
+    background-color: $purple-1;
+  }
+}
+
+/*--- Navigation Top Menu ---*/
+
+.navigation--menu {
 	display: flex;
 	width: 100%;
 	background-color: rgba(57, 59, 59, 0.5);

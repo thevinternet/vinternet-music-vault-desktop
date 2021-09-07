@@ -55,30 +55,34 @@ const TrackListItem = props => {
 				</figure>
 				<div className="card__details">
 					<h2>
-						{ props.trackArtist.map((artist, index, array) =>
-							array.length - 1 === index ? (
-								<span key={artist._id}>
-									<Link to={`/artists/${artist._id}`}>
-										{ artist.name ? he.decode(artist.name) : "" }
-									</Link>
-									{" - "}
-								</span>
-							) : (
-								<span key={artist._id}>
-									<Link to={`/artists/${artist._id}`}>
-										{ artist.name ? he.decode(artist.name) : "" }
-									</Link>
-									{" & "}
-								</span>
-							)
-						) }
 						<Link to={`/tracks/${props.trackId}`}>
 							{ props.trackName ? he.decode(props.trackName) : "" }
 						</Link>
 					</h2>
 					<Auxiliary>
 						<ul className="details--inline">
+							<li key={props.trackId}>
+							<b>Artist(s): </b>
+							{ props.trackArtist.map((artist, index, array) =>
+								array.length - 1 === index ? (
+									<span key={artist._id}>
+										<Link to={`/artists/${artist._id}`}>
+											{ artist.name ? he.decode(artist.name) : "" }
+										</Link>
+										{" - "}
+									</span>
+								) : (
+									<span key={artist._id}>
+										<Link to={`/artists/${artist._id}`}>
+											{ artist.name ? he.decode(artist.name) : "" }
+										</Link>
+										{" & "}
+									</span>
+								)
+							) }
+							</li>
 							<li key={props.trackCatalogue}>
+								<b>Release: </b>
 								<Link to={`/releases/${props.trackReleaseId}`}>
 									{ he.decode(props.trackCatalogue) }
 								</Link>

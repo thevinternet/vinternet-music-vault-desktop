@@ -1,34 +1,135 @@
 const TrackModel = require("../schemas/track.schema");
 
 //===============================================================================================================//
-// Return ALL documents in Tracks collection
+// Return Track Documents (All or By First Letter Filter) with Sorting, Limiting & Cursor Pagination 
 //===============================================================================================================//
 
-TrackModel.getAllTracks = async () => {
+TrackModel.getAllTracks = async (query) => {
 	try {
-		const tracks = await TrackModel.find({});
+		let queryLetter;
+		let searchFilter;
+		let sortFilter;
 
-		if (!tracks.length) {
+		//===============================================================================================================//
+		
+		// Setup query string & search filter
+
+		if (query.letter && query.letter !== "all") {
+			queryLetter = `^${query.letter}`;
+			searchFilter = { name: new RegExp(queryLetter, "i") };
+		} else {
+			queryLetter = "all";
+			searchFilter = {};
+		}
+
+		// Setup result sorting parameters
+
+		query.sort
+		? sortFilter = { [query.sort]: 1, _id: 1 }
+		: sortFilter = { name: 1, _id: 1 }
+
+		//===============================================================================================================//
+
+		// Execute bare query to check results exist
+		
+		const tracksResult = await TrackModel.find(searchFilter)
+		.lean()
+		.sort(sortFilter)
+		.exec();
+
+		//===============================================================================================================//
+
+		// If no results exist send error response
+
+		if (!tracksResult.length) {
+			
+			let errorFeedback;
+			
+			queryLetter !== "all"
+			? errorFeedback = `No track results found starting with the letter '${query.letter}'`
+			: errorFeedback = 'No track results found'
+
 			return {
-				error : {
+				success : {
 					status: "Request Successful",
 					response: "HTTP Status Code 200 (OK)",
-					errors: [
-						{
-							msg: "No track results found"
-						}
-					]
+					feedback: errorFeedback,
+					tracks: [],
+					queryResults: {
+						count: 0,
+						sliceMin: 0,
+						sliceMax: 0,
+						next: "",
+						hasNext: false,
+						prev: "",
+						hasPrev: false
+					}
 				}
 			}
-		} else {
-			return TrackModel.find({})
-				.populate("release_title", "title")
-				.populate("artist_name", "name")
-				.populate("release_label", "name")
-				.populate("release_picture", "picture")
-				.lean()
-				.sort({ catalogue: 1, track_number: 1 })
-				.exec();
+		}
+		
+		// if results exisit construct & execute full query
+
+		else {
+
+			// Setup any required result pagination
+
+			let pageRequest;
+
+			if (query.reqNext && query.next) {
+				pageRequest = { $gt: query.next } 
+			}
+			else if (query.reqPrev && query.prev) {
+				pageRequest = { $lt: query.prev } 
+			}
+			else {
+				pageRequest = { $exists: true };
+			}
+
+			// Setup query string & search filter
+
+			if (queryLetter !== "all") {
+				searchFilter = { 
+					$and: [
+						{ name: new RegExp(queryLetter, "i") },
+						{ name: pageRequest }
+					]
+				}
+			} else {
+				searchFilter = { name: pageRequest };
+			}
+
+			//===============================================================================================================//
+	
+			// Execute main query and return response object
+
+			const tracksQuery = await TrackModel.find(searchFilter)
+			.populate("release_title", "title")
+			.populate("artist_name", "name")
+			.populate("release_label", "name")
+			.populate("release_picture", "picture")
+			.lean()
+			.sort(sortFilter)
+			.limit(query.limit)
+			.exec();
+
+			return { 
+				success : {
+					status: "Request Successful",
+					response: "HTTP Status Code 200 (OK)",
+					feedback: null,
+					tracks: tracksQuery,
+					queryResults: {
+						count: tracksResult.length,
+						sliceMin: tracksResult.findIndex(track => track._id.equals(tracksQuery[0]._id)) + 1,
+						sliceMax: tracksResult.findIndex(track => track._id.equals(tracksQuery[tracksQuery.length - 1]._id)) + 1,
+						next: tracksQuery[tracksQuery.length - 1].name,
+						hasNext: tracksQuery.length < query.limit ? false : true,
+						prev: tracksQuery[0].name,
+						hasPrev: tracksResult[0]._id.equals(tracksQuery[0]._id) ? false : true,
+					}
+				}
+			}
 		}
 
 	} catch (err) {

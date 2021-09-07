@@ -1,8 +1,8 @@
 import * as actionTypes from "./actionTypes";
 
 //===============================================================================================================//
-
 // Generic Track Action Creators
+//===============================================================================================================//
 
 export const trackStartLoading = () => {
   return {
@@ -30,25 +30,28 @@ export const trackResetResults = () => {
 };
 
 //===============================================================================================================//
-
 // Action Creators for retreiving Tracks from database
+//===============================================================================================================//
 
-export const fetchTracksSuccess = tracks => {
+export const fetchTracksSuccess = (tracks, query, feedback) => {
   return {
     type: actionTypes.FETCH_TRACKS_SUCCESS,
-    tracks: tracks
+    tracks: tracks,
+		query: query,
+		feedback: feedback
   };
 };
 
-export const fetchTracksSend = () => {
+export const fetchTracksSend = query => {
   return {
-    type: actionTypes.FETCH_TRACKS_SEND
+    type: actionTypes.FETCH_TRACKS_SEND,
+		query: query
   };
 };
 
 //===============================================================================================================//
-
 // Action Creators for retreiving single Track from database
+//===============================================================================================================//
 
 export const fetchTrackSuccess = track => {
   return {
@@ -66,8 +69,8 @@ export const fetchTrackSend = (trackId, edit) => {
 };
 
 //===============================================================================================================//
-
 // Action Creators for retreiving Tracks By Artist from database
+//===============================================================================================================//
 
 export const fetchTracksByArtistSuccess = tracks => {
   return {
@@ -84,8 +87,8 @@ export const fetchTracksByArtistSend = (artistId) => {
 };
 
 //===============================================================================================================//
-
 // Action Creators for retreiving Tracks By Label from database
+//===============================================================================================================//
 
 export const fetchTracksByLabelSuccess = tracks => {
   return {
@@ -102,8 +105,8 @@ export const fetchTracksByLabelSend = (labelId) => {
 };
 
 //===============================================================================================================//
-
 // Action Creators for retreiving Tracks By Release from database
+//===============================================================================================================//
 
 export const fetchTracksByReleaseSuccess = tracks => {
   return {
@@ -119,9 +122,10 @@ export const fetchTracksByReleaseSend = (releaseId, edit) => {
 		edit: edit
   };
 };
-//===============================================================================================================//
 
+//===============================================================================================================//
 // Action Creators for adding Tracks to database
+//===============================================================================================================//
 
 export const addTrackClientPrep = () => {
   return {
@@ -130,8 +134,8 @@ export const addTrackClientPrep = () => {
 };
 
 //===============================================================================================================//
-
 // Action Creators for editing Track data client side
+//===============================================================================================================//
 
 export const editTrackClientPrep = tracks => {
   return {

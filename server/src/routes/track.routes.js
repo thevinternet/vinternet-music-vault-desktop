@@ -7,8 +7,8 @@ const TrackController = require("../controllers/track.controller");
 // Routes - All Release [GET] Routes
 //===============================================================================================================//
 
-// [GET] All Tracks Endpoint
-router.get("/", TrackController.getAllTracks);
+// [GET] All Tracks (with Query parameters) Endpoint
+router.post("/", TrackController.getAllTracks);
 
 // [GET] Single Track By Id Endpoint
 router.get("/:id", TrackController.validate("checkTrackId"), TrackController.getTrackById);

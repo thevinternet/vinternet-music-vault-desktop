@@ -24,7 +24,7 @@ TrackController.validate = (method) => {
 
 TrackController.getAllTracks = async (req, res, next) => {
 	try {
-		const tracks = await TrackModel.getAllTracks();
+		const tracks = await TrackModel.getAllTracks(req.body);
 
 		if (res.error) {
 			return res.json({

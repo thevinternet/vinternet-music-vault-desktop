@@ -128,6 +128,18 @@
   }
 }
 
+@mixin list--inline {
+  @include list;
+  @include list-headings;
+  display: flex;
+  flex-wrap: wrap;
+
+  > li {
+    width: auto;
+    margin-right: $base-spacing-unit;
+  }
+}
+
 @mixin list--block {
   @include list;
   @include list-headings;

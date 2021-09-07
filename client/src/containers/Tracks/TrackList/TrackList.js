@@ -5,10 +5,12 @@ import { HashLink as Link } from "react-router-hash-link";
 import "./TrackList.scss";
 
 import TrackListItem from "../../../components/Lists/Track/TrackListItem";
+import NavigationLetter from "../../../components/Utilities/Navigation/NavigationLetter/NavigationLetter";
 import Auxiliary from "../../../wrappers/Auxiliary/Auxiliary";
 
 import Loader from "../../../components/Utilities/UI/Loader/Loader";
 import StatusPrompt from "../../../components/Utilities/UI/StatusPrompt/StatusPrompt";
+import StatusMessage from "../../../components/Utilities/UI/StatusMessage/StatusMessage";
 
 import * as trackActions from "../../../store/actions/index";
 
@@ -20,8 +22,11 @@ const TrackList = props => {
 	// Set Up Component STATE
 	//===============================================================================================================//
 
-	const { onFetchTracks, history } = props;
+	const { onFetchTracks, stateQuery, stateQueryResults, history } = props;
 	const [getShouldRedirect, setShouldRedirect] = useState(false);
+	const [getActiveLetter, setActiveLetter] = useState("all");
+	const [getSortAxis, setSortAxis] = useState("name");
+	const [getQueryLimit, setQueryLimit] = useState(50);
 
 	//===============================================================================================================//
 	// Setup useEffect Functions
@@ -29,8 +34,9 @@ const TrackList = props => {
 
 	// Get Tracks Effect
 	useEffect(() => {
-		onFetchTracks();
-	}, [onFetchTracks]);
+		setActiveLetter("all")
+		onFetchTracks(stateQuery);
+	}, [onFetchTracks, stateQuery]);
 
 	// Redirect To Tracks List Effect
 	useEffect(() => {
@@ -40,6 +46,20 @@ const TrackList = props => {
 	//===============================================================================================================//
 	// Track Action Helpers
 	//===============================================================================================================//
+
+	const trackByFirstLetterHandler = (event) => {
+		event.preventDefault();
+		let letter = event.target.innerHTML;
+		setActiveLetter(letter);
+
+		const query = {
+			letter: letter,
+			sort: getSortAxis,
+			limit : getQueryLimit,
+		}
+
+		onFetchTracks(query);
+	}
 
 	const trackMessageHandler = (event, redirect) => {
 		event.preventDefault();
@@ -59,6 +79,7 @@ const TrackList = props => {
 					headline={props.stateError}
 					response={props.stateResponse}
 					message={props.stateFeedback}
+					textContent={true}
 					action={event => trackMessageHandler(event, true)}
 					buttonText={`OK`}
 				/>
@@ -69,13 +90,17 @@ const TrackList = props => {
 		trackList = (
 			<div className="container">
 				<h1>Tracks</h1>
-				<p>Showing {props.stateTracks.length} results</p>
+				<p>Showing { stateQueryResults.sliceMin }{ stateQueryResults.sliceMax !== 0 ? `-${stateQueryResults.sliceMax}` : "" } of { stateQueryResults.count } results</p>
+				<NavigationLetter
+					queryLetter={getActiveLetter}
+					clicked={event => trackByFirstLetterHandler(event) }
+				/>
 				<Auxiliary>
 					{props.stateTracks.length ? (
 						<ol className="list--block">
 							{props.stateTracks.map(track => (
 								<TrackListItem
-									key={track._id}
+									key={track.createdAt}
 									trackId={track._id}
 									trackName={track.name}
 									trackArtist={track.artist_name}
@@ -85,7 +110,14 @@ const TrackList = props => {
 								/>
 							))}
 						</ol>
-					) : null }
+					) :
+						<div className="list--block">
+							<StatusMessage
+								status={"warning"}
+								message={props.stateFeedback}
+							/>
+						</div>
+					}
 				</Auxiliary>
 				<Link smooth to="#content">
 					Back To Top
@@ -103,6 +135,8 @@ const TrackList = props => {
 const mapStateToProps = state => {
 	return {
 		stateTracks: state.track.tracks,
+		stateQuery: state.track.query,
+		stateQueryResults: state.track.queryResults,
 		stateLoading: state.track.loading,
 		stateError: state.track.error,
 		stateSuccess: state.track.success,
@@ -113,8 +147,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onFetchTracks: () => 
-			dispatch(trackActions.fetchTracksSend()),
+		onFetchTracks: (query) => 
+			dispatch(trackActions.fetchTracksSend(query)),
 		onResetStatus: () => 
 			dispatch(trackActions.trackResetStatus())
 	};

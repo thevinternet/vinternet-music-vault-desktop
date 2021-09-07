@@ -59,7 +59,7 @@ const Navigation = props => {
 
 	let navigation = (
 		<Auxiliary>
-			<nav>
+			<nav className={"navigation--menu"}>
 				<ul>
 					<NavigationItem link="/">Dashboard</NavigationItem>
 					<NavigationItem link="/artists">Artists</NavigationItem>
